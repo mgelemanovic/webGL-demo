@@ -1,15 +1,21 @@
 var gl;
 
 function initGL(canvas) {
+    var context;
+
     try {
-        gl = canvas.getContext("experimental-webgl");
-        gl.viewportWidth = canvas.width;
-        gl.viewportHeight = canvas.height;
+        context = canvas.getContext("experimental-webgl");
+        context.viewportWidth = canvas.width;
+        context.viewportHeight = canvas.height;
     } catch (e) {
     }
-    if (!gl) {
+
+    if (!context) {
         alert("Could not initialise WebGL, sorry :-(");
+        return null;
     }
+
+    return context;
 }
 
 function getShader(gl, id) {
@@ -53,7 +59,7 @@ function initShaders() {
     var fragmentShader = getShader(gl, "shader-fs");
     var vertexShader = getShader(gl, "shader-vs");
 
-    shaderProgram = gl.createProgram();
+    var shaderProgram = gl.createProgram();
     gl.attachShader(shaderProgram, vertexShader);
     gl.attachShader(shaderProgram, fragmentShader);
     gl.linkProgram(shaderProgram);
@@ -72,6 +78,8 @@ function initShaders() {
     shaderProgram.pMatrixUniform = gl.getUniformLocation(shaderProgram, "uPMatrix");
     shaderProgram.mvMatrixUniform = gl.getUniformLocation(shaderProgram, "uMVMatrix");
     shaderProgram.samplerUniform = gl.getUniformLocation(shaderProgram, "uSampler");
+
+    return shaderProgram;
 }
 
 function handleLoadedTexture(texture) {
@@ -81,21 +89,20 @@ function handleLoadedTexture(texture) {
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
     gl.bindTexture(gl.TEXTURE_2D, null);
-
-    gl.activeTexture(gl.TEXTURE0);
-    gl.bindTexture(gl.TEXTURE_2D, texture);
-    gl.uniform1i(shaderProgram.samplerUniform, 0);
 }
 
 var neheTexture;
 
-function initTexture() {
-    neheTexture = gl.createTexture();
-    neheTexture.image = new Image();
-    neheTexture.image.onload = function () {
-        handleLoadedTexture(neheTexture)
+function initTexture(path) {
+    var newTexture = gl.createTexture();
+
+    newTexture.image = new Image();
+    newTexture.image.onload = function () {
+        handleLoadedTexture(newTexture)
     };
-    neheTexture.image.src = "nehe.gif";
+    newTexture.image.src = path;
+
+    return newTexture;
 }
 
 var mvMatrix = mat4.create();
@@ -124,8 +131,10 @@ function degToRad(degrees) {
     return degrees * Math.PI / 180;
 }
 
-var cubeVertexPositionBuffer;
-var cubeVertexTextureCoordBuffer;
+var vertexBuffer = {
+    position: null,
+    textureCoord: null
+};
 
 function createBufferFromData(data, itemSize, numItems) {
     var newBuffer = gl.createBuffer();
@@ -146,40 +155,55 @@ function initBuffers() {
         -1.0, -1.0, 0.0,
         1.0, -1.0, 0.0
     ];
-    cubeVertexPositionBuffer = createBufferFromData(vertices, 3, 4);
     var textureCoords = [
         0.0, 1.0,
         1.0, 1.0,
         0.0, 0.0,
         1.0, 0.0
     ];
-    cubeVertexTextureCoordBuffer = createBufferFromData(textureCoords, 2, 4);
+    return {
+        position: createBufferFromData(vertices, 3, 4),
+        textureCoord: createBufferFromData(textureCoords, 2, 4)
+    }
 }
 
-function drawObject(posBuffer, textureBuffer, texture) {
-    gl.bindBuffer(gl.ARRAY_BUFFER, posBuffer);
-    gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, posBuffer.itemSize, gl.FLOAT, false, 0, 0);
+function setTexture(texture) {
+    gl.activeTexture(gl.TEXTURE0);
+    gl.bindTexture(gl.TEXTURE_2D, texture);
+    gl.uniform1i(shaderProgram.samplerUniform, 0);
+}
 
-    gl.bindBuffer(gl.ARRAY_BUFFER, textureBuffer);
-    gl.vertexAttribPointer(shaderProgram.textureCoordAttribute, textureBuffer.itemSize, gl.FLOAT, false, 0, 0);
-
+function drawObject(posBuffer) {
     setMatrixUniforms();
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, posBuffer.numItems);
 }
 
-function drawScene() {
+function render() {
     gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
     mat4.perspective(45, gl.viewportWidth / gl.viewportHeight, 0.1, 100.0, pMatrix);
     mat4.identity(mvMatrix);
 
-    mat4.translate(mvMatrix, [0.0, 0.0, -5.0]);
-    drawObject(cubeVertexPositionBuffer, cubeVertexTextureCoordBuffer, neheTexture);
+    gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer.position);
+    gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, vertexBuffer.position.itemSize, gl.FLOAT, false, 0, 0);
+
+    gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer.textureCoord);
+    gl.vertexAttribPointer(shaderProgram.textureCoordAttribute, vertexBuffer.textureCoord.itemSize, gl.FLOAT, false, 0, 0);
+
+    setTexture(neheTexture);
+    mvPushMatrix();
+    mat4.translate(mvMatrix, [-1.0, -3.0, -10.0]);
+    drawObject(vertexBuffer.position);
+    mvPopMatrix();
+    mvPushMatrix();
+    mat4.translate(mvMatrix, [1.0, -3.0, -10.0]);
+    drawObject(vertexBuffer.position);
+    mvPopMatrix();
 }
 
 var lastTime = 0;
-function animate() {
+function update() {
     var timeNow = new Date().getTime();
     if (lastTime != 0) {
         var elapsed = timeNow - lastTime;
@@ -188,22 +212,22 @@ function animate() {
     lastTime = timeNow;
 }
 
-function tick() {
-    requestAnimFrame(tick);
+function gameLoop() {
+    requestAnimFrame(gameLoop);
 
-    drawScene();
-    animate();
+    render();
+    update();
 }
 
 function webGLStart() {
-    var canvas = document.getElementById("lesson05-canvas");
-    initGL(canvas);
-    initShaders();
-    initBuffers();
-    initTexture();
+    var canvas = document.getElementById("webgl-context");
+    gl = initGL(canvas);
+    shaderProgram = initShaders();
+    vertexBuffer = initBuffers();
+    neheTexture = initTexture("nehe.gif");
 
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
     gl.enable(gl.DEPTH_TEST);
 
-    tick();
+    gameLoop();
 }
