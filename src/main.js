@@ -1,7 +1,7 @@
 var gl;
 var shaderProgram;
 
-var neheTexture;
+var textures = [];
 
 var vertexBuffer = {
     position: null,
@@ -11,6 +11,7 @@ var vertexBuffer = {
 function gameLoop() {
     requestAnimFrame(gameLoop);
 
+    handleInput();
     render();
     update();
 }
@@ -20,7 +21,10 @@ function webGLStart() {
     gl = initGL(canvas);
     shaderProgram = initShaders();
     vertexBuffer = initBuffers();
-    neheTexture = initTexture("nehe.gif");
+    textures.push(initTexture("nehe.gif"));
+
+    document.onkeydown = handleKeyDown;
+    document.onkeyup = handleKeyUp;
 
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
     gl.enable(gl.DEPTH_TEST);

@@ -1,7 +1,12 @@
-function drawObject(posBuffer) {
+function drawObject(position) {
+    mvPushMatrix();
+    mat4.translate(mvMatrix, position);
     setMatrixUniforms();
-    gl.drawArrays(gl.TRIANGLE_STRIP, 0, posBuffer.numItems);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    mvPopMatrix();
 }
+
+var distance = -20.0;
 
 function render() {
     gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
@@ -16,13 +21,11 @@ function render() {
     gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer.textureCoord);
     gl.vertexAttribPointer(shaderProgram.textureCoordAttribute, vertexBuffer.textureCoord.itemSize, gl.FLOAT, false, 0, 0);
 
-    setTexture(neheTexture);
-    mvPushMatrix();
-    mat4.translate(mvMatrix, [-1.0, -3.0, -10.0]);
-    drawObject(vertexBuffer.position);
-    mvPopMatrix();
-    mvPushMatrix();
-    mat4.translate(mvMatrix, [1.0, -3.0, -10.0]);
-    drawObject(vertexBuffer.position);
-    mvPopMatrix();
+    setTexture(textures[0]);
+
+    for (var i = -10; i <= 10; i += 2) {
+        for (var j = -10; j <= 10; j +=2) {
+            drawObject([i, j, distance]);
+        }
+    }
 }
