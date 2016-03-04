@@ -21,10 +21,10 @@ function render() {
     gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer.textureCoord);
     gl.vertexAttribPointer(shaderProgram.textureCoordAttribute, vertexBuffer.textureCoord.itemSize, gl.FLOAT, false, 0, 0);
 
-    setTexture(textures[0]);
-
+    var k = 0;
     for (var i = -10; i <= 10; i += 2) {
         for (var j = -10; j <= 10; j +=2) {
+            setTexture(textures[k = 1 - k]);
             drawObject([i, j, distance]);
         }
     }

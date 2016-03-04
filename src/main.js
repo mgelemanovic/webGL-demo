@@ -21,7 +21,8 @@ function webGLStart() {
     gl = initGL(canvas);
     shaderProgram = initShaders();
     vertexBuffer = initBuffers();
-    textures.push(initTexture("nehe.gif"));
+    textures.push(initTexture("images/squirtle.gif"));
+    textures.push(initTexture("images/charmander.png"));
 
     document.onkeydown = handleKeyDown;
     document.onkeyup = handleKeyUp;
