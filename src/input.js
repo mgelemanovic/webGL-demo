@@ -17,7 +17,12 @@ Input.prototype.handleInput = function() {
     if (currentlyPressedKeys[37]) {
         player.position.x -= 0.05;
     }
-    if (currentlyPressedKeys[38]) {
-        player.position.y = 2;
+
+    if (currentlyPressedKeys[38] && player.grounded) {
+        player.force.y = 0.015;
+        player.grounded = false;
+    }
+    else {
+        player.force.y = 0;
     }
 };

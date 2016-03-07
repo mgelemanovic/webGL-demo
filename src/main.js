@@ -46,7 +46,7 @@ function webGLStart() {
 
     //GameObject creations
     background = new GameObject(textureManager.background);
-    player = new MovableObject(textureManager.player);
+    player = new MovableObject(textureManager.player, 50);
 
     //How far away from camera the scene is
     drawDistance = -5;
