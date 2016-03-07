@@ -10,9 +10,9 @@ function handleKeyUp(event) {
 
 function handleInput() {
     if (currentlyPressedKeys[39]) {
-        playerPosition += 0.1;
+        player.x += 0.05;
     }
     if (currentlyPressedKeys[37]) {
-        playerPosition -= 0.1;
+        player.x -= 0.05;
     }
 }

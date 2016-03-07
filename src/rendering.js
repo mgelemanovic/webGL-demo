@@ -6,7 +6,11 @@ function drawObject(position) {
     mvPopMatrix();
 }
 
-var playerPosition = 0.0;
+var player = {
+    x: 0.0,
+    y: 0.0,
+    speed: 0.0
+};
 
 function render() {
     gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
@@ -25,5 +29,5 @@ function render() {
     for (var i = -5; i < 5; ++i)
         drawObject([i, 0.0, -5.0]);
     setTexture(textures[1]);
-    drawObject([playerPosition, 0.0, -5.0]);
+    drawObject([player.x, player.y, -5.0]);
 }
