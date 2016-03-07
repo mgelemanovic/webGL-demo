@@ -6,7 +6,7 @@ function drawObject(position) {
     mvPopMatrix();
 }
 
-var distance = -20.0;
+var playerPosition = 0.0;
 
 function render() {
     gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
@@ -21,11 +21,9 @@ function render() {
     gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer.textureCoord);
     gl.vertexAttribPointer(shaderProgram.textureCoordAttribute, vertexBuffer.textureCoord.itemSize, gl.FLOAT, false, 0, 0);
 
-    var k = 0;
-    for (var i = -10; i <= 10; i += 2) {
-        for (var j = -10; j <= 10; j +=2) {
-            setTexture(textures[k = 1 - k]);
-            drawObject([i, j, distance]);
-        }
-    }
+    setTexture(textures[0]);
+    for (var i = -5; i < 5; ++i)
+        drawObject([i, 0.0, -5.0]);
+    setTexture(textures[1]);
+    drawObject([playerPosition, 0.0, -5.0]);
 }
