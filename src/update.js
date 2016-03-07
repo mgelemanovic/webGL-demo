@@ -7,8 +7,12 @@ function update() {
     if (lastTime != 0) {
         var elapsed = timeNow - lastTime;
 
-        player.speed += gAcc * elapsed;
-        player.y += player.speed * elapsed;
+        player.speed.y += gAcc * elapsed;
+        player.position.y += player.speed.y * elapsed;
+        if (player.position.y < -1) {
+            player.position.y = -1;
+            player.speed.y = 0;
+        }
     }
     lastTime = timeNow;
 }

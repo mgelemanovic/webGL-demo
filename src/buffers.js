@@ -1,8 +1,8 @@
 function createBufferFromData(data, itemSize, numItems) {
-    var newBuffer = gl.createBuffer();
+    var newBuffer = GL.createBuffer();
 
-    gl.bindBuffer(gl.ARRAY_BUFFER, newBuffer);
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(data), gl.STATIC_DRAW);
+    GL.bindBuffer(GL.ARRAY_BUFFER, newBuffer);
+    GL.bufferData(GL.ARRAY_BUFFER, new Float32Array(data), GL.STATIC_DRAW);
 
     newBuffer.itemSize = itemSize;
     newBuffer.numItems = numItems;

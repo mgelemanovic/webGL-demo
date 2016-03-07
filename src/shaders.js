@@ -34,28 +34,28 @@ function getShader(gl, id) {
 }
 
 function initShaders() {
-    var fragmentShader = getShader(gl, "shader-fs");
-    var vertexShader = getShader(gl, "shader-vs");
+    var fragmentShader = getShader(GL, "shader-fs");
+    var vertexShader = getShader(GL, "shader-vs");
 
-    var shaderProgram = gl.createProgram();
-    gl.attachShader(shaderProgram, vertexShader);
-    gl.attachShader(shaderProgram, fragmentShader);
-    gl.linkProgram(shaderProgram);
+    var shaderProgram = GL.createProgram();
+    GL.attachShader(shaderProgram, vertexShader);
+    GL.attachShader(shaderProgram, fragmentShader);
+    GL.linkProgram(shaderProgram);
 
-    if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
+    if (!GL.getProgramParameter(shaderProgram, GL.LINK_STATUS)) {
         alert("Could not initialise shaders");
     }
 
-    gl.useProgram(shaderProgram);
-    shaderProgram.vertexPositionAttribute = gl.getAttribLocation(shaderProgram, "aVertexPosition");
-    gl.enableVertexAttribArray(shaderProgram.vertexPositionAttribute);
+    GL.useProgram(shaderProgram);
+    shaderProgram.vertexPositionAttribute = GL.getAttribLocation(shaderProgram, "aVertexPosition");
+    GL.enableVertexAttribArray(shaderProgram.vertexPositionAttribute);
 
-    shaderProgram.textureCoordAttribute = gl.getAttribLocation(shaderProgram, "aTextureCoord");
-    gl.enableVertexAttribArray(shaderProgram.textureCoordAttribute);
+    shaderProgram.textureCoordAttribute = GL.getAttribLocation(shaderProgram, "aTextureCoord");
+    GL.enableVertexAttribArray(shaderProgram.textureCoordAttribute);
 
-    shaderProgram.pMatrixUniform = gl.getUniformLocation(shaderProgram, "uPMatrix");
-    shaderProgram.mvMatrixUniform = gl.getUniformLocation(shaderProgram, "uMVMatrix");
-    shaderProgram.samplerUniform = gl.getUniformLocation(shaderProgram, "uSampler");
+    shaderProgram.pMatrixUniform = GL.getUniformLocation(shaderProgram, "uPMatrix");
+    shaderProgram.mvMatrixUniform = GL.getUniformLocation(shaderProgram, "uMVMatrix");
+    shaderProgram.samplerUniform = GL.getUniformLocation(shaderProgram, "uSampler");
 
     return shaderProgram;
 }

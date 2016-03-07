@@ -1,27 +1,55 @@
-var gl;
+var GL;
 var shaderProgram;
-
 var vertexBuffer = {
     position: null,
     textureCoord: null
 };
 
-var textures = [];
+var inputManager;
+var textureManager = {
+    currentTexture: null,
+    background: null,
+    player: null
+};
+
+var drawDistance;
+var player;
+var background;
 
 function webGLStart() {
     var canvas = document.getElementById("webgl-context");
-    gl = initGL(canvas);
+    GL = initGL(canvas);
     shaderProgram = initShaders();
     vertexBuffer = initBuffers();
-    textures.push(initTexture("textures/bg.jpg"));
-    textures.push(initTexture("textures/charmander.png"));
 
-    document.onkeydown = handleKeyDown;
-    document.onkeyup = handleKeyUp;
+    //Input binding
+    inputManager = new Input();
+    document.onkeydown = inputManager.handleKeyDown;
+    document.onkeyup = inputManager.handleKeyUp;
 
-    gl.clearColor(0.0, 0.0, 0.0, 1.0);
-    gl.enable(gl.BLEND);
-    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+    //WebGL state setup
+    GL.clearColor(0.0, 0.0, 0.0, 1.0);
+    GL.viewport(0, 0, GL.viewportWidth, GL.viewportHeight);
+
+    GL.enable(GL.BLEND);
+    GL.blendFunc(GL.SRC_ALPHA, GL.ONE_MINUS_SRC_ALPHA);
+
+    GL.bindBuffer(GL.ARRAY_BUFFER, vertexBuffer.position);
+    GL.vertexAttribPointer(shaderProgram.vertexPositionAttribute, vertexBuffer.position.itemSize, GL.FLOAT, false, 0, 0);
+
+    GL.bindBuffer(GL.ARRAY_BUFFER, vertexBuffer.textureCoord);
+    GL.vertexAttribPointer(shaderProgram.textureCoordAttribute, vertexBuffer.textureCoord.itemSize, GL.FLOAT, false, 0, 0);
+
+    //Texture loading
+    textureManager.background = initTexture("textures/bg.jpg");
+    textureManager.player = initTexture("textures/charmander.png");
+
+    //GameObject creations
+    background = new GameObject(textureManager.background);
+    player = new MovableObject(textureManager.player);
+
+    //How far away from camera the scene is
+    drawDistance = -5;
 
     gameLoop();
 }
@@ -29,7 +57,7 @@ function webGLStart() {
 function gameLoop() {
     requestAnimFrame(gameLoop);
 
-    handleInput();
+    inputManager.handleInput();
     update();
     render();
 }

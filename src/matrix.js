@@ -16,8 +16,8 @@ function mvPopMatrix() {
 }
 
 function setMatrixUniforms() {
-    gl.uniformMatrix4fv(shaderProgram.pMatrixUniform, false, pMatrix);
-    gl.uniformMatrix4fv(shaderProgram.mvMatrixUniform, false, mvMatrix);
+    GL.uniformMatrix4fv(shaderProgram.pMatrixUniform, false, pMatrix);
+    GL.uniformMatrix4fv(shaderProgram.mvMatrixUniform, false, mvMatrix);
 }
 
 function degToRad(degrees) {

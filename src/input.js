@@ -1,18 +1,23 @@
 var currentlyPressedKeys = {};
 
-function handleKeyDown(event) {
+var Input = function() {};
+
+Input.prototype.handleKeyDown = function(event) {
     currentlyPressedKeys[event.keyCode] = true;
-}
+};
 
-function handleKeyUp(event) {
+Input.prototype.handleKeyUp = function(event) {
     currentlyPressedKeys[event.keyCode] = false;
-}
+};
 
-function handleInput() {
+Input.prototype.handleInput = function() {
     if (currentlyPressedKeys[39]) {
-        player.x += 0.05;
+        player.position.x += 0.05;
     }
     if (currentlyPressedKeys[37]) {
-        player.x -= 0.05;
+        player.position.x -= 0.05;
     }
-}
+    if (currentlyPressedKeys[38]) {
+        player.position.y = 2;
+    }
+};

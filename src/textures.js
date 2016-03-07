@@ -1,14 +1,20 @@
 function handleLoadedTexture(texture) {
-    gl.bindTexture(gl.TEXTURE_2D, texture);
-    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, texture.image);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
-    gl.bindTexture(gl.TEXTURE_2D, null);
+    GL.bindTexture(GL.TEXTURE_2D, texture);
+
+    GL.pixelStorei(GL.UNPACK_FLIP_Y_WEBGL, true);
+    GL.texImage2D(GL.TEXTURE_2D, 0, GL.RGBA, GL.RGBA, GL.UNSIGNED_BYTE, texture.image);
+
+    GL.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_MAG_FILTER, GL.NEAREST);
+    GL.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_MIN_FILTER, GL.NEAREST);
+
+    GL.bindTexture(GL.TEXTURE_2D, null);
 }
 
 function initTexture(path) {
-    var newTexture = gl.createTexture();
+    var newTexture = GL.createTexture();
+
+    GL.bindTexture(GL.TEXTURE_2D, newTexture);
+    GL.texImage2D(GL.TEXTURE_2D, 0, GL.RGBA, 1, 1, 0, GL.RGBA, GL.UNSIGNED_BYTE, new Uint8Array([255, 255, 255, 255]));
 
     newTexture.image = new Image();
     newTexture.image.onload = function () {
@@ -20,7 +26,10 @@ function initTexture(path) {
 }
 
 function setTexture(texture) {
-    gl.activeTexture(gl.TEXTURE0);
-    gl.bindTexture(gl.TEXTURE_2D, texture);
-    gl.uniform1i(shaderProgram.samplerUniform, 0);
+    if (textureManager.currentTexture != texture) {
+        textureManager.currentTexture = texture;
+        GL.activeTexture(GL.TEXTURE0);
+        GL.bindTexture(GL.TEXTURE_2D, texture);
+        GL.uniform1i(shaderProgram.samplerUniform, 0);
+    }
 }
