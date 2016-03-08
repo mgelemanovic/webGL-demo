@@ -1,21 +1,26 @@
 var currentlyPressedKeys = {};
 
-var Input = function() {};
+var Input = function () {
+};
 
-Input.prototype.handleKeyDown = function(event) {
+Input.prototype.handleKeyDown = function (event) {
     currentlyPressedKeys[event.keyCode] = true;
 };
 
-Input.prototype.handleKeyUp = function(event) {
+Input.prototype.handleKeyUp = function (event) {
     currentlyPressedKeys[event.keyCode] = false;
 };
 
-Input.prototype.handleInput = function() {
+Input.prototype.handleInput = function () {
     if (currentlyPressedKeys[39]) {
         player.position.x += 0.05;
+        //Needs to be 1 when having a texture normally facing right
+        player.scale.x = -1;
     }
     if (currentlyPressedKeys[37]) {
         player.position.x -= 0.05;
+        //Needs to be -1 when having a texture normally facing right
+        player.scale.x = 1;
     }
 
     if (currentlyPressedKeys[38] && player.grounded) {

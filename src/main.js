@@ -8,12 +8,14 @@ var vertexBuffer = {
 var inputManager;
 var textureManager = {
     currentTexture: null,
-    background: null,
-    player: null
+    player: null,
+    ground: null,
+    background: null
 };
 
-var drawDistance;
+var scene;
 var player;
+var ground;
 var background;
 
 function webGLStart() {
@@ -41,15 +43,15 @@ function webGLStart() {
     GL.vertexAttribPointer(shaderProgram.textureCoordAttribute, vertexBuffer.textureCoord.itemSize, GL.FLOAT, false, 0, 0);
 
     //Texture loading
-    textureManager.background = initTexture("textures/bg.jpg");
+    textureManager.background = initTexture(null);
     textureManager.player = initTexture("textures/charmander.png");
+    textureManager.ground = initTexture("textures/squirtle.gif");
 
     //GameObject creations
-    background = new GameObject(textureManager.background);
-    player = new MovableObject(textureManager.player, 50);
-
-    //How far away from camera the scene is
-    drawDistance = -5;
+    scene = new SceneManager();
+    player = new MovableObject(textureManager.player, -5, 50);
+    ground = new GameObject(textureManager.ground, -5);
+    background = new GameObject(textureManager.background, -0.1);
 
     gameLoop();
 }
@@ -58,8 +60,8 @@ function gameLoop() {
     requestAnimFrame(gameLoop);
 
     inputManager.handleInput();
-    update();
-    render();
+    scene.update();
+    scene.render();
 }
 
 function initGL(canvas) {

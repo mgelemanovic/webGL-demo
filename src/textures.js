@@ -14,13 +14,15 @@ function initTexture(path) {
     var newTexture = GL.createTexture();
 
     GL.bindTexture(GL.TEXTURE_2D, newTexture);
-    GL.texImage2D(GL.TEXTURE_2D, 0, GL.RGBA, 1, 1, 0, GL.RGBA, GL.UNSIGNED_BYTE, new Uint8Array([255, 255, 255, 255]));
+    GL.texImage2D(GL.TEXTURE_2D, 0, GL.RGBA, 1, 1, 0, GL.RGBA, GL.UNSIGNED_BYTE, new Uint8Array([135, 206, 250, 255]));
 
-    newTexture.image = new Image();
-    newTexture.image.onload = function () {
-        handleLoadedTexture(newTexture)
-    };
-    newTexture.image.src = path;
+    if (path != null) {
+        newTexture.image = new Image();
+        newTexture.image.onload = function () {
+            handleLoadedTexture(newTexture)
+        };
+        newTexture.image.src = path;
+    }
 
     return newTexture;
 }
