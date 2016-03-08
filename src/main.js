@@ -6,7 +6,7 @@ var vertexBuffer = {
 };
 
 var inputManager;
-var textureManager = {
+var textureManager = {  // Holds all textures
     currentTexture: null,
     player: null,
     ground: null,
@@ -15,8 +15,8 @@ var textureManager = {
 
 var scene;
 var player;
-var ground;
-var background;
+var ground; // Not okay
+var background; // Kinda okay, do I really need it, tho???
 
 function webGLStart() {
     var canvas = document.getElementById("webgl-context");
@@ -45,13 +45,15 @@ function webGLStart() {
     //Texture loading
     textureManager.background = initTexture(null);
     textureManager.player = initTexture("textures/charmander.png");
-    textureManager.ground = initTexture("textures/squirtle.gif");
+    textureManager.ground = initTexture("textures/ground.png");
 
     //GameObject creations
-    scene = new SceneManager();
-    player = new MovableObject(textureManager.player, -5, 50);
+    scene = new SceneManager(); //Pass in JSON to load scene
+    player = new MovableObject(textureManager.player, -5, 50);  //Mass is wtf
     ground = new GameObject(textureManager.ground, -5);
-    background = new GameObject(textureManager.background, -0.1);
+    ground.position.y = -2; //NO
+    ground.collider.updateCollider(ground.position);
+    background = new GameObject(textureManager.background, -0.1);   //Maybe clearColor set to sky is better, than this shit
 
     gameLoop();
 }
@@ -66,7 +68,7 @@ function gameLoop() {
 
 function initGL(canvas) {
     var context;
-
+    // Add support for webgl and webkit
     try {
         context = canvas.getContext("experimental-webgl");
         context.viewportWidth = canvas.width;

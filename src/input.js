@@ -1,4 +1,4 @@
-var currentlyPressedKeys = {};
+var currentlyPressedKeys = {}; //Try squeezing it into Input class as member
 
 var Input = function () {
 };
@@ -13,7 +13,7 @@ Input.prototype.handleKeyUp = function (event) {
 
 Input.prototype.handleInput = function () {
     if (currentlyPressedKeys[39]) {
-        player.position.x += 0.05;
+        player.position.x += 0.05;  // Extract into a variable?
         //Needs to be 1 when having a texture normally facing right
         player.scale.x = -1;
     }
@@ -23,11 +23,21 @@ Input.prototype.handleInput = function () {
         player.scale.x = 1;
     }
 
-    if (currentlyPressedKeys[38] && player.grounded) {
-        player.force.y = 0.015;
-        player.grounded = false;
+    //KILL THIS MONSTROSITY
+    if (currentlyPressedKeys[38] && player.rigidBody.isGrounded) {
+        wannaJump = true;
+        player.rigidBody.forceY = 0.015;
+        player.rigidBody.isGrounded = false;
     }
+    //BAD GELE BAD
+    else if (!currentlyPressedKeys[38]) {
+        wannaJump = false;
+    }
+    //This is tolerable
     else {
-        player.force.y = 0;
+        player.rigidBody.forceY = 0;
     }
 };
+
+//Go fuck yourself, idiot^3
+var wannaJump;

@@ -1,12 +1,15 @@
-var SceneManager = function() {
+var SceneManager = function () {
     this.cameraX = 0;
     this.cameraY = 0;
 
     this.lastTime = 0;
     this.elapsed = 0;
+
+    //Something to hold info on scene
 };
 
-SceneManager.prototype.prepare = function(fovy, aspect, near, far) {
+//Clears the scene, sets the perspective and moves the camera
+SceneManager.prototype.prepare = function (fovy, aspect, near, far) {
     GL.clear(GL.COLOR_BUFFER_BIT | GL.DEPTH_BUFFER_BIT);
 
     mat4.perspective(fovy, aspect, near, far, pMatrix);
@@ -14,18 +17,15 @@ SceneManager.prototype.prepare = function(fovy, aspect, near, far) {
     mat4.translate(mvMatrix, [-this.cameraX, -this.cameraY, 0]);
 };
 
-SceneManager.prototype.render = function() {
+SceneManager.prototype.render = function () {
     this.prepare(45, GL.viewportWidth / GL.viewportHeight, 0.1, 100.0);
 
-    for (var i = -5; i < 5; ++i) {
-        background.position.x = i;
-        background.draw();
-    }
-
+    background.draw();
+    ground.draw();
     player.draw();
 };
 
-SceneManager.prototype.update = function() {
+SceneManager.prototype.update = function () {
     var timeNow = new Date().getTime();
     if (this.lastTime != 0) {
         this.elapsed = timeNow - this.lastTime;
@@ -33,4 +33,11 @@ SceneManager.prototype.update = function() {
         player.move();
     }
     this.lastTime = timeNow;
+
+    //Check for death
+    if (player.position.y < -4) {
+        player.position.x = 0;
+        player.position.y = 0;
+        player.rigidBody.speedY = 0;
+    }
 };

@@ -1,6 +1,6 @@
-var mvMatrix = mat4.create();
+var mvMatrix = mat4.create();   // Model View Matrix
 var mvMatrixStack = [];
-var pMatrix = mat4.create();
+var pMatrix = mat4.create();    // Perspective Matrix
 
 function mvPushMatrix() {
     var copy = mat4.create();

@@ -1,3 +1,4 @@
+// Compile a shader and return it
 function getShader(gl, id) {
     var shaderScript = document.getElementById(id);
     if (!shaderScript) {
@@ -33,6 +34,7 @@ function getShader(gl, id) {
     return shader;
 }
 
+// Grab vertex and fragment shader and link them into a shader program
 function initShaders() {
     var fragmentShader = getShader(GL, "shader-fs");
     var vertexShader = getShader(GL, "shader-vs");

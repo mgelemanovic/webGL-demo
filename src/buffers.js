@@ -10,12 +10,14 @@ function createBufferFromData(data, itemSize, numItems) {
     return newBuffer;
 }
 
+var squareVertexDistance = 0.5;
+
 function initBuffers() {
     var vertices = [
-        -0.5, 0.5, 0.0,
-        0.5, 0.5, 0.0,
-        -0.5, -0.5, 0.0,
-        0.5, -0.5, 0.0
+        -squareVertexDistance, squareVertexDistance, 0.0,
+        squareVertexDistance, squareVertexDistance, 0.0,
+        -squareVertexDistance, -squareVertexDistance, 0.0,
+        squareVertexDistance, -squareVertexDistance, 0.0
     ];
     var textureCoords = [
         0.0, 1.0,
