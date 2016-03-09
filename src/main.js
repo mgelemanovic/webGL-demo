@@ -51,8 +51,7 @@ function webGLStart() {
     scene = new SceneManager(); //Pass in JSON to load scene
     player = new MovableObject(textureManager.player, -5, 50);  //Mass is wtf
     ground = new GameObject(textureManager.ground, -5);
-    ground.position.y = -2; //NO
-    ground.collider.updateCollider(ground.position);
+    ground.position.y = -2;
     background = new GameObject(textureManager.background, -0.1);   //Maybe clearColor set to sky is better, than this shit
 
     gameLoop();

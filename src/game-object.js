@@ -11,15 +11,18 @@ var GameObject = function (texture, drawDistance) {
     //this.rotation = 0.0;
     this.texture = texture;
     this.drawDistance = drawDistance;   // Is this weird???
-    this.collider = {   //???????
-        x: this.position.x - squareVertexDistance / 2,
-        y: this.position.y + squareVertexDistance / 2,
-        w: squareVertexDistance,
-        h: 2 * squareVertexDistance,
-        updateCollider: function (pos) {    //This sucks ass
-            this.x = pos.x - squareVertexDistance / 2;
-            this.y = pos.y - squareVertexDistance / 2;
-        }
+    this.collider = new Collider(this, 1, 1);
+};
+
+GameObject.prototype.setPosition = function(newX, newY) {
+    this.position.x = newX;
+    this.position.y = newY;
+};
+
+GameObject.prototype.getPosition = function() {
+    return {
+        x: this.position.x,
+        y: this.position.y
     }
 };
 

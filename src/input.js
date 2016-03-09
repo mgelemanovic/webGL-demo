@@ -23,21 +23,12 @@ Input.prototype.handleInput = function () {
         player.scale.x = 1;
     }
 
-    //KILL THIS MONSTROSITY
     if (currentlyPressedKeys[38] && player.rigidBody.isGrounded) {
-        wannaJump = true;
         player.rigidBody.forceY = 0.015;
         player.rigidBody.isGrounded = false;
-    }
-    //BAD GELE BAD
-    else if (!currentlyPressedKeys[38]) {
-        wannaJump = false;
     }
     //This is tolerable
     else {
         player.rigidBody.forceY = 0;
     }
 };
-
-//Go fuck yourself, idiot^3
-var wannaJump;
