@@ -1,16 +1,16 @@
-var GameObject = function (texture, drawDistance) {
-    //Position, scale are kinda weird
+var GameObject = function (texture) {
+    //Position and scale are kinda weird
     this.position = {
         x: 0.0,
         y: 0.0
     };
+    this.drawDistance = -5;
     this.scale = {
         x: 1.0,
         y: 1.0
     };
     //this.rotation = 0.0;
     this.texture = texture;
-    this.drawDistance = drawDistance;   // Is this weird???
     this.collider = new Collider(this, 1, 1);
 };
 
@@ -24,6 +24,13 @@ GameObject.prototype.getPosition = function() {
         x: this.position.x,
         y: this.position.y
     }
+};
+
+GameObject.prototype.setScale = function(newX, newY) {
+    this.scale.x = newX;
+    this.scale.y = newY;
+    this.collider.w = Math.abs(newX);
+    this.collider.h = Math.abs(newY);
 };
 
 GameObject.prototype.draw = function () {

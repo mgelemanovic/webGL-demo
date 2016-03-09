@@ -10,7 +10,7 @@ var SceneManager = function () {
 
 //Clears the scene, sets the perspective and moves the camera
 SceneManager.prototype.prepare = function (fovy, aspect, near, far) {
-    GL.clear(GL.COLOR_BUFFER_BIT | GL.DEPTH_BUFFER_BIT);
+    GL.clear(GL.COLOR_BUFFER_BIT);
 
     mat4.perspective(fovy, aspect, near, far, pMatrix);
     mat4.identity(mvMatrix);
@@ -20,7 +20,6 @@ SceneManager.prototype.prepare = function (fovy, aspect, near, far) {
 SceneManager.prototype.render = function () {
     this.prepare(45, GL.viewportWidth / GL.viewportHeight, 0.1, 100.0);
 
-    background.draw();
     ground.draw();
     player.draw();
 };
@@ -38,6 +37,7 @@ SceneManager.prototype.update = function () {
     if (player.position.y < -4) {
         player.position.x = 0;
         player.position.y = 0;
+        player.rigidBody.isGrounded = false;
         player.rigidBody.speedY = 0;
     }
 };

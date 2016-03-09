@@ -27,7 +27,6 @@ Input.prototype.handleInput = function () {
         player.rigidBody.forceY = 0.015;
         player.rigidBody.isGrounded = false;
     }
-    //This is tolerable
     else {
         player.rigidBody.forceY = 0;
     }

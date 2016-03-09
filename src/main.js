@@ -9,14 +9,12 @@ var inputManager;
 var textureManager = {  // Holds all textures
     currentTexture: null,
     player: null,
-    ground: null,
-    background: null
+    ground: null
 };
 
 var scene;
 var player;
-var ground; // Not okay
-var background; // Kinda okay, do I really need it, tho???
+var ground;
 
 function webGLStart() {
     var canvas = document.getElementById("webgl-context");
@@ -30,7 +28,7 @@ function webGLStart() {
     document.onkeyup = inputManager.handleKeyUp;
 
     //WebGL state setup
-    GL.clearColor(0.0, 0.0, 0.0, 1.0);
+    GL.clearColor(135/255, 206/255, 250/255, 1);
     GL.viewport(0, 0, GL.viewportWidth, GL.viewportHeight);
 
     GL.enable(GL.BLEND);
@@ -43,16 +41,15 @@ function webGLStart() {
     GL.vertexAttribPointer(shaderProgram.textureCoordAttribute, vertexBuffer.textureCoord.itemSize, GL.FLOAT, false, 0, 0);
 
     //Texture loading
-    textureManager.background = initTexture(null);
     textureManager.player = initTexture("textures/charmander.png");
     textureManager.ground = initTexture("textures/ground.png");
 
     //GameObject creations
     scene = new SceneManager(); //Pass in JSON to load scene
-    player = new MovableObject(textureManager.player, -5, 50);  //Mass is wtf
-    ground = new GameObject(textureManager.ground, -5);
-    ground.position.y = -2;
-    background = new GameObject(textureManager.background, -0.1);   //Maybe clearColor set to sky is better, than this shit
+    player = new MovableObject(textureManager.player, 50);
+    player.collider.w = 0.5;
+    ground = new GameObject(textureManager.ground);
+    ground.setPosition(0, -2);
 
     gameLoop();
 }
