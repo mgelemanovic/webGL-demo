@@ -10,13 +10,14 @@ function handleLoadedTexture(texture) {
     GL.bindTexture(GL.TEXTURE_2D, null);
 }
 
-function initTexture(path) {
+function initTextureFromImage(path) {
     var newTexture = GL.createTexture();
 
-    // Set temporary texture to nice sky color, also used if no image is given for texture
-    // Used as background
+    // Set temporary texture to background color, also used if no image is given for texture
     GL.bindTexture(GL.TEXTURE_2D, newTexture);
-    GL.texImage2D(GL.TEXTURE_2D, 0, GL.RGBA, 1, 1, 0, GL.RGBA, GL.UNSIGNED_BYTE, new Uint8Array([135, 206, 250, 255]));
+    GL.texImage2D(GL.TEXTURE_2D, 0, GL.RGBA, 1, 1, 0, GL.RGBA, GL.UNSIGNED_BYTE,
+        new Uint8Array([backgroundColor.r, backgroundColor.g, backgroundColor.b, backgroundColor.a]));
+    GL.bindTexture(GL.TEXTURE_2D, null);
 
     if (path != null) {
         newTexture.image = new Image();
@@ -29,9 +30,18 @@ function initTexture(path) {
     return newTexture;
 }
 
-// If the texture is not set, set it
+function initTextureWithColor(color) {
+    var newTexture = GL.createTexture();
+
+    GL.bindTexture(GL.TEXTURE_2D, newTexture);
+    GL.texImage2D(GL.TEXTURE_2D, 0, GL.RGBA, 1, 1, 0, GL.RGBA, GL.UNSIGNED_BYTE, new Uint8Array(color));
+    GL.bindTexture(GL.TEXTURE_2D, null);
+
+    return newTexture;
+}
+
 function setTexture(texture) {
-    if (textureManager.currentTexture != texture) {
+    if (textureManager.currentTexture != texture) { // Set as current texture, only if it's not already being used
         textureManager.currentTexture = texture;
         GL.activeTexture(GL.TEXTURE0);
         GL.bindTexture(GL.TEXTURE_2D, texture);

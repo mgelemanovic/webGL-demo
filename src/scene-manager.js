@@ -15,11 +15,11 @@ var SceneManager = function () {
     this.addObjectToScene(this.ground, new GameObject(textureManager.ground), {x: 1, y: -2});
     this.addObjectToScene(this.ground, new GameObject(textureManager.ground), {x: -1, y: -2});
     this.addObjectToScene(this.ground, new GameObject(textureManager.ground), {x: -1, y: -1});
-    this.addObjectToScene(this.ground, new GameObject(textureManager.ground), {x: 1, y: -1});
-    this.ground[4].setScale(0.2, 0.3);
+    this.addObjectToScene(this.ground, new GameObject(textureManager.ground), {x: 1, y: -1 - 0.35});
+    this.ground[4].setScale(1, 0.3);
 };
 
-SceneManager.prototype.addObjectToScene = function(objectPool, newObject, position) {
+SceneManager.prototype.addObjectToScene = function (objectPool, newObject, position) {
     objectPool.push(newObject);
     objectPool[objectPool.length - 1].setPosition(position.x, position.y);
 };

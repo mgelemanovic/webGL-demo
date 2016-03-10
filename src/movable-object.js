@@ -14,7 +14,7 @@ MovableObject.prototype.update = function () {
     }
 };
 
-MovableObject.prototype.move = function(direction) {
+MovableObject.prototype.move = function (direction) {
     var moveDistance = 0.05;
     if (direction == "left") {
         this.position.x -= moveDistance;
@@ -27,7 +27,7 @@ MovableObject.prototype.move = function(direction) {
     }
 };
 
-MovableObject.prototype.jump = function() {
+MovableObject.prototype.jump = function () {
     var jumpForce = 0.015;
     if (this.rigidBody.isGrounded) {
         this.rigidBody.forceY = jumpForce;

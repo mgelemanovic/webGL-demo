@@ -14,19 +14,19 @@ var GameObject = function (texture) {
     this.collider = new Collider(this, 1, 1);
 };
 
-GameObject.prototype.setPosition = function(newX, newY) {
+GameObject.prototype.setPosition = function (newX, newY) {
     this.position.x = newX;
     this.position.y = newY;
 };
 
-GameObject.prototype.getPosition = function() {
+GameObject.prototype.getPosition = function () {
     return {
         x: this.position.x,
         y: this.position.y
     }
 };
 
-GameObject.prototype.setScale = function(newX, newY) {
+GameObject.prototype.setScale = function (newX, newY) {
     this.scale.x = newX;
     this.scale.y = newY;
     this.collider.w = Math.abs(newX);
