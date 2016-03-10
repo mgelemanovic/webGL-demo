@@ -13,8 +13,6 @@ var textureManager = {  // Holds all textures
 };
 
 var scene;
-var player;
-var ground;
 
 function webGLStart() {
     var canvas = document.getElementById("webgl-context");
@@ -30,7 +28,6 @@ function webGLStart() {
     //WebGL state setup
     GL.clearColor(135/255, 206/255, 250/255, 1);
     GL.viewport(0, 0, GL.viewportWidth, GL.viewportHeight);
-
     GL.enable(GL.BLEND);
     GL.blendFunc(GL.SRC_ALPHA, GL.ONE_MINUS_SRC_ALPHA);
 
@@ -44,12 +41,8 @@ function webGLStart() {
     textureManager.player = initTexture("textures/charmander.png");
     textureManager.ground = initTexture("textures/ground.png");
 
-    //GameObject creations
+    //Scene loading
     scene = new SceneManager(); //Pass in JSON to load scene
-    player = new MovableObject(textureManager.player, 50);
-    player.collider.w = 0.5;
-    ground = new GameObject(textureManager.ground);
-    ground.setPosition(0, -2);
 
     gameLoop();
 }

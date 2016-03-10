@@ -1,4 +1,4 @@
-var RigidBody = function(attachedTo, mass) {
+var RigidBody = function (attachedTo, mass) {
     this.attachedTo = attachedTo;
     this.mass = mass;
     this.speedX = 0.0;
@@ -8,7 +8,7 @@ var RigidBody = function(attachedTo, mass) {
     this.isGrounded = false;
 };
 
-RigidBody.prototype.applyForce = function() {
+RigidBody.prototype.applyForce = function () {
     var gAcc = -0.00001;    // Kinda low? Maybe?
     var vAcc = this.forceY / this.mass;
     var hAcc = this.forceX / this.mass;
@@ -20,27 +20,28 @@ RigidBody.prototype.applyForce = function() {
     this.attachedTo.setPosition(bodyPosition.x + this.speedX * scene.elapsed, bodyPosition.y + this.speedY * scene.elapsed);
 };
 
-RigidBody.prototype.onGround = function() {
+RigidBody.prototype.onGround = function () {
     this.isGrounded = true;
     this.speedY = 0.0;
 };
 
-var Collider = function(attachedTo, width, height) {
+var Collider = function (attachedTo, width, height) {
     this.attachedTo = attachedTo;
     this.w = width;
     this.h = height;
 };
 
-Collider.prototype.checkForCollision = function(other) {
+Collider.prototype.checkForCollision = function (other) {
     var actorPos = this.attachedTo.getPosition();
     var otherPos = other.attachedTo.getPosition();
 
-    if (actorPos.x - this.w/2 < otherPos.x + other.w/2 &&
-        actorPos.x + this.w/2 > otherPos.x - other.w/2 &&
-        actorPos.y - this.h/2 < otherPos.y + other.h/2 &&
-        actorPos.y + this.h/2 > otherPos.y - other.h/2) {
+    if (actorPos.x - this.w / 2 < otherPos.x + other.w / 2 &&
+        actorPos.x + this.w / 2 > otherPos.x - other.w / 2 &&
+        actorPos.y - this.h / 2 < otherPos.y + other.h / 2 &&
+        actorPos.y + this.h / 2 > otherPos.y - other.h / 2) {
         // collision detected!
+        // try looking at distance between the two x and y, and update depending on which one is farther from each other
         this.attachedTo.rigidBody.onGround();
-        this.attachedTo.setPosition(actorPos.x, otherPos.y + other.h);
+        this.attachedTo.setPosition(actorPos.x, otherPos.y + other.h / 2 + this.h / 2);
     }
 };

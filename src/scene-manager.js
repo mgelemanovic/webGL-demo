@@ -6,6 +6,22 @@ var SceneManager = function () {
     this.elapsed = 0;
 
     //Something to hold info on scene
+    this.player = new MovableObject(textureManager.player, 50);
+    this.player.collider.w = 0.5;
+    this.player.collider.h = 0.55;
+
+    this.ground = [];
+    this.addObjectToScene(this.ground, new GameObject(textureManager.ground), {x: 0, y: -2});
+    this.addObjectToScene(this.ground, new GameObject(textureManager.ground), {x: 1, y: -2});
+    this.addObjectToScene(this.ground, new GameObject(textureManager.ground), {x: -1, y: -2});
+    this.addObjectToScene(this.ground, new GameObject(textureManager.ground), {x: -1, y: -1});
+    this.addObjectToScene(this.ground, new GameObject(textureManager.ground), {x: 1, y: -1});
+    this.ground[4].setScale(0.2, 0.3);
+};
+
+SceneManager.prototype.addObjectToScene = function(objectPool, newObject, position) {
+    objectPool.push(newObject);
+    objectPool[objectPool.length - 1].setPosition(position.x, position.y);
 };
 
 //Clears the scene, sets the perspective and moves the camera
@@ -20,8 +36,10 @@ SceneManager.prototype.prepare = function (fovy, aspect, near, far) {
 SceneManager.prototype.render = function () {
     this.prepare(45, GL.viewportWidth / GL.viewportHeight, 0.1, 100.0);
 
-    ground.draw();
-    player.draw();
+    for (var i = 0; i < scene.ground.length; ++i) {
+        this.ground[i].draw();
+    }
+    this.player.draw();
 };
 
 SceneManager.prototype.update = function () {
@@ -29,15 +47,15 @@ SceneManager.prototype.update = function () {
     if (this.lastTime != 0) {
         this.elapsed = timeNow - this.lastTime;
 
-        player.move();
+        this.player.update();
     }
     this.lastTime = timeNow;
 
     //Check for death
-    if (player.position.y < -4) {
-        player.position.x = 0;
-        player.position.y = 0;
-        player.rigidBody.isGrounded = false;
-        player.rigidBody.speedY = 0;
+    if (this.player.position.y < -4) {
+        this.player.position.x = 0;
+        this.player.position.y = 0;
+        this.player.rigidBody.isGrounded = false;
+        this.player.rigidBody.speedY = 0;
     }
 };

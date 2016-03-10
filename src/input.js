@@ -13,21 +13,12 @@ Input.prototype.handleKeyUp = function (event) {
 
 Input.prototype.handleInput = function () {
     if (currentlyPressedKeys[39]) {
-        player.position.x += 0.05;  // Extract into a variable?
-        //Needs to be 1 when having a texture normally facing right
-        player.scale.x = -1;
+        scene.player.move("right");
     }
     if (currentlyPressedKeys[37]) {
-        player.position.x -= 0.05;
-        //Needs to be -1 when having a texture normally facing right
-        player.scale.x = 1;
+        scene.player.move("left");
     }
-
-    if (currentlyPressedKeys[38] && player.rigidBody.isGrounded) {
-        player.rigidBody.forceY = 0.015;
-        player.rigidBody.isGrounded = false;
-    }
-    else {
-        player.rigidBody.forceY = 0;
+    if (currentlyPressedKeys[38]) {
+        scene.player.jump();
     }
 };
