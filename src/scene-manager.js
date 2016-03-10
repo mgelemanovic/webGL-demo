@@ -11,18 +11,18 @@ var SceneManager = function () {
     this.player.collider.h = 0.55;
 
     this.ground = [];
-    this.addObjectToScene(this.ground, new GameObject(textureManager.ground), {x: 0, y: -2});
-    this.addObjectToScene(this.ground, new GameObject(textureManager.ground), {x: 1, y: -2});
-    this.addObjectToScene(this.ground, new GameObject(textureManager.ground), {x: -1, y: -2});
-    this.addObjectToScene(this.ground, new GameObject(textureManager.ground), {x: 1, y: -1});
-    this.addObjectToScene(this.ground, new GameObject(textureManager.ground), {x: 0, y: -1 - 0.25});
-    this.ground[4].setScale(1, 0.5);
-    this.addObjectToScene(this.ground, new GameObject(textureManager.ground), {x: 0, y: 1});
+    this.addObjectToScene(this.ground, new GameObject(textureManager.ground), {x: 0, y: -2}, {x: 1, y: 1});
+    this.addObjectToScene(this.ground, new GameObject(textureManager.ground), {x: 1, y: -2}, {x: 1, y: 1});
+    this.addObjectToScene(this.ground, new GameObject(textureManager.ground), {x: -1, y: -2}, {x: 1, y: 1});
+    this.addObjectToScene(this.ground, new GameObject(textureManager.ground), {x: -1, y: -1}, {x: 1, y: 1});
+    this.addObjectToScene(this.ground, new GameObject(textureManager.ground), {x: 0, y: -1}, {x: 1, y: 0.5});
+    this.addObjectToScene(this.ground, new GameObject(textureManager.ground), {x: 0, y: 1}, {x: 1, y: 1});
 };
 
-SceneManager.prototype.addObjectToScene = function (objectPool, newObject, position) {
+SceneManager.prototype.addObjectToScene = function (objectPool, newObject, position, scale) {
     objectPool.push(newObject);
-    objectPool[objectPool.length - 1].setPosition(position.x, position.y);
+    objectPool[objectPool.length - 1].setScale(scale.x, scale.y);
+    objectPool[objectPool.length - 1].setPosition(position.x, position.y - (0.5 - scale.y /2));
 };
 
 //Clears the scene, sets the perspective and moves the camera
