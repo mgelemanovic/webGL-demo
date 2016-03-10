@@ -43,7 +43,7 @@ Collider.prototype.checkForCollision = function (other) {
         var deltaX = actorPos.x - otherPos.x;
         var deltaY = actorPos.y - otherPos.y;
 
-        if (deltaY > deltaX) {
+        if (Math.abs(deltaY) > Math.abs(deltaX)) {
             if (deltaY > 0) {
                 this.attachedTo.rigidBody.onGround();
                 this.attachedTo.setPosition(actorPos.x, otherPos.y + (other.h + this.h) / 2);
