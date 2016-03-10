@@ -43,7 +43,9 @@ function webGLStart() {
 
     //Texture loading
     textureManager.player = initTextureFromImage("textures/charmander.png");
-    textureManager.ground = initTextureWithColor([1, 166, 17, 255]);
+    //textureManager.ground = initTextureWithColor([1, 166, 17, 255]);
+    textureManager.ground = initTextureWithColor(
+        [Math.floor((Math.random() * 255)), Math.floor((Math.random() * 255)), Math.floor((Math.random() * 255)), 255]);
 
     //Scene loading
     scene = new SceneManager(); //Pass in JSON to load scene

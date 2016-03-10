@@ -39,9 +39,23 @@ Collider.prototype.checkForCollision = function (other) {
         actorPos.x + this.w / 2 > otherPos.x - other.w / 2 &&
         actorPos.y - this.h / 2 < otherPos.y + other.h / 2 &&
         actorPos.y + this.h / 2 > otherPos.y - other.h / 2) {
-        // collision detected!
-        // try looking at distance between the two x and y, and update depending on which one is farther from each other
-        this.attachedTo.rigidBody.onGround();
-        this.attachedTo.setPosition(actorPos.x, otherPos.y + other.h / 2 + this.h / 2);
+
+        var deltaX = actorPos.x - otherPos.x;
+        var deltaY = actorPos.y - otherPos.y;
+
+        if (deltaY > deltaX) {
+            if (deltaY > 0) {
+                this.attachedTo.rigidBody.onGround();
+                this.attachedTo.setPosition(actorPos.x, otherPos.y + (other.h + this.h) / 2);
+            } else {
+                this.attachedTo.setPosition(actorPos.x, otherPos.y - (other.h + this.h) / 2);
+            }
+        } else {
+            if (deltaX > 0) {
+                this.attachedTo.setPosition(otherPos.x + (other.w + this.w) / 2, actorPos.y);
+            } else {
+                this.attachedTo.setPosition(otherPos.x - (other.w + this.w) / 2, actorPos.y);
+            }
+        }
     }
 };
