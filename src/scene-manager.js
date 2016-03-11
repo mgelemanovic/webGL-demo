@@ -1,4 +1,4 @@
-var SceneManager = function () {
+var SceneManager = function (sceneInfo) {
     this.cameraX = 0;
     this.cameraY = 0;
 
@@ -6,23 +6,26 @@ var SceneManager = function () {
     this.elapsed = 0;
 
     //Something to hold info on scene
-    this.player = new MovableObject(textureManager.player, 50);
+    this.player = new MovableObject(textureManager.player[0], 50);
     this.player.collider.w = 0.5;
     this.player.collider.h = 0.55;
 
     this.ground = [];
-    this.addObjectToScene(this.ground, new GameObject(textureManager.ground), {x: 0, y: -2}, {x: 1, y: 1});
-    this.addObjectToScene(this.ground, new GameObject(textureManager.ground), {x: 1, y: -2}, {x: 1, y: 1});
-    this.addObjectToScene(this.ground, new GameObject(textureManager.ground), {x: -1, y: -2}, {x: 1, y: 1});
-    this.addObjectToScene(this.ground, new GameObject(textureManager.ground), {x: -1, y: -1}, {x: 1, y: 1});
-    this.addObjectToScene(this.ground, new GameObject(textureManager.ground), {x: 0, y: -1}, {x: 1, y: 0.5});
-    this.addObjectToScene(this.ground, new GameObject(textureManager.ground), {x: 0, y: 1}, {x: 1, y: 1});
+    for (var i = 0; i < sceneInfo.ground.length; ++i) {
+        var tmpScale = {x: 1, y: 1};
+        var tmpTexture = 0;
+        if (sceneInfo.ground[i].scale)
+            tmpScale = sceneInfo.ground[i].scale;
+        if (sceneInfo.ground[i].texture)
+            tmpTexture = sceneInfo.ground[i].texture;
+        this.addObjectToScene(this.ground, new GameObject(textureManager.ground[tmpTexture]), sceneInfo.ground[i].pos, tmpScale);
+    }
 };
 
 SceneManager.prototype.addObjectToScene = function (objectPool, newObject, position, scale) {
     objectPool.push(newObject);
     objectPool[objectPool.length - 1].setScale(scale.x, scale.y);
-    objectPool[objectPool.length - 1].setPosition(position.x, position.y - (0.5 - scale.y /2));
+    objectPool[objectPool.length - 1].setPosition(position.x, position.y - (0.5 - scale.y / 2));
 };
 
 //Clears the scene, sets the perspective and moves the camera

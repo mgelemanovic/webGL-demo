@@ -7,8 +7,8 @@ var vertexBuffer = {    // Info for drawing squares and applying texture to them
 var inputManager;   // Handles input from player
 var textureManager = {  // Holds all textures
     currentTexture: null,
-    player: null,
-    ground: null
+    player: [],
+    ground: []
 };
 var backgroundColor = {
     r: 135,
@@ -42,13 +42,15 @@ function webGLStart() {
     GL.vertexAttribPointer(shaderProgram.textureCoordAttribute, vertexBuffer.textureCoord.itemSize, GL.FLOAT, false, 0, 0);
 
     //Texture loading
-    textureManager.player = initTextureFromImage("textures/charmander.png");
+    textureManager.player.push(initTextureFromImage("textures/charmander.png"));
     //textureManager.ground = initTextureWithColor([1, 166, 17, 255]);
-    textureManager.ground = initTextureWithColor(
-        [Math.floor((Math.random() * 255)), Math.floor((Math.random() * 255)), Math.floor((Math.random() * 255)), 255]);
+    textureManager.ground.push(initTextureWithColor(
+        [Math.floor((Math.random() * 255)), Math.floor((Math.random() * 255)), Math.floor((Math.random() * 255)), 255]));
+    textureManager.ground.push(initTextureWithColor(
+        [Math.floor((Math.random() * 255)), Math.floor((Math.random() * 255)), Math.floor((Math.random() * 255)), 255]));
 
     //Scene loading
-    scene = new SceneManager(); //Pass in JSON to load scene
+    loadSceneInfo("scenes/demo.json");
 
     gameLoop();
 }
@@ -77,4 +79,17 @@ function initGL(canvas) {
     }
 
     return context;
+}
+
+function loadSceneInfo(path) {
+    var http_request = new XMLHttpRequest();
+    http_request.onreadystatechange = function () {
+        if (http_request.readyState == 4) {
+            // Javascript function JSON.parse to parse JSON data
+            scene = new SceneManager(JSON.parse(http_request.responseText));
+        }
+    };
+
+    http_request.open("GET", path, true);
+    http_request.send();
 }
