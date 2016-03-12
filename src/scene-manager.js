@@ -32,9 +32,9 @@ SceneManager.prototype.addObjectToScene = function (objectPool, newObject, posit
 SceneManager.prototype.prepare = function (fovy, aspect, near, far) {
     GL.clear(GL.COLOR_BUFFER_BIT);
 
-    mat4.perspective(fovy, aspect, near, far, pMatrix);
+    mat4.perspective(pMatrix, fovy, aspect, near, far);
     mat4.identity(mvMatrix);
-    mat4.translate(mvMatrix, [-this.cameraX, -this.cameraY, 0]);
+    mat4.translate(mvMatrix, mvMatrix, [-this.cameraX, -this.cameraY, 0]);
 };
 
 SceneManager.prototype.render = function () {

@@ -37,8 +37,8 @@ GameObject.prototype.draw = function () {
     setTexture(this.texture);
     mvPushMatrix();
     //Rotations are missing, shall I even implement it?
-    mat4.translate(mvMatrix, [this.position.x, this.position.y, this.drawDistance]);
-    mat4.scale(mvMatrix, [this.scale.x, this.scale.y, 1.0]);
+    mat4.translate(mvMatrix, mvMatrix, [this.position.x, this.position.y, this.drawDistance]);
+    mat4.scale(mvMatrix, mvMatrix, [this.scale.x, this.scale.y, 1.0]);
     setMatrixUniforms();
     GL.drawArrays(GL.TRIANGLE_STRIP, 0, 4);
     mvPopMatrix();
