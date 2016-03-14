@@ -27,6 +27,8 @@ GameObject.prototype.getPosition = function () {
 };
 
 GameObject.prototype.setScale = function (newX, newY) {
+    if (newX > 1) newX = 1;
+    if (newY > 1) newY = 1;
     this.scale.x = newX;
     this.scale.y = newY;
     this.collider.w = Math.abs(newX);

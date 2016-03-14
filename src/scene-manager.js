@@ -5,11 +5,12 @@ var SceneManager = function (sceneInfo) {
     this.lastTime = 0;
     this.elapsed = 0;
 
-    //Something to hold info on scene
+    //Player info
     this.player = new MovableObject(textureManager.player[0], 50);
     this.player.collider.w = 0.5;
     this.player.collider.h = 0.55;
 
+    //Ground info
     this.ground = [];
     for (var i = 0; i < sceneInfo.ground.length; ++i) {
         var tmpScale = {x: 1, y: 1};
@@ -28,12 +29,29 @@ SceneManager.prototype.addObjectToScene = function (objectPool, newObject, posit
     objectPool[objectPool.length - 1].setPosition(position.x, position.y - (0.5 - scale.y / 2));
 };
 
+SceneManager.prototype.removeObjectFromScene = function (objectPool, index) {
+    if (index > -1 && index < objectPool.length)
+        objectPool.splice(index, 1);
+};
+
+SceneManager.prototype.checkForCoords = function (objectPool, coords) {
+    for (var i = 0; i < scene.ground.length; ++i) {
+        if (coords.x == objectPool[i].position.x && coords.y == objectPool[i].position.y) {
+            return i;
+        }
+    }
+    return -1;
+};
+
 //Clears the scene, sets the perspective and moves the camera
 SceneManager.prototype.prepare = function (fovy, aspect, near, far) {
     GL.clear(GL.COLOR_BUFFER_BIT);
 
     mat4.perspective(pMatrix, fovy, aspect, near, far);
     mat4.identity(mvMatrix);
+
+    // Position the camera to follow the player
+    this.cameraX = this.player.position.x;
     mat4.translate(mvMatrix, mvMatrix, [-this.cameraX, -this.cameraY, 0]);
 };
 
@@ -56,10 +74,5 @@ SceneManager.prototype.update = function () {
     this.lastTime = timeNow;
 
     //Check for death
-    if (this.player.position.y < -4) {
-        this.player.position.x = 0;
-        this.player.position.y = 0;
-        this.player.rigidBody.isGrounded = false;
-        this.player.rigidBody.speedY = 0;
-    }
+    this.player.checkForDeath();
 };

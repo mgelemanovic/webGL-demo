@@ -36,3 +36,20 @@ MovableObject.prototype.jump = function () {
         this.rigidBody.forceY = 0;
     }
 };
+
+MovableObject.prototype.checkForDeath = function() {
+    if (this.position.y < -3) {
+        this.respawn();
+    }
+};
+
+MovableObject.prototype.respawn = function() {
+    var respawnPos = {
+        x: 0,
+        y: 0
+    };
+    this.position.x = respawnPos.x;
+    this.position.y = respawnPos.y;
+    this.rigidBody.isGrounded = false;
+    this.rigidBody.speedY = 0;
+};
