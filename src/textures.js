@@ -1,3 +1,9 @@
+var textureManager = {  // Holds all textures
+    currentTexture: null,
+    player: [],
+    ground: []
+};
+
 function handleLoadedTexture(texture) {
     GL.bindTexture(GL.TEXTURE_2D, texture);
 

@@ -1,0 +1,24 @@
+{
+  "name": "webgl-game",
+  "version": "0.1.0",
+  "description": "2D platformer game made from scratch using only webGL for rendering",
+  "main": "game.min.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.2",
+    "grunt-contrib-uglify": "~0.2.4",
+    "grunt-contrib-watch" : "~0.5.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mgelemanovic/webGL-game.git"
+  },
+  "author": "Mladen Gelemanović",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mgelemanovic/webGL-game/issues"
+  },
+  "homepage": "https://github.com/mgelemanovic/webGL-game#readme"
+}

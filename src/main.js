@@ -2,12 +2,6 @@ var scene;  // Currently displayed scene
 
 var inputManager;   // Handles input from player
 
-var textureManager = {  // Holds all textures
-    currentTexture: null,
-    player: [],
-    ground: []
-};
-
 var backgroundColor = {
     r: 135,
     g: 206,
