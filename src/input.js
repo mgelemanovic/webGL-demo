@@ -24,7 +24,7 @@ Input.prototype.handleMouseDown = function (event) {
 
     switch (event.which) {
         case 1:
-            scene.addObjectToScene(scene.ground, new GameObject(textureManager.ground[1]), mouseClickPos, {
+            scene.addObjectToScene(scene.ground, new GameObject(textureManager.ground, 1), mouseClickPos, {
                 x: 1,
                 y: 1
             });
@@ -44,5 +44,9 @@ Input.prototype.handleInput = function () {
     }
     if (currentlyPressedKeys[38]) {
         scene.player.jump();
+    }
+    if (currentlyPressedKeys[65]) {
+        saveSceneInfo("newScene.json");
+        currentlyPressedKeys[65] = false;
     }
 };

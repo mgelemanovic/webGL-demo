@@ -2,13 +2,6 @@ var scene;  // Currently displayed scene
 
 var inputManager;   // Handles input from player
 
-var backgroundColor = {
-    r: 135,
-    g: 206,
-    b: 250,
-    a: 255
-};
-
 var editor = true;
 
 function startGame() {
@@ -26,7 +19,7 @@ function startGame() {
         [Math.floor((Math.random() * 255)), Math.floor((Math.random() * 255)), Math.floor((Math.random() * 255)), 255]));
 
     //Scene loading
-    loadSceneInfo("scenes/demo.json");
+    loadSceneInfo("scenes/2.json");
 
     gameLoop();
 }
@@ -50,4 +43,25 @@ function loadSceneInfo(path) {
 
     http_request.open("GET", path, true);
     http_request.send();
+}
+
+function saveSceneInfo(path) {
+    var data = {
+        ground: []
+    };
+    for (var i = 0; i < scene.ground.length; ++i) {
+        var tmp = {
+            texture: scene.ground[i].textureIndex,
+            pos: {
+                x: scene.ground[i].position.x,
+                y: scene.ground[i].position.y
+            }
+        };
+        data.ground.push(tmp);
+    }
+    var a = document.createElement("a");
+    var file = new Blob([JSON.stringify(data)], {type: "text/json"});
+    a.href = URL.createObjectURL(file);
+    a.download = path;
+    a.click();
 }

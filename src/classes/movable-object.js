@@ -1,5 +1,5 @@
-var MovableObject = function (texture, mass) {
-    GameObject.call(this, texture);
+var MovableObject = function (texturePool, textureIndex, mass) {
+    GameObject.call(this, texturePool, textureIndex);
     this.rigidBody = new RigidBody(this, mass);
 };
 

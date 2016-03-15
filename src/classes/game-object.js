@@ -1,4 +1,4 @@
-var GameObject = function (texture) {
+var GameObject = function (texturePool, textureIndex) {
     //Position and scale are kinda weird
     this.position = {
         x: 0.0,
@@ -10,7 +10,8 @@ var GameObject = function (texture) {
         y: 1.0
     };
     //this.rotation = 0.0;
-    this.texture = texture;
+    this.texturePool = texturePool;
+    this.textureIndex = textureIndex;
     this.collider = new Collider(this, 1, 1);
 };
 
@@ -36,7 +37,7 @@ GameObject.prototype.setScale = function (newX, newY) {
 };
 
 GameObject.prototype.draw = function () {
-    setTexture(this.texture);
+    setTexture(this.texturePool[this.textureIndex]);
     mvPushMatrix();
     //Rotations are missing, shall I even implement it?
     mat4.translate(mvMatrix, mvMatrix, [this.position.x, this.position.y, this.drawDistance]);

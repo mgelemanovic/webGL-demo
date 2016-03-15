@@ -6,7 +6,7 @@ var SceneManager = function (sceneInfo) {
     this.elapsed = 0;
 
     //Player info
-    this.player = new MovableObject(textureManager.player[0], 50);
+    this.player = new MovableObject(textureManager.player, 0, 50);
     this.player.collider.w = 0.5;
     this.player.collider.h = 0.55;
 
@@ -19,7 +19,7 @@ var SceneManager = function (sceneInfo) {
             tmpScale = sceneInfo.ground[i].scale;
         if (sceneInfo.ground[i].texture)
             tmpTexture = sceneInfo.ground[i].texture;
-        this.addObjectToScene(this.ground, new GameObject(textureManager.ground[tmpTexture]), sceneInfo.ground[i].pos, tmpScale);
+        this.addObjectToScene(this.ground, new GameObject(textureManager.ground, tmpTexture), sceneInfo.ground[i].pos, tmpScale);
     }
 };
 
