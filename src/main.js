@@ -1,4 +1,4 @@
-var GameInfo = function() {
+var Game = function () {
     webGLStart();
     this.scene = null;
     this.inputManager = new Input();
@@ -6,7 +6,7 @@ var GameInfo = function() {
     this.isRunning = false;
 };
 
-GameInfo.prototype.loadScene = function(path) {
+Game.prototype.loadScene = function (path) {
     var self = this;
     var http_request = new XMLHttpRequest();
     http_request.onreadystatechange = function () {
@@ -21,23 +21,27 @@ GameInfo.prototype.loadScene = function(path) {
     http_request.send();
 };
 
-GameInfo.prototype.saveScene = function(path) {
+Game.prototype.saveScene = function (path) {
     var data = {
         ground: []
     };
     var ground = this.scene.ground;
     for (var i = 0; i < ground.length; ++i) {
         var tmp = {
-            texture: ground[i].textureIndex,
             pos: {
                 x: ground[i].position.x,
                 y: ground[i].position.y
-            },
-            scale: {
-                x: ground[i].scale.x,
-                y: ground[i].scale.y
             }
         };
+        if (ground[i].textureIndex != 0) {
+            tmp.texture = ground[i].textureIndex;
+        }
+        if (ground[i].scale.x != 1.0 || ground[i].scale.y != 1.0) {
+            tmp.scale = {
+                x: ground[i].scale.x,
+                y: ground[i].scale.y
+            };
+        }
         data.ground.push(tmp);
     }
     var a = document.createElement("a");
@@ -50,7 +54,7 @@ GameInfo.prototype.saveScene = function(path) {
 var game;
 
 function startGame() {
-    game = new GameInfo();
+    game = new Game();
 
     //Texture loading
     textureManager.player.push(initTextureFromImage("textures/charmander.png"));

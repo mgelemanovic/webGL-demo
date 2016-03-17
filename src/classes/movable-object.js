@@ -49,5 +49,5 @@ MovableObject.prototype.respawn = function() {
     var respawnPos = new Vector(0.0, 0.0);
     this.position.set(respawnPos.x, respawnPos.y);
     this.rigidBody.isGrounded = false;
-    this.rigidBody.speed.set(0.0, 0.0);
+    this.rigidBody.resetSpeedAndForce();
 };

@@ -23,7 +23,7 @@ Input.prototype.handleMouseDown = function (event) {
     if (game.editorMode) {
         switch (event.which) {
             case 1:
-                game.scene.addObjectToScene(game.scene.ground, new GameObject(textureManager.ground, 1), mouseClickPos, {
+                game.scene.addObjectToScene(game.scene.ground, new GameObject(textureManager.ground, 0), mouseClickPos, {
                     x: 1,
                     y: 1
                 });
