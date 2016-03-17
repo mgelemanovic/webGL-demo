@@ -1,37 +1,16 @@
 var GameObject = function (texturePool, textureIndex) {
-    //Position and scale are kinda weird
-    this.position = {
-        x: 0.0,
-        y: 0.0
-    };
+    this.position = new Vector(0.0, 0.0);
     this.drawDistance = -5;
-    this.scale = {
-        x: 1.0,
-        y: 1.0
-    };
-    //this.rotation = 0.0;
+    this.scale = new Vector(1.0, 1.0);
     this.texturePool = texturePool;
     this.textureIndex = textureIndex;
     this.collider = new Collider(this, 1, 1);
 };
 
-GameObject.prototype.setPosition = function (newX, newY) {
-    this.position.x = newX;
-    this.position.y = newY;
-};
-
-GameObject.prototype.getPosition = function () {
-    return {
-        x: this.position.x,
-        y: this.position.y
-    }
-};
-
 GameObject.prototype.setScale = function (newX, newY) {
     if (newX > 1) newX = 1;
     if (newY > 1) newY = 1;
-    this.scale.x = newX;
-    this.scale.y = newY;
+    this.scale.set(newX, newY);
     this.collider.w = Math.abs(newX);
     this.collider.h = Math.abs(newY);
 };
@@ -39,7 +18,6 @@ GameObject.prototype.setScale = function (newX, newY) {
 GameObject.prototype.draw = function () {
     setTexture(this.texturePool[this.textureIndex]);
     mvPushMatrix();
-    //Rotations are missing, shall I even implement it?
     mat4.translate(mvMatrix, mvMatrix, [this.position.x, this.position.y, this.drawDistance]);
     mat4.scale(mvMatrix, mvMatrix, [this.scale.x, this.scale.y, 1.0]);
     setMatrixUniforms();

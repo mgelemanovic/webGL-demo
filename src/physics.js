@@ -1,28 +1,24 @@
 var RigidBody = function (attachedTo, mass) {
     this.attachedTo = attachedTo;
     this.mass = mass;
-    this.speedX = 0.0;
-    this.speedY = 0.0;
-    this.forceX = 0.0;
-    this.forceY = 0.0;
+    this.speed = new Vector(0.0, 0.0);
+    this.force = new Vector(0.0, 0.0);
     this.isGrounded = false;
 };
 
 RigidBody.prototype.applyForce = function () {
+    var elapsed = game.scene.elapsed;
     var gAcc = -0.00001;    // Kinda low? Maybe?
-    var vAcc = this.forceY / this.mass;
-    var hAcc = this.forceX / this.mass;
+    var acc = new Vector(this.force.x / this.mass, this.force.y / this.mass);
 
-    this.speedY += (gAcc + vAcc) * scene.elapsed;
-    this.speedX += hAcc * scene.elapsed;
+    this.speed.set(this.speed.x + acc.x * elapsed, this.speed.y + (gAcc + acc.y) * elapsed);
 
-    var bodyPosition = this.attachedTo.getPosition();
-    this.attachedTo.setPosition(bodyPosition.x + this.speedX * scene.elapsed, bodyPosition.y + this.speedY * scene.elapsed);
+    this.attachedTo.position.set(this.attachedTo.position.x + this.speed.x * elapsed, this.attachedTo.position.y + this.speed.y * elapsed);
 };
 
 RigidBody.prototype.onGround = function () {
     this.isGrounded = true;
-    this.speedY = 0.0;
+    this.speed.y = 0.0;
 };
 
 var Collider = function (attachedTo, width, height) {
@@ -32,8 +28,8 @@ var Collider = function (attachedTo, width, height) {
 };
 
 Collider.prototype.checkForCollision = function (other) {
-    var actorPos = this.attachedTo.getPosition();
-    var otherPos = other.attachedTo.getPosition();
+    var actorPos = this.attachedTo.position.get();
+    var otherPos = other.attachedTo.position.get();
 
     if (actorPos.x - this.w / 2 < otherPos.x + other.w / 2 &&
         actorPos.x + this.w / 2 > otherPos.x - other.w / 2 &&
@@ -46,15 +42,15 @@ Collider.prototype.checkForCollision = function (other) {
         if (Math.abs(deltaY) > Math.abs(deltaX)) {
             if (deltaY > 0) {
                 this.attachedTo.rigidBody.onGround();
-                this.attachedTo.setPosition(actorPos.x, otherPos.y + (other.h + this.h) / 2);
+                this.attachedTo.position.set(actorPos.x, otherPos.y + (other.h + this.h) / 2);
             } else {
-                this.attachedTo.setPosition(actorPos.x, otherPos.y - (other.h + this.h) / 2);
+                this.attachedTo.position.set(actorPos.x, otherPos.y - (other.h + this.h) / 2);
             }
         } else {
             if (deltaX > 0) {
-                this.attachedTo.setPosition(otherPos.x + (other.w + this.w) / 2, actorPos.y);
+                this.attachedTo.position.set(otherPos.x + (other.w + this.w) / 2, actorPos.y);
             } else {
-                this.attachedTo.setPosition(otherPos.x - (other.w + this.w) / 2, actorPos.y);
+                this.attachedTo.position.set(otherPos.x - (other.w + this.w) / 2, actorPos.y);
             }
         }
     }

@@ -8,9 +8,11 @@ MovableObject.prototype.constructor = MovableObject;
 
 MovableObject.prototype.update = function () {
     this.rigidBody.applyForce();
-    for (var i = 0; i < scene.ground.length; ++i) {
-        if (this.position.x - scene.ground[i].position.x <= 1 && this.position.y - scene.ground[i].position.y <= 1)
-            this.collider.checkForCollision(scene.ground[i].collider);
+
+    var ground = game.scene.ground;
+    for (var i = 0; i < ground.length; ++i) {
+        if (this.position.x - ground[i].position.x <= 1 && this.position.y - ground[i].position.y <= 1)
+            this.collider.checkForCollision(ground[i].collider);
     }
 };
 
@@ -30,26 +32,22 @@ MovableObject.prototype.move = function (direction) {
 MovableObject.prototype.jump = function () {
     var jumpForce = 0.015;
     if (this.rigidBody.isGrounded) {
-        this.rigidBody.forceY = jumpForce;
+        this.rigidBody.force.y = jumpForce;
         this.rigidBody.isGrounded = false;
     } else {
-        this.rigidBody.forceY = 0;
+        this.rigidBody.force.y = 0;
     }
 };
 
 MovableObject.prototype.checkForDeath = function() {
-    if (this.position.y < -3) {
+    if (this.position.y < -3 && this.position.y > 6) {
         this.respawn();
     }
 };
 
 MovableObject.prototype.respawn = function() {
-    var respawnPos = {
-        x: 0,
-        y: 0
-    };
-    this.position.x = respawnPos.x;
-    this.position.y = respawnPos.y;
+    var respawnPos = new Vector(0.0, 0.0);
+    this.position.set(respawnPos.x, respawnPos.y);
     this.rigidBody.isGrounded = false;
     this.rigidBody.speedY = 0;
 };

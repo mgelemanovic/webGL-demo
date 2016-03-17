@@ -1,14 +1,56 @@
-var scene;  // Currently displayed scene
+var GameInfo = function() {
+    webGLStart();
+    this.scene = null;
+    this.inputManager = new Input();
+    this.editorMode = false;
+    this.isRunning = false;
+};
 
-var inputManager;   // Handles input from player
+GameInfo.prototype.loadScene = function(path) {
+    var self = this;
+    var http_request = new XMLHttpRequest();
+    http_request.onreadystatechange = function () {
+        if (http_request.readyState == 4) {
+            // Javascript function JSON.parse to parse JSON data
+            self.scene = new SceneManager(JSON.parse(http_request.responseText));
+            self.isRunning = true;
+        }
+    };
 
-var editor = true;
+    http_request.open("GET", path, true);
+    http_request.send();
+};
+
+GameInfo.prototype.saveScene = function(path) {
+    var data = {
+        ground: []
+    };
+    var ground = this.scene.ground;
+    for (var i = 0; i < ground.length; ++i) {
+        var tmp = {
+            texture: ground[i].textureIndex,
+            pos: {
+                x: ground[i].position.x,
+                y: ground[i].position.y
+            },
+            scale: {
+                x: ground[i].scale.x,
+                y: ground[i].scale.y
+            }
+        };
+        data.ground.push(tmp);
+    }
+    var a = document.createElement("a");
+    var file = new Blob([JSON.stringify(data)], {type: "text/json"});
+    a.href = URL.createObjectURL(file);
+    a.download = path;
+    a.click();
+};
+
+var game;
 
 function startGame() {
-    webGLStart();
-
-    //Input binding
-    inputManager = new Input();
+    game = new GameInfo();
 
     //Texture loading
     textureManager.player.push(initTextureFromImage("textures/charmander.png"));
@@ -19,49 +61,16 @@ function startGame() {
         [Math.floor((Math.random() * 255)), Math.floor((Math.random() * 255)), Math.floor((Math.random() * 255)), 255]));
 
     //Scene loading
-    loadSceneInfo("scenes/2.json");
-
+    game.loadScene("scenes/demo.json");
     gameLoop();
 }
 
 function gameLoop() {
     requestAnimFrame(gameLoop);
 
-    inputManager.handleInput();
-    scene.update();
-    scene.render();
-}
-
-function loadSceneInfo(path) {
-    var http_request = new XMLHttpRequest();
-    http_request.onreadystatechange = function () {
-        if (http_request.readyState == 4) {
-            // Javascript function JSON.parse to parse JSON data
-            scene = new SceneManager(JSON.parse(http_request.responseText));
-        }
-    };
-
-    http_request.open("GET", path, true);
-    http_request.send();
-}
-
-function saveSceneInfo(path) {
-    var data = {
-        ground: []
-    };
-    for (var i = 0; i < scene.ground.length; ++i) {
-        var tmp = {
-            texture: scene.ground[i].textureIndex,
-            pos: {
-                x: scene.ground[i].position.x,
-                y: scene.ground[i].position.y
-            }
-        };
-        data.ground.push(tmp);
+    if (game.isRunning) {
+        game.inputManager.handleInput();
+        game.scene.update();
+        game.scene.render();
     }
-    var a = document.createElement("a");
-    var file = new Blob([JSON.stringify(data)], {type: "text/json"});
-    a.href = URL.createObjectURL(file);
-    a.download = path;
-    a.click();
 }

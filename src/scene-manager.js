@@ -1,6 +1,5 @@
 var SceneManager = function (sceneInfo) {
-    this.cameraX = 0;
-    this.cameraY = 0;
+    this.camera = new Vector(0.0, 0.0);
 
     this.lastTime = 0;
     this.elapsed = 0;
@@ -26,7 +25,7 @@ var SceneManager = function (sceneInfo) {
 SceneManager.prototype.addObjectToScene = function (objectPool, newObject, position, scale) {
     objectPool.push(newObject);
     objectPool[objectPool.length - 1].setScale(scale.x, scale.y);
-    objectPool[objectPool.length - 1].setPosition(position.x, position.y - (0.5 - scale.y / 2));
+    objectPool[objectPool.length - 1].position.set(position.x, position.y /*- (0.5 - scale.y / 2)*/);
 };
 
 SceneManager.prototype.removeObjectFromScene = function (objectPool, index) {
@@ -35,7 +34,7 @@ SceneManager.prototype.removeObjectFromScene = function (objectPool, index) {
 };
 
 SceneManager.prototype.checkForCoords = function (objectPool, coords) {
-    for (var i = 0; i < scene.ground.length; ++i) {
+    for (var i = 0; i < this.ground.length; ++i) {
         if (coords.x == objectPool[i].position.x && coords.y == objectPool[i].position.y) {
             return i;
         }
@@ -51,14 +50,14 @@ SceneManager.prototype.prepare = function (fovy, aspect, near, far) {
     mat4.identity(mvMatrix);
 
     // Position the camera to follow the player
-    this.cameraX = this.player.position.x;
-    mat4.translate(mvMatrix, mvMatrix, [-this.cameraX, -this.cameraY, 0]);
+    this.camera.x = this.player.position.x;
+    mat4.translate(mvMatrix, mvMatrix, [-this.camera.x, -this.camera.y, 0]);
 };
 
 SceneManager.prototype.render = function () {
     this.prepare(45, GL.viewportWidth / GL.viewportHeight, 0.1, 100.0);
 
-    for (var i = 0; i < scene.ground.length; ++i) {
+    for (var i = 0; i < this.ground.length; ++i) {
         this.ground[i].draw();
     }
     this.player.draw();

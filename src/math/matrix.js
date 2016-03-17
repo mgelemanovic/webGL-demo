@@ -19,7 +19,3 @@ function setMatrixUniforms() {
     GL.uniformMatrix4fv(shaderProgram.pMatrixUniform, false, pMatrix);
     GL.uniformMatrix4fv(shaderProgram.mvMatrixUniform, false, mvMatrix);
 }
-
-function degToRad(degrees) {
-    return degrees * Math.PI / 180;
-}
