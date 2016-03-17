@@ -40,7 +40,7 @@ MovableObject.prototype.jump = function () {
 };
 
 MovableObject.prototype.checkForDeath = function() {
-    if (this.position.y < -3 && this.position.y > 6) {
+    if (this.position.y < -3 || this.position.y > 6) {
         this.respawn();
     }
 };
@@ -49,5 +49,5 @@ MovableObject.prototype.respawn = function() {
     var respawnPos = new Vector(0.0, 0.0);
     this.position.set(respawnPos.x, respawnPos.y);
     this.rigidBody.isGrounded = false;
-    this.rigidBody.speedY = 0;
+    this.rigidBody.speed.set(0.0, 0.0);
 };

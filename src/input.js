@@ -16,8 +16,8 @@ Input.prototype.handleKeyUp = function (event) {
 
 Input.prototype.handleMouseDown = function (event) {
     var mouseClickPos = {
-        x: Math.round(game.scene.cameraX + (event.pageX - canvas.offsetLeft - canvas.width / 2) / 100),
-        y: Math.round(game.scene.cameraY + (event.pageY - canvas.offsetTop - canvas.height / 2) / -100)
+        x: Math.round(game.scene.camera.x + (event.pageX - canvas.offsetLeft - canvas.width / 2) / 100),
+        y: Math.round(game.scene.camera.y + (event.pageY - canvas.offsetTop - canvas.height / 2) / -100)
     };
 
     if (game.editorMode) {
@@ -29,7 +29,7 @@ Input.prototype.handleMouseDown = function (event) {
                 });
                 break;
             case 2:
-                game.scene.removeObjectFromScene(game.scene.ground, game.scene.checkForCoords(scene.ground, mouseClickPos));
+                game.scene.removeObjectFromScene(game.scene.ground, game.scene.checkForCoords(game.scene.ground, mouseClickPos));
                 break;
         }
     }
