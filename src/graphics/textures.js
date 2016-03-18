@@ -3,6 +3,13 @@ var TextureManager = function () {
     this.background = [];
     this.player = [];
     this.ground = [];
+
+    //Texture loading
+    this.initTexture(this.background, "textures/BG.png");
+    this.initTexture(this.player, "textures/charmander.png");
+    for (var i = 1; i <= 18; ++i) {
+        this.initTexture(this.ground, "textures/tiles/" + i + ".png");
+    }
 };
 
 TextureManager.prototype.setTexture = function (texture) {

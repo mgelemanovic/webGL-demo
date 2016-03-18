@@ -4,9 +4,11 @@ var Game = function () {
     this.inputManager = new Input();
     this.textureManager = new TextureManager();
     this.hud = new HUD();
-    this.editorMode = false;
+    this.editor = new Editor();
     this.isRunning = false;
 
+    //Scene loading
+    this.loadScene("scenes/demo.json");
 };
 
 Game.prototype.loadScene = function (path) {
@@ -58,15 +60,6 @@ var game;
 
 function startGame() {
     game = new Game();
-
-    //Texture loading
-    game.textureManager.initTexture(game.textureManager.background, "textures/BG.png");
-    game.textureManager.initTexture(game.textureManager.player, "textures/charmander.png");
-    game.textureManager.initTexture(game.textureManager.ground, "textures/5.png");
-    game.textureManager.initTexture(game.textureManager.ground, "textures/2.png");
-
-    //Scene loading
-    game.loadScene("scenes/demo.json");
     gameLoop();
 }
 
@@ -75,7 +68,10 @@ function gameLoop() {
 
     if (game.isRunning) {
         var start = new Date().getMilliseconds();
-        game.inputManager.handleInput();
+        if (game.editor.isOn)
+            game.editor.handleInput();
+        else
+            game.inputManager.handleInput();
         game.scene.update();
         game.scene.render();
         var end = new Date().getMilliseconds();

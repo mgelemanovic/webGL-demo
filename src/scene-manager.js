@@ -53,8 +53,10 @@ SceneManager.prototype.prepare = function (fovy, aspect, near, far) {
     mat4.perspective(pMatrix, fovy, aspect, near, far);
     mat4.identity(mvMatrix);
 
-    // Position the camera to follow the player
-    this.background.position.x = this.camera.x = this.player.position.x;
+    // Position the camera to follow the player or move it independently in editor mode
+    if (!game.editor.isOn)
+        this.camera.x = this.player.position.x;
+    this.background.position.x = this.camera.x;
     mat4.translate(mvMatrix, mvMatrix, [-this.camera.x, -this.camera.y, 0]);
 };
 

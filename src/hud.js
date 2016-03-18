@@ -7,14 +7,22 @@ var HUD = function () {
 
     this.editor = document.createTextNode("OFF");
     document.getElementById("editorMode").appendChild(this.editor);
+    this.textureID = document.createTextNode("");
+    document.getElementById("textureID").appendChild(this.textureID);
 
     this.objects = document.createTextNode("0");
     document.getElementById("loadedObjects").appendChild(this.objects);
 };
 
-HUD.prototype.updateEditor = function () {
-    if (game.editorMode) this.editor.nodeValue = "ON";
-    else this.editor.nodeValue = "OFF";
+HUD.prototype.updateEditor = function (index) {
+    if (game.editor.isOn) {
+        this.editor.nodeValue = "ON";
+        this.textureID.nodeValue = "TEXTURE: " + index;
+    }
+    else {
+        this.editor.nodeValue = "OFF";
+        this.textureID.nodeValue = "";
+    }
 };
 
 HUD.prototype.updateLoadedObjects = function (n) {
