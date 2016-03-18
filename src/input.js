@@ -23,7 +23,7 @@ Input.prototype.handleMouseDown = function (event) {
     if (game.editorMode) {
         switch (event.which) {
             case 1:
-                game.scene.addObjectToScene(game.scene.ground, new GameObject(textureManager.ground, 0), mouseClickPos, {
+                game.scene.addObjectToScene(game.scene.ground, new GameObject(game.textureManager.ground, 0), mouseClickPos, {
                     x: 1,
                     y: 1
                 });
@@ -55,12 +55,15 @@ Input.prototype.handleInput = function () {
     }
     // Pressed s
     if (currentlyPressedKeys[83]) {
-        game.saveScene("newScene.json");
-        currentlyPressedKeys[83] = false;
+        if (game.editorMode) {
+            game.saveScene("newScene.json");
+            currentlyPressedKeys[83] = false;
+        }
     }
     // Pressed e
     if (currentlyPressedKeys[69]) {
         game.editorMode = !game.editorMode;
+        game.hud.updateEditor();
         currentlyPressedKeys[69] = false;
     }
 };

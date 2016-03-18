@@ -1,5 +1,6 @@
 var TextureManager = function () {
     this.currentTexture = null;
+    this.background = [];
     this.player = [];
     this.ground = [];
 };
@@ -32,6 +33,9 @@ TextureManager.prototype.initTexture = function (pool, path) {
 
             GL.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_MAG_FILTER, GL.NEAREST);
             GL.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_MIN_FILTER, GL.NEAREST);
+
+            GL.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_WRAP_S, GL.CLAMP_TO_EDGE);
+            GL.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_WRAP_T, GL.CLAMP_TO_EDGE);
 
             GL.bindTexture(GL.TEXTURE_2D, null);
         };

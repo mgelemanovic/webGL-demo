@@ -4,6 +4,10 @@ var SceneManager = function (sceneInfo) {
     this.lastTime = 0;
     this.elapsed = 0;
 
+    //Background info
+    this.background = new GameObject(game.textureManager.background, 0);
+    this.background.drawDistance = -0.5;
+
     //Player info
     this.player = new MovableObject(game.textureManager.player, 0, 50);
     this.player.collider.w = 0.5;
@@ -50,18 +54,29 @@ SceneManager.prototype.prepare = function (fovy, aspect, near, far) {
     mat4.identity(mvMatrix);
 
     // Position the camera to follow the player
-    this.camera.x = this.player.position.x;
+    this.background.position.x = this.camera.x = this.player.position.x;
     mat4.translate(mvMatrix, mvMatrix, [-this.camera.x, -this.camera.y, 0]);
 };
 
 SceneManager.prototype.render = function () {
     this.prepare(45, GL.viewportWidth / GL.viewportHeight, 0.1, 100.0);
 
+    var n = 0;
+
+    this.background.draw();
+    ++n;
+
     for (var i = 0; i < this.ground.length; ++i) {
-        if (Math.abs(this.ground[i].position.x - this.camera.x) < 5)
+        if (Math.abs(this.ground[i].position.x - this.camera.x) < 5) {
             this.ground[i].draw();
+            ++n;
+        }
     }
+
     this.player.draw();
+    ++n;
+
+    game.hud.updateLoadedObjects(n);
 };
 
 SceneManager.prototype.update = function () {

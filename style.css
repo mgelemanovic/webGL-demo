@@ -1,0 +1,18 @@
+#container {
+    position: relative;
+    text-align: center;
+}
+
+#webgl-context {
+    border: none;
+}
+
+#hud {
+    position: absolute;
+    left: 293px;
+    top: 10px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    font-family: monospace;
+    padding: 1em;
+}
