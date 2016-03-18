@@ -16,7 +16,7 @@ GameObject.prototype.setScale = function (newX, newY) {
 };
 
 GameObject.prototype.draw = function () {
-    setTexture(this.texturePool[this.textureIndex]);
+    game.textureManager.setTexture(this.texturePool[this.textureIndex]);
     mvPushMatrix();
     mat4.translate(mvMatrix, mvMatrix, [this.position.x, this.position.y, this.drawDistance]);
     mat4.scale(mvMatrix, mvMatrix, [this.scale.x, this.scale.y, 1.0]);

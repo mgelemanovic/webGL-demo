@@ -2,6 +2,7 @@ var Game = function () {
     webGLStart();
     this.scene = null;
     this.inputManager = new Input();
+    this.textureManager = new TextureManager();
     this.editorMode = false;
     this.isRunning = false;
 };
@@ -57,12 +58,9 @@ function startGame() {
     game = new Game();
 
     //Texture loading
-    textureManager.player.push(initTextureFromImage("textures/charmander.png"));
-    //textureManager.ground = initTextureWithColor([1, 166, 17, 255]);
-    textureManager.ground.push(initTextureWithColor(
-        [Math.floor((Math.random() * 255)), Math.floor((Math.random() * 255)), Math.floor((Math.random() * 255)), 255]));
-    textureManager.ground.push(initTextureWithColor(
-        [Math.floor((Math.random() * 255)), Math.floor((Math.random() * 255)), Math.floor((Math.random() * 255)), 255]));
+    game.textureManager.initTexture(game.textureManager.player, "textures/charmander.png");
+    game.textureManager.initTexture(game.textureManager.ground, "textures/5.png");
+    game.textureManager.initTexture(game.textureManager.ground, "textures/2.png");
 
     //Scene loading
     game.loadScene("scenes/demo.json");

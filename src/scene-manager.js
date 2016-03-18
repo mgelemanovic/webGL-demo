@@ -5,7 +5,7 @@ var SceneManager = function (sceneInfo) {
     this.elapsed = 0;
 
     //Player info
-    this.player = new MovableObject(textureManager.player, 0, 50);
+    this.player = new MovableObject(game.textureManager.player, 0, 50);
     this.player.collider.w = 0.5;
     this.player.collider.h = 0.55;
 
@@ -18,7 +18,7 @@ var SceneManager = function (sceneInfo) {
             tmpScale = sceneInfo.ground[i].scale;
         if (sceneInfo.ground[i].texture)
             tmpTexture = sceneInfo.ground[i].texture;
-        this.addObjectToScene(this.ground, new GameObject(textureManager.ground, tmpTexture), sceneInfo.ground[i].pos, tmpScale);
+        this.addObjectToScene(this.ground, new GameObject(game.textureManager.ground, tmpTexture), sceneInfo.ground[i].pos, tmpScale);
     }
 };
 
@@ -58,7 +58,8 @@ SceneManager.prototype.render = function () {
     this.prepare(45, GL.viewportWidth / GL.viewportHeight, 0.1, 100.0);
 
     for (var i = 0; i < this.ground.length; ++i) {
-        this.ground[i].draw();
+        if (Math.abs(this.ground[i].position.x - this.camera.x) < 5)
+            this.ground[i].draw();
     }
     this.player.draw();
 };
