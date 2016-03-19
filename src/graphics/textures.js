@@ -5,10 +5,12 @@ var TextureManager = function () {
     this.ground = [];
 
     //Texture loading
-    this.initTexture(this.background, "textures/BG.png");
+    var biomes = ['grass', 'snow', 'desert'];
+    var biome = biomes[Math.floor(Math.random() * 3)];
+    this.initTexture(this.background, "textures/bg/" + biome + ".png");
     this.initTexture(this.player, "textures/charmander.png");
     for (var i = 1; i <= 18; ++i) {
-        this.initTexture(this.ground, "textures/tiles/" + i + ".png");
+        this.initTexture(this.ground, "textures/tiles/" + biome + "/" + i + ".png");
     }
 };
 
