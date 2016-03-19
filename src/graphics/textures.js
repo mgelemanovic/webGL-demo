@@ -9,9 +9,7 @@ var TextureManager = function () {
     var biome = biomes[Math.floor(Math.random() * 3)];
     this.initTexture(this.background, "textures/bg/" + biome + ".png");
     this.initTexture(this.player, "textures/charmander.png");
-    for (var i = 1; i <= 18; ++i) {
-        this.initTexture(this.ground, "textures/tiles/" + biome + "/" + i + ".png");
-    }
+    this.initSpriteSheet(this.ground, "textures/tiles/" + biome + ".png", 3, 6, 128, 128);
 };
 
 TextureManager.prototype.setTexture = function (texture) {
@@ -52,4 +50,37 @@ TextureManager.prototype.initTexture = function (pool, path) {
     }
 
     pool.push(newTexture);
+};
+
+TextureManager.prototype.initSpriteSheet = function (pool, path, row, col, w, h) {
+    var image = new Image();
+
+    image.onload = function () {
+        for (var i = 0; i < row; ++i) {
+            for (var j = 0; j < col; ++j) {
+                var canvas = document.createElement("canvas");
+                var ctx = canvas.getContext("2d");
+                canvas.height = h;
+                canvas.width = w;
+
+                ctx.drawImage(image, w * j, h * i, w, h, 0, 0, w, h);
+
+                var newTexture = GL.createTexture();
+                GL.bindTexture(GL.TEXTURE_2D, newTexture);
+
+                GL.pixelStorei(GL.UNPACK_FLIP_Y_WEBGL, true);
+                GL.texImage2D(GL.TEXTURE_2D, 0, GL.RGBA, GL.RGBA, GL.UNSIGNED_BYTE, canvas);
+
+                GL.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_MAG_FILTER, GL.NEAREST);
+                GL.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_MIN_FILTER, GL.NEAREST);
+
+                GL.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_WRAP_S, GL.CLAMP_TO_EDGE);
+                GL.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_WRAP_T, GL.CLAMP_TO_EDGE);
+
+                pool.push(newTexture);
+            }
+        }
+    };
+
+    image.src = path;
 };
