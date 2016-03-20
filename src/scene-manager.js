@@ -51,6 +51,7 @@ SceneManager.prototype.prepare = function (fovy, aspect, near, far) {
     GL.clear(GL.COLOR_BUFFER_BIT);
 
     mat4.perspective(pMatrix, fovy, aspect, near, far);
+    GL.uniformMatrix4fv(shaderProgram.pMatrixUniform, false, pMatrix);
     mat4.identity(mvMatrix);
 
     // Position the camera to follow the player or move it independently in editor mode

@@ -33,8 +33,8 @@ Input.prototype.handleInput = function () {
     }
     // Pressed s
     if (currentlyPressedKeys[83]) {
-            game.saveScene("newScene.json");
-            currentlyPressedKeys[83] = false;
+        game.saveScene("newScene.json");
+        currentlyPressedKeys[83] = false;
     }
     // Pressed e
     if (currentlyPressedKeys[69]) {
