@@ -9,7 +9,7 @@ var TextureManager = function () {
     var biome = biomes[Math.floor(Math.random() * 3)];
     this.initTexture(this.background, "textures/bg/" + biome + ".png");
     this.initTexture(this.player, "textures/charmander.png");
-    this.initSpriteSheet(this.ground, "textures/tiles/" + biome + ".png", 3, 6, 128, 128);
+    this.initSpriteSheet(this.ground, "textures/tiles/" + biome + ".png", 0, 3, 0, 6, 128, 128);
 };
 
 TextureManager.prototype.setTexture = function (texture) {
@@ -52,12 +52,12 @@ TextureManager.prototype.initTexture = function (pool, path) {
     pool.push(newTexture);
 };
 
-TextureManager.prototype.initSpriteSheet = function (pool, path, row, col, w, h) {
+TextureManager.prototype.initSpriteSheet = function (pool, path, iMIN, iMAX, jMIN, jMAX, w, h) {
     var image = new Image();
 
     image.onload = function () {
-        for (var i = 0; i < row; ++i) {
-            for (var j = 0; j < col; ++j) {
+        for (var i = iMIN; i < iMAX; ++i) {
+            for (var j = jMIN; j < jMAX; ++j) {
                 var canvas = document.createElement("canvas");
                 var ctx = canvas.getContext("2d");
                 canvas.height = h;
