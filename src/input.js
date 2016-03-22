@@ -14,6 +14,7 @@ Input.prototype.handleKeyUp = function (event) {
 };
 
 Input.prototype.handleInput = function () {
+    game.scene.player.animator.changeTexturePool(game.textureManager.player.idle);
     // Pressed right
     if (currentlyPressedKeys[39]) {
         game.scene.player.move("right");

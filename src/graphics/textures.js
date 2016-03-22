@@ -1,14 +1,20 @@
 var TextureManager = function () {
     this.currentTexture = null;
     this.background = [];
-    this.player = [];
+    this.player = {
+        idle: [],
+        run: [],
+        jump: []
+    };
     this.ground = [];
 
     //Texture loading
     var biomes = ['grass', 'snow', 'desert'];
     var biome = biomes[Math.floor(Math.random() * 3)];
     this.initTexture(this.background, "textures/bg/" + biome + ".png");
-    this.initTexture(this.player, "textures/charmander.png");
+    this.initSpriteSheet(this.player.idle, "textures/robot.png", 0, 2, 0, 5, 128, 128);
+    this.initSpriteSheet(this.player.run, "textures/robot.png", 2, 4, 0, 4, 128, 128);
+    this.initSpriteSheet(this.player.jump, "textures/robot.png", 4, 6, 0, 5, 128, 128);
     this.initSpriteSheet(this.ground, "textures/tiles/" + biome + ".png", 0, 3, 0, 6, 128, 128);
 };
 
