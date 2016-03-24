@@ -1,4 +1,4 @@
-var Game = function () {
+var Game = function (scene) {
     webGLStart();
     this.scene = null;
     this.inputManager = new Input();
@@ -8,7 +8,7 @@ var Game = function () {
     this.waitToLoad = 6;
 
     //Scene loading
-    this.loadScene("scenes/demo.json");
+    this.loadScene(scene);
 };
 
 Game.prototype.finishedLoadingResource = function () {
@@ -64,7 +64,8 @@ Game.prototype.saveScene = function (path) {
 var game;
 
 function startGame() {
-    game = new Game();
+    //game = new Game("scenes/demo.json");
+    game = new Game("scenes/empty.json");
     gameLoop();
 }
 
@@ -72,11 +73,20 @@ function gameLoop() {
     requestAnimFrame(gameLoop);
 
     if (game.waitToLoad == 0) {
-        if (game.editor.isOn)
+        if (game.editor.isOn) {
             game.editor.handleInput();
+        }
         else
             game.inputManager.handleInput();
         game.scene.update();
         game.scene.render();
+        if (game.editor.isOn) {
+            game.editor.drawUsedObject();
+        }
     }
+}
+
+function changeScene(newScene) {
+    game.hud.clearHUD();
+    game = new Game(newScene);
 }

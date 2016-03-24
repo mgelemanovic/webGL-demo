@@ -12,6 +12,13 @@ var HUD = function () {
     document.getElementById("loadedObjects").appendChild(this.objects);
 };
 
+HUD.prototype.clearHUD = function() {
+    this.resourceLoading.nodeValue = "";
+    this.editor.nodeValue = "";
+    this.textureID.nodeValue = "";
+    this.objects.nodeValue = "";
+};
+
 HUD.prototype.updateEditor = function (index) {
     if (game.editor.isOn) {
         this.editor.nodeValue = "ON";

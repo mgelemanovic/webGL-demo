@@ -42,4 +42,8 @@ Input.prototype.handleInput = function () {
         game.editor.changeOnOff();
         currentlyPressedKeys[69] = false;
     }
+    if (currentlyPressedKeys[66]) {
+        changeScene("scenes/demo.json");
+        currentlyPressedKeys[66] = false;
+    }
 };

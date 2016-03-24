@@ -13,6 +13,13 @@ Editor.prototype.changeOnOff = function () {
     game.hud.updateEditor(this.textureIndex + 1);
 };
 
+Editor.prototype.drawUsedObject = function() {
+    var editorBlock = new GameObject(game.textureManager.ground, this.textureIndex);
+    editorBlock.drawDistance = -10;
+    editorBlock.position.set(game.scene.camera.x - 3.8,game.scene.camera.y + 4.5);
+    editorBlock.draw();
+};
+
 Editor.prototype.changeTextureIndex = function (inc) {
     this.textureIndex += inc;
     if (this.textureIndex == -1) this.textureIndex += game.textureManager.ground.length;
