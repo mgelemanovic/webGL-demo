@@ -51,6 +51,8 @@ TextureManager.prototype.initTexture = function (pool, path) {
             GL.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_WRAP_T, GL.CLAMP_TO_EDGE);
 
             GL.bindTexture(GL.TEXTURE_2D, null);
+
+            game.finishedLoadingResource();
         };
         newTexture.image.src = path;
     }
@@ -86,6 +88,8 @@ TextureManager.prototype.initSpriteSheet = function (pool, path, iMIN, iMAX, jMI
                 pool.push(newTexture);
             }
         }
+
+        game.finishedLoadingResource();
     };
 
     image.src = path;

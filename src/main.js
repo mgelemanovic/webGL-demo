@@ -5,10 +5,15 @@ var Game = function () {
     this.textureManager = new TextureManager();
     this.hud = new HUD();
     this.editor = new Editor();
-    this.isRunning = false;
+    this.waitToLoad = 6;
 
     //Scene loading
     this.loadScene("scenes/demo.json");
+};
+
+Game.prototype.finishedLoadingResource = function () {
+    --this.waitToLoad;
+    this.hud.updateResourceLoading();
 };
 
 Game.prototype.loadScene = function (path) {
@@ -18,7 +23,7 @@ Game.prototype.loadScene = function (path) {
         if (http_request.readyState == 4) {
             // Javascript function JSON.parse to parse JSON data
             self.scene = new SceneManager(JSON.parse(http_request.responseText));
-            self.isRunning = true;
+            self.finishedLoadingResource();
         }
     };
 
@@ -66,15 +71,12 @@ function startGame() {
 function gameLoop() {
     requestAnimFrame(gameLoop);
 
-    if (game.isRunning) {
-        var start = new Date().getMilliseconds();
+    if (game.waitToLoad == 0) {
         if (game.editor.isOn)
             game.editor.handleInput();
         else
             game.inputManager.handleInput();
         game.scene.update();
         game.scene.render();
-        var end = new Date().getMilliseconds();
-        game.hud.updateFPS(end - start);
     }
 }
