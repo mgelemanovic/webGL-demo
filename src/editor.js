@@ -5,6 +5,7 @@ var Editor = function () {
 };
 
 Editor.prototype.changeOnOff = function () {
+    game.inputManager.clearInput();
     this.isOn = !this.isOn;
     if (this.isOn)
         canvas.onmousedown = this.handleMouseDown;

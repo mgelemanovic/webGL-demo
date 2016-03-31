@@ -1,6 +1,14 @@
 var currentlyPressedKeys = {}; //Try squeezing it into Input class as member
 
 var Input = function () {
+    this.commands = {
+        moveRight: 39,  // Right arrow
+        moveLeft: 37,   // Left arrow
+        jump: 32,       // Spacebar
+        respawn: 82,    // R
+        save: 83,       // S
+        editor: 69      // E
+    };
     document.onkeydown = this.handleKeyDown;
     document.onkeyup = this.handleKeyUp;
 };
@@ -13,37 +21,43 @@ Input.prototype.handleKeyUp = function (event) {
     currentlyPressedKeys[event.keyCode] = false;
 };
 
+Input.prototype.clearInput = function() {
+    for (var prop in this.commands) {
+        currentlyPressedKeys[this.commands[prop]] = false;
+    }
+};
+
 Input.prototype.handleInput = function () {
-    game.scene.player.animator.changeTexturePool(game.textureManager.player.idle);
-    // Pressed right
-    if (currentlyPressedKeys[39]) {
-        game.scene.player.move("right");
-    }
-    // Pressed left
-    if (currentlyPressedKeys[37]) {
-        game.scene.player.move("left");
-    }
-    // Pressed up
-    if (currentlyPressedKeys[38]) {
+    // Movement handling
+    if (currentlyPressedKeys[this.commands.moveRight] || currentlyPressedKeys[this.commands.moveLeft]) {
+        // Pressed right
+        if (currentlyPressedKeys[this.commands.moveRight])
+            game.scene.player.move("right");
+        // Pressed left
+        else if (currentlyPressedKeys[this.commands.moveLeft])
+            game.scene.player.move("left");
+    } else
+        game.scene.player.move("stop");
+
+    // Jump handling
+    if (currentlyPressedKeys[this.commands.jump]) {
         game.scene.player.jump();
     }
-    // Pressed r
-    if (currentlyPressedKeys[82]) {
+    // Respawn player
+    if (currentlyPressedKeys[this.commands.respawn]) {
         game.scene.player.respawn();
-        currentlyPressedKeys[82] = false;
+        currentlyPressedKeys[this.commands.respawn] = false;
     }
-    // Pressed s
-    if (currentlyPressedKeys[83]) {
+    // Save scene
+    if (currentlyPressedKeys[this.commands.save]) {
         game.saveScene("newScene.json");
-        currentlyPressedKeys[83] = false;
+        currentlyPressedKeys[this.commands.save] = false;
     }
-    // Pressed e
-    if (currentlyPressedKeys[69]) {
+    // Turn editor mode on
+    if (currentlyPressedKeys[this.commands.editor]) {
+        if (confirm("Create new scene?"))
+            changeScene("empty");
         game.editor.changeOnOff();
-        currentlyPressedKeys[69] = false;
-    }
-    if (currentlyPressedKeys[66]) {
-        changeScene("scenes/demo.json");
-        currentlyPressedKeys[66] = false;
+        currentlyPressedKeys[this.commands.editor] = false;
     }
 };

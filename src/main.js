@@ -27,7 +27,7 @@ Game.prototype.loadScene = function (path) {
         }
     };
 
-    http_request.open("GET", path, true);
+    http_request.open("GET", "scenes/" + path + ".json", true);
     http_request.send();
 };
 
@@ -64,8 +64,7 @@ Game.prototype.saveScene = function (path) {
 var game;
 
 function startGame() {
-    //game = new Game("scenes/demo.json");
-    game = new Game("scenes/empty.json");
+    game = new Game("demo");
     gameLoop();
 }
 
