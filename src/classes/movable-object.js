@@ -39,8 +39,6 @@ MovableObject.prototype.jump = function () {
     if (this.rigidBody.isGrounded) {
         this.rigidBody.isGrounded = false;
         this.rigidBody.force.y = jumpForce;
-    } else {
-        this.rigidBody.force.y = 0;
     }
 };
 

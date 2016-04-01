@@ -12,6 +12,9 @@ var SceneManager = function (sceneInfo) {
     this.player = new MovableObject(game.textureManager.player.idle, 0, 50);
     this.player.collider.w = 0.45;
     this.player.collider.h = 0.8;
+    if (sceneInfo.respawn)
+        this.player.respawnPosition.setv(sceneInfo.respawn);
+    this.player.respawn();
 
     //Ground info
     this.ground = [];
@@ -29,7 +32,7 @@ var SceneManager = function (sceneInfo) {
 SceneManager.prototype.addObjectToScene = function (objectPool, newObject, position, scale) {
     objectPool.push(newObject);
     objectPool[objectPool.length - 1].setScale(scale.x, scale.y);
-    objectPool[objectPool.length - 1].position.set(position.x, position.y);
+    objectPool[objectPool.length - 1].position.setv(position);
 };
 
 SceneManager.prototype.removeObjectFromScene = function (objectPool, index) {

@@ -10,10 +10,16 @@ RigidBody.prototype.applyForce = function () {
     var elapsed = game.scene.elapsed;
     var gAcc = -0.00001;    // Kinda low? Maybe?
     var acc = new Vector(this.force.x / this.mass, this.force.y / this.mass);
+    this.force.set(0, 0);    // Turn off forces
 
-    this.speed.set(this.speed.x + acc.x * elapsed, this.speed.y + (gAcc + acc.y) * elapsed);
+    this.speed.add(acc.x * elapsed, (gAcc + acc.y) * elapsed);
 
-    this.attachedTo.position.set(this.attachedTo.position.x + this.speed.x * elapsed, this.attachedTo.position.y + this.speed.y * elapsed);
+    // Vertical speed upper limitation
+    var upperLimit = 0.005;
+    if (this.speed.y > upperLimit)
+        this.speed.y = upperLimit;
+
+    this.attachedTo.position.add(this.speed.x * elapsed, this.speed.y * elapsed);
 };
 
 RigidBody.prototype.onGround = function () {
@@ -21,7 +27,7 @@ RigidBody.prototype.onGround = function () {
     this.resetSpeedAndForce();
 };
 
-RigidBody.prototype.resetSpeedAndForce = function() {
+RigidBody.prototype.resetSpeedAndForce = function () {
     this.speed.set(0.0, 0.0);
     this.force.set(0.0, 0.0);
 };
