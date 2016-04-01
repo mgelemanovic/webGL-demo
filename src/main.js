@@ -33,27 +33,34 @@ Game.prototype.loadScene = function (path) {
 
 Game.prototype.saveScene = function (path) {
     var data = {
-        ground: []
+        ground: [],
+        decor: []
     };
-    var ground = this.scene.ground;
-    for (var i = 0; i < ground.length; ++i) {
-        var tmp = {
-            pos: {
-                x: ground[i].position.x,
-                y: ground[i].position.y
-            }
-        };
-        if (ground[i].textureIndex != 0) {
-            tmp.texture = ground[i].textureIndex;
-        }
-        if (ground[i].scale.x != 1.0 || ground[i].scale.y != 1.0) {
-            tmp.scale = {
-                x: ground[i].scale.x,
-                y: ground[i].scale.y
+
+    var fillData = function(data, scenePool) {
+        for (var i = 0; i < scenePool.length; ++i) {
+            var tmp = {
+                pos: {
+                    x: scenePool[i].position.x,
+                    y: scenePool[i].position.y
+                }
             };
+            if (scenePool[i].textureIndex != 0) {
+                tmp.texture = scenePool[i].textureIndex;
+            }
+            if (scenePool[i].scale.x != 1.0 || scenePool[i].scale.y != 1.0) {
+                tmp.scale = {
+                    x: scenePool[i].scale.x,
+                    y: scenePool[i].scale.y
+                };
+            }
+            data.push(tmp);
         }
-        data.ground.push(tmp);
-    }
+    };
+    fillData(data.ground, this.scene.ground);
+    fillData(data.decor, this.scene.decor);
+    if (this.scene.player.respawnPosition.x != 0 ||this.scene.player.respawnPosition.y != 0)
+        data.respawn = this.scene.player.respawnPosition;
     var a = document.createElement("a");
     var file = new Blob([JSON.stringify(data)], {type: "text/json"});
     a.href = URL.createObjectURL(file);

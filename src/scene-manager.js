@@ -16,17 +16,25 @@ var SceneManager = function (sceneInfo) {
         this.player.respawnPosition.setv(sceneInfo.respawn);
     this.player.respawn();
 
+    var fillUp = function (self, objectPool, sceneInfo) {
+        for (var i = 0; i < sceneInfo.length; ++i) {
+            var tmpScale = {x: 1, y: 1};
+            var tmpTexture = 0;
+            if (sceneInfo[i].scale)
+                tmpScale = sceneInfo[i].scale;
+            if (sceneInfo[i].texture)
+                tmpTexture = sceneInfo[i].texture;
+            self.addObjectToScene(objectPool, new GameObject(game.textureManager.ground, tmpTexture), sceneInfo[i].pos, tmpScale);
+        }
+    };
+
     //Ground info
     this.ground = [];
-    for (var i = 0; i < sceneInfo.ground.length; ++i) {
-        var tmpScale = {x: 1, y: 1};
-        var tmpTexture = 0;
-        if (sceneInfo.ground[i].scale)
-            tmpScale = sceneInfo.ground[i].scale;
-        if (sceneInfo.ground[i].texture)
-            tmpTexture = sceneInfo.ground[i].texture;
-        this.addObjectToScene(this.ground, new GameObject(game.textureManager.ground, tmpTexture), sceneInfo.ground[i].pos, tmpScale);
-    }
+    fillUp(this, this.ground, sceneInfo.ground);
+
+    //Decor info
+    this.decor = [];
+    fillUp(this, this.decor, sceneInfo.decor);
 };
 
 SceneManager.prototype.addObjectToScene = function (objectPool, newObject, position, scale) {
@@ -73,12 +81,16 @@ SceneManager.prototype.render = function () {
     this.background.draw();
     ++n;
 
-    for (var i = 0; i < this.ground.length; ++i) {
-        if (Math.abs(this.ground[i].position.x - this.camera.x) < 5) {
-            this.ground[i].draw();
-            ++n;
+    var drawPool = function(objectPool, camera) {
+        for (var i = 0; i < objectPool.length; ++i) {
+            if (Math.abs(objectPool[i].position.x - camera.x) < 5) {
+                objectPool[i].draw();
+                ++n;
+            }
         }
-    }
+    };
+    drawPool(this.decor, this.camera);
+    drawPool(this.ground, this.camera);
 
     this.player.draw();
     ++n;

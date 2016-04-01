@@ -19,10 +19,10 @@ HUD.prototype.clearHUD = function() {
     this.objects.nodeValue = "";
 };
 
-HUD.prototype.updateEditor = function (index) {
+HUD.prototype.updateEditor = function (objectPool, index) {
     if (game.editor.isOn) {
         this.editor.nodeValue = "ON";
-        this.textureID.nodeValue = "TEXTURE: " + index;
+        this.textureID.nodeValue = objectPool + ": " + index;
     }
     else {
         this.editor.nodeValue = "OFF";

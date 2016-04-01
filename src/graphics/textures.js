@@ -10,7 +10,7 @@ var TextureManager = function () {
 
     //Texture loading
     var biomes = ['grass', 'snow', 'desert'];
-    var biome = biomes[Math.floor(Math.random() * 3)];
+    var biome = biomes[Math.floor(Math.random() * biomes.length)];
     this.initTexture(this.background, "textures/bg/" + biome + ".png");
     this.initSpriteSheet(this.player.idle, "textures/robot.png", 0, 2, 0, 5, 128, 128);
     this.initSpriteSheet(this.player.run, "textures/robot.png", 2, 4, 0, 4, 128, 128);

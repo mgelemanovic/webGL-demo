@@ -2,6 +2,8 @@ var Editor = function () {
     this.isOn = false;
     this.textureIndex = 0;
     this.switchStopper = false;
+    this.pools = ['GROUND', 'DECOR'];
+    this.currentPool = 0;
 };
 
 Editor.prototype.changeOnOff = function () {
@@ -11,13 +13,13 @@ Editor.prototype.changeOnOff = function () {
         canvas.onmousedown = this.handleMouseDown;
     else
         canvas.onmousedown = null;
-    game.hud.updateEditor(this.textureIndex + 1);
+    game.hud.updateEditor(this.pools[this.currentPool], this.textureIndex + 1);
 };
 
-Editor.prototype.drawUsedObject = function() {
+Editor.prototype.drawUsedObject = function () {
     var editorBlock = new GameObject(game.textureManager.ground, this.textureIndex);
     editorBlock.drawDistance = -10;
-    editorBlock.position.set(game.scene.camera.x - 3.8,game.scene.camera.y + 4.5);
+    editorBlock.position.set(game.scene.camera.x - 3.8, game.scene.camera.y + 4.5);
     editorBlock.draw();
 };
 
@@ -25,7 +27,12 @@ Editor.prototype.changeTextureIndex = function (inc) {
     this.textureIndex += inc;
     if (this.textureIndex == -1) this.textureIndex += game.textureManager.ground.length;
     if (this.textureIndex == game.textureManager.ground.length) this.textureIndex = 0;
-    game.hud.updateEditor(this.textureIndex + 1);
+    game.hud.updateEditor(this.pools[this.currentPool], this.textureIndex + 1);
+};
+
+Editor.prototype.changeObjectPool = function() {
+    this.currentPool = (this.currentPool + 1) % this.pools.length;
+    game.hud.updateEditor(this.pools[this.currentPool], this.textureIndex + 1);
 };
 
 Editor.prototype.handleMouseDown = function (event) {
@@ -34,15 +41,25 @@ Editor.prototype.handleMouseDown = function (event) {
         y: Math.round(game.scene.camera.y + (event.pageY - canvas.offsetTop - canvas.height / 2) / -100)
     };
 
+    var pool = null;
+    switch (game.editor.currentPool) {
+        case 0:
+            pool = game.scene.ground;
+            break;
+        case 1:
+            pool = game.scene.decor;
+            break;
+    }
+
     switch (event.which) {
         case 1:
-            game.scene.addObjectToScene(game.scene.ground, new GameObject(game.textureManager.ground, game.editor.textureIndex), mouseClickPos, {
+            game.scene.addObjectToScene(pool, new GameObject(game.textureManager.ground, game.editor.textureIndex), mouseClickPos, {
                 x: 1,
                 y: 1
             });
             break;
         case 2:
-            game.scene.removeObjectFromScene(game.scene.ground, game.scene.checkForCoords(game.scene.ground, mouseClickPos));
+            game.scene.removeObjectFromScene(pool, game.scene.checkForCoords(pool, mouseClickPos));
             break;
     }
 
@@ -83,7 +100,15 @@ Editor.prototype.handleInput = function () {
         }
     }
 
-    if (!currentlyPressedKeys[70] && !currentlyPressedKeys[71]) {
+    // Pressed h
+    if (currentlyPressedKeys[72]) {
+        if (!this.switchStopper) {
+            game.editor.changeObjectPool();
+            this.switchStopper = true;
+        }
+    }
+
+    if (!currentlyPressedKeys[70] && !currentlyPressedKeys[71] && !currentlyPressedKeys[72]) {
         this.switchStopper = false;
     }
 };
