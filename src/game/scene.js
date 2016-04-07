@@ -9,7 +9,7 @@ var Scene = function (sceneInfo) {
     this.background.drawDistance = -0.5;
 
     //Player info
-    this.player = new MovableObject(game.textureManager.player.idle, 0, 50);
+    this.player = new Player(game.textureManager.player.idle, 0, 50);
     this.player.collider.w = 0.45;
     this.player.collider.h = 0.8;
     if (sceneInfo.respawn)
