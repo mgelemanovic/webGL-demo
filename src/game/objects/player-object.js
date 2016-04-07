@@ -1,7 +1,8 @@
 var Player = function (texturePool, textureIndex, mass) {
     MovableObject.call(this, texturePool, textureIndex, mass);
-    this.respawnPosition = new Vector(0, 0);
     this.animator = new Animator(this, game.textureManager.player);
+    this.respawnPosition = new Vector(0, 0);
+    this.currentLives = this.maxLives = 3;
 };
 
 Player.prototype = Object.create(MovableObject.prototype);
@@ -32,6 +33,11 @@ Player.prototype.jump = function () {
 
 Player.prototype.checkForDeath = function() {
     if (this.position.y < -4 || this.position.y > 5) {
+        this.currentLives -= 0.5;
+        if (this.currentLives <= 0) {
+            // Game over
+            this.currentLives = 1;
+        }
         this.respawn();
     }
 };

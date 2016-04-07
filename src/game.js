@@ -5,7 +5,7 @@ var Game = function (scene) {
     this.textureManager = new TextureManager();
     this.hud = new HUD();
     this.editor = new Editor();
-    this.waitToLoad = 6;
+    this.waitToLoad = 7;
     this.drawDistance = -7;
     this.loadTextures();
     this.loadScene(scene);
@@ -25,6 +25,7 @@ Game.prototype.loadTextures = function() {
     textures.initSpriteSheet(textures.player.idle, "textures/robot.png", 0, 2, 0, 5, 128, 128);
     textures.initSpriteSheet(textures.player.run, "textures/robot.png", 2, 4, 0, 4, 128, 128);
     textures.initSpriteSheet(textures.player.jump, "textures/robot.png", 4, 6, 0, 5, 128, 128);
+    textures.initSpriteSheet(textures.hud, "textures/hud.png", 0, 3, 0, 5, 128, 128);
     textures.initSpriteSheet(textures.ground, "textures/tiles/" + biome + ".png", 0, 3, 0, 6, 128, 128);
 };
 
@@ -100,6 +101,8 @@ function gameLoop() {
         game.scene.render();
         if (game.editor.isOn) {
             game.editor.drawUsedObject();
+        } else {
+            game.hud.render();
         }
     }
 }
