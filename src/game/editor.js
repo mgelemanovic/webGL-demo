@@ -37,8 +37,8 @@ Editor.prototype.changeObjectPool = function() {
 
 Editor.prototype.handleMouseDown = function (event) {
     var mouseClickPos = {
-        x: Math.round(game.scene.camera.x + (event.pageX - canvas.offsetLeft - canvas.width / 2) / 100),
-        y: Math.round(game.scene.camera.y + (event.pageY - canvas.offsetTop - canvas.height / 2) / -100)
+        x: Math.round(game.scene.camera.x + (event.pageX - canvas.offsetLeft - canvas.width / 2) / 75),
+        y: Math.round(game.scene.camera.y + (event.pageY - canvas.offsetTop - canvas.height / 2) / -75)
     };
 
     var pool = null;

@@ -31,7 +31,7 @@ Player.prototype.jump = function () {
 };
 
 Player.prototype.checkForDeath = function() {
-    if (this.position.y < -3 || this.position.y > 5) {
+    if (this.position.y < -4 || this.position.y > 5) {
         this.respawn();
     }
 };
