@@ -6,8 +6,8 @@ var Game = function (scene) {
     this.hud = new HUD();
     this.editor = new Editor();
     this.waitToLoad = 6;
-
-    //Scene loading
+    this.drawDistance = -7;
+    this.loadTextures();
     this.loadScene(scene);
 };
 
@@ -16,13 +16,25 @@ Game.prototype.finishedLoadingResource = function () {
     this.hud.updateResourceLoading();
 };
 
+Game.prototype.loadTextures = function() {
+    var textures = this.textureManager;
+    var biomes = ['grass', 'snow', 'desert'];
+    var biome = biomes[Math.floor(Math.random() * biomes.length)];
+
+    textures.initTexture(textures.background, "textures/bg/" + biome + ".png");
+    textures.initSpriteSheet(textures.player.idle, "textures/robot.png", 0, 2, 0, 5, 128, 128);
+    textures.initSpriteSheet(textures.player.run, "textures/robot.png", 2, 4, 0, 4, 128, 128);
+    textures.initSpriteSheet(textures.player.jump, "textures/robot.png", 4, 6, 0, 5, 128, 128);
+    textures.initSpriteSheet(textures.ground, "textures/tiles/" + biome + ".png", 0, 3, 0, 6, 128, 128);
+};
+
 Game.prototype.loadScene = function (path) {
     var self = this;
     var http_request = new XMLHttpRequest();
     http_request.onreadystatechange = function () {
         if (http_request.readyState == 4) {
             // Javascript function JSON.parse to parse JSON data
-            self.scene = new SceneManager(JSON.parse(http_request.responseText));
+            self.scene = new Scene(JSON.parse(http_request.responseText));
             self.finishedLoadingResource();
         }
     };

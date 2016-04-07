@@ -1,4 +1,4 @@
-var SceneManager = function (sceneInfo) {
+var Scene = function (sceneInfo) {
     this.camera = new Vector(0.0, 0.0);
 
     this.lastTime = 0;
@@ -37,18 +37,18 @@ var SceneManager = function (sceneInfo) {
     fillUp(this, this.decor, sceneInfo.decor);
 };
 
-SceneManager.prototype.addObjectToScene = function (objectPool, newObject, position, scale) {
+Scene.prototype.addObjectToScene = function (objectPool, newObject, position, scale) {
     objectPool.push(newObject);
     objectPool[objectPool.length - 1].setScale(scale.x, scale.y);
     objectPool[objectPool.length - 1].position.setv(position);
 };
 
-SceneManager.prototype.removeObjectFromScene = function (objectPool, index) {
+Scene.prototype.removeObjectFromScene = function (objectPool, index) {
     if (index > -1 && index < objectPool.length)
         objectPool.splice(index, 1);
 };
 
-SceneManager.prototype.checkForCoords = function (objectPool, coords) {
+Scene.prototype.checkForCoords = function (objectPool, coords) {
     for (var i = 0; i < this.ground.length; ++i) {
         if (coords.x == objectPool[i].position.x && coords.y == objectPool[i].position.y) {
             return i;
@@ -58,7 +58,7 @@ SceneManager.prototype.checkForCoords = function (objectPool, coords) {
 };
 
 //Clears the scene, sets the perspective and moves the camera
-SceneManager.prototype.prepare = function (fovy, aspect, near, far) {
+Scene.prototype.prepare = function (fovy, aspect, near, far) {
     GL.clear(GL.COLOR_BUFFER_BIT);
 
     mat4.perspective(pMatrix, fovy, aspect, near, far);
@@ -73,7 +73,7 @@ SceneManager.prototype.prepare = function (fovy, aspect, near, far) {
     mat4.translate(mvMatrix, mvMatrix, [-this.camera.x, -this.camera.y, 0]);
 };
 
-SceneManager.prototype.render = function () {
+Scene.prototype.render = function () {
     this.prepare(45, GL.viewportWidth / GL.viewportHeight, 0.1, 100.0);
 
     var n = 0;
@@ -83,7 +83,7 @@ SceneManager.prototype.render = function () {
 
     var drawPool = function(objectPool, camera) {
         for (var i = 0; i < objectPool.length; ++i) {
-            if (Math.abs(objectPool[i].position.x - camera.x) < 5) {
+            if (Math.abs(objectPool[i].position.x - camera.x) < 6) {
                 objectPool[i].draw();
                 ++n;
             }
@@ -98,7 +98,7 @@ SceneManager.prototype.render = function () {
     game.hud.updateLoadedObjects(n);
 };
 
-SceneManager.prototype.update = function () {
+Scene.prototype.update = function () {
     var timeNow = new Date().getTime();
     if (this.lastTime != 0) {
         this.elapsed = timeNow - this.lastTime;

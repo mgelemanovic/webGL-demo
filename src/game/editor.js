@@ -19,7 +19,7 @@ Editor.prototype.changeOnOff = function () {
 Editor.prototype.drawUsedObject = function () {
     var editorBlock = new GameObject(game.textureManager.ground, this.textureIndex);
     editorBlock.drawDistance = -10;
-    editorBlock.position.set(game.scene.camera.x - 3.8, game.scene.camera.y + 4.5);
+    editorBlock.position.set(game.scene.camera.x - 6.5, game.scene.camera.y + 4.5);
     editorBlock.draw();
 };
 

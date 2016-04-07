@@ -7,23 +7,15 @@ var TextureManager = function () {
         jump: []
     };
     this.ground = [];
-
-    //Texture loading
-    var biomes = ['grass', 'snow', 'desert'];
-    var biome = biomes[Math.floor(Math.random() * biomes.length)];
-    this.initTexture(this.background, "textures/bg/" + biome + ".png");
-    this.initSpriteSheet(this.player.idle, "textures/robot.png", 0, 2, 0, 5, 128, 128);
-    this.initSpriteSheet(this.player.run, "textures/robot.png", 2, 4, 0, 4, 128, 128);
-    this.initSpriteSheet(this.player.jump, "textures/robot.png", 4, 6, 0, 5, 128, 128);
-    this.initSpriteSheet(this.ground, "textures/tiles/" + biome + ".png", 0, 3, 0, 6, 128, 128);
 };
 
 TextureManager.prototype.setTexture = function (texture) {
     if (this.currentTexture != texture) { // Set as current texture, only if it's not already being used
         this.currentTexture = texture;
-        GL.activeTexture(GL.TEXTURE0);
+        // I'm only using one texture buffer, so activating and updating shader is not needed
+        //GL.activeTexture(GL.TEXTURE0);
         GL.bindTexture(GL.TEXTURE_2D, texture);
-        GL.uniform1i(shaderProgram.samplerUniform, 0);
+        //GL.uniform1i(shaderProgram.samplerUniform, 0);
     }
 };
 
