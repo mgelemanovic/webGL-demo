@@ -36,12 +36,12 @@ Input.prototype.handleInput = function () {
     if (currentlyPressedKeys[this.commands.moveRight] || currentlyPressedKeys[this.commands.moveLeft]) {
         // Pressed right
         if (currentlyPressedKeys[this.commands.moveRight])
-            game.scene.player.move("right");
+            game.scene.player.move("RIGHT");
         // Pressed left
         else if (currentlyPressedKeys[this.commands.moveLeft])
-            game.scene.player.move("left");
+            game.scene.player.move("LEFT");
     } else
-        game.scene.player.move("stop");
+        game.scene.player.move("STOP");
 
     // Jump handling
     if (currentlyPressedKeys[this.commands.jump]) {

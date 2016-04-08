@@ -13,15 +13,15 @@ Player.prototype = Object.create(MovableObject.prototype);
 Player.prototype.constructor = Player;
 
 Player.prototype.move = function (direction) {
-    if (direction == "stop") {
+    if (direction == "STOP") {
         this.rigidBody.speed.x = 0;
         return;
     }
     var moveSpeed = 0.004;
-    if (direction == "left") {
+    if (direction == "LEFT") {
         this.rigidBody.speed.x = -moveSpeed;
         this.scale.x = -1;
-    } else if (direction == "right") {
+    } else if (direction == "RIGHT") {
         this.rigidBody.speed.x = moveSpeed;
         this.scale.x = 1;
     }

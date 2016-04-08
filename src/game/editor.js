@@ -30,36 +30,37 @@ Editor.prototype.changeTextureIndex = function (inc) {
     game.hud.updateEditor(this.pools[this.currentPool], this.textureIndex + 1);
 };
 
-Editor.prototype.changeObjectPool = function() {
+Editor.prototype.changeObjectPool = function () {
     this.currentPool = (this.currentPool + 1) % this.pools.length;
     game.hud.updateEditor(this.pools[this.currentPool], this.textureIndex + 1);
 };
 
 Editor.prototype.handleMouseDown = function (event) {
-    var mouseClickPos = {
-        x: Math.round(game.scene.camera.x + (event.pageX - canvas.offsetLeft - canvas.width / 2) / 75),
-        y: Math.round(game.scene.camera.y + (event.pageY - canvas.offsetTop - canvas.height / 2) / -75)
-    };
+    var scene = game.scene,
+        mouse = {
+            x: Math.round(scene.camera.x + (event.pageX - canvas.offsetLeft - canvas.width / 2) / 75),
+            y: Math.round(scene.camera.y + (event.pageY - canvas.offsetTop - canvas.height / 2) / -75)
+        },
+        pool = null,
+        texture = game.textureManager.ground,
+        object = GameObject,
+        scale = {x: 1, y: 1};
 
-    var pool = null;
     switch (game.editor.currentPool) {
         case 0:
-            pool = game.scene.ground;
+            pool = scene.ground;
             break;
         case 1:
-            pool = game.scene.decor;
+            pool = scene.decor;
             break;
     }
 
     switch (event.which) {
         case 1:
-            game.scene.addObjectToScene(pool, new GameObject(game.textureManager.ground, game.editor.textureIndex), mouseClickPos, {
-                x: 1,
-                y: 1
-            });
+            scene.addObjectToScene(pool, new object(texture, game.editor.textureIndex), mouse, scale);
             break;
         case 2:
-            game.scene.removeObjectFromScene(pool, game.scene.checkForCoords(pool, mouseClickPos));
+            scene.removeObjectFromScene(pool, scene.checkForCoords(pool, mouse));
             break;
     }
 
@@ -76,11 +77,14 @@ Editor.prototype.handleInput = function () {
     }
     // Pressed s
     if (currentlyPressedKeys[83]) {
-        game.saveScene("newScene.json");
+        game.saveScene("scene.json");
         currentlyPressedKeys[83] = false;
     }
     // Pressed e
     if (currentlyPressedKeys[69]) {
+        var player = game.scene.player;
+        player.respawn();
+        player.currentLives = player.maxLives;
         game.editor.changeOnOff();
         currentlyPressedKeys[69] = false;
     }

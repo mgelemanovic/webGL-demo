@@ -90,8 +90,10 @@ Scene.prototype.render = function () {
     drawPool(this.decor, this.camera);
     drawPool(this.ground, this.camera);
 
-    this.player.draw();
-    ++n;
+    if (!game.editor.isOn) {
+        this.player.draw();
+        ++n;
+    }
 
     game.hud.updateLoadedObjects(n);
 };
