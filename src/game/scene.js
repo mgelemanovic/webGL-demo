@@ -10,8 +10,6 @@ var Scene = function (sceneInfo) {
 
     //Player info
     this.player = new Player(game.textureManager.player.idle, 0, 50);
-    this.player.collider.w = 0.45;
-    this.player.collider.h = 0.8;
     if (sceneInfo.respawn)
         this.player.respawnPosition.setv(sceneInfo.respawn);
     this.player.respawn();

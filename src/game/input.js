@@ -21,7 +21,7 @@ Input.prototype.handleKeyUp = function (event) {
     currentlyPressedKeys[event.keyCode] = false;
 };
 
-Input.prototype.clearInput = function() {
+Input.prototype.clearInput = function () {
     for (var prop in this.commands) {
         currentlyPressedKeys[this.commands[prop]] = false;
     }
@@ -56,7 +56,7 @@ Input.prototype.handleInput = function () {
     // Turn editor mode on
     if (currentlyPressedKeys[this.commands.editor]) {
         if (confirm("Create new scene?"))
-            changeScene("empty");
+            game.changeScene("empty");
         game.editor.changeOnOff();
         currentlyPressedKeys[this.commands.editor] = false;
     }

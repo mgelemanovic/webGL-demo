@@ -3,6 +3,9 @@ var Player = function (texturePool, textureIndex, mass) {
     this.animator = new Animator(this, game.textureManager.player);
     this.respawnPosition = new Vector(0, 0);
     this.currentLives = this.maxLives = 3;
+
+    this.collider.w = 0.45;
+    this.collider.h = 0.8;
 };
 
 Player.prototype = Object.create(MovableObject.prototype);

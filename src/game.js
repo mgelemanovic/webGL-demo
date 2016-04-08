@@ -16,7 +16,13 @@ Game.prototype.finishedLoadingResource = function () {
     this.hud.updateResourceLoading();
 };
 
-Game.prototype.loadTextures = function() {
+Game.prototype.changeScene = function (newScene) {
+    this.hud.clearHUD();
+    this.waitToLoad = 1;
+    this.loadScene(newScene);
+};
+
+Game.prototype.loadTextures = function () {
     var textures = this.textureManager;
     var biomes = ['grass', 'snow', 'desert'];
     var biome = biomes[Math.floor(Math.random() * biomes.length)];
@@ -44,13 +50,24 @@ Game.prototype.loadScene = function (path) {
     http_request.send();
 };
 
+Game.prototype.uploadScene = function () {
+    var reader = new FileReader();
+    reader.onload = function () {
+        var data = JSON.parse(reader.result);
+        if (data.checksum == 36479732)
+            game.scene = new Scene(data);
+    };
+    reader.readAsText(document.getElementById("fileSelecter").files[0]);
+};
+
 Game.prototype.saveScene = function (path) {
     var data = {
+        checksum: 36479732,
         ground: [],
         decor: []
     };
 
-    var fillData = function(data, scenePool) {
+    var fillData = function (data, scenePool) {
         for (var i = 0; i < scenePool.length; ++i) {
             var tmp = {
                 pos: {
@@ -72,7 +89,7 @@ Game.prototype.saveScene = function (path) {
     };
     fillData(data.ground, this.scene.ground);
     fillData(data.decor, this.scene.decor);
-    if (this.scene.player.respawnPosition.x != 0 ||this.scene.player.respawnPosition.y != 0)
+    if (this.scene.player.respawnPosition.x != 0 || this.scene.player.respawnPosition.y != 0)
         data.respawn = this.scene.player.respawnPosition;
     var a = document.createElement("a");
     var file = new Blob([JSON.stringify(data)], {type: "text/json"});
@@ -105,9 +122,4 @@ function gameLoop() {
             game.hud.render();
         }
     }
-}
-
-function changeScene(newScene) {
-    game.hud.clearHUD();
-    game = new Game(newScene);
 }
