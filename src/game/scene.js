@@ -100,6 +100,8 @@ Scene.prototype.update = function () {
     var timeNow = new Date().getTime();
     if (this.lastTime != 0) {
         this.elapsed = timeNow - this.lastTime;
+        // Time step correction
+        if (this.elapsed > 60) this.elapsed = 60;
 
         this.player.update();
     }

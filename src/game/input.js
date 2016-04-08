@@ -14,6 +14,10 @@ var Input = function () {
 };
 
 Input.prototype.handleKeyDown = function (event) {
+    // Pause the game if P is pressed
+    if (event.keyCode == 80)
+        game.pause();
+
     currentlyPressedKeys[event.keyCode] = true;
 };
 

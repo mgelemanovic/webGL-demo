@@ -99,6 +99,11 @@ Game.prototype.saveScene = function (path) {
     a.click();
 };
 
+Game.prototype.pause = function () {
+    this.waitToLoad = 1 - game.waitToLoad;
+    this.scene.lastTime = new Date().getTime();
+};
+
 var game;
 
 function startGame() {
