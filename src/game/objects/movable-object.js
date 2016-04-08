@@ -15,16 +15,26 @@ MovableObject.prototype.update = function () {
     this.animator.animate();
 
     // Check for collisions
-    var ground = game.scene.ground;
-    for (var i = 0; i < ground.length; ++i) {
-        if (this.position.x - ground[i].position.x <= 1 && this.position.y - ground[i].position.y <= 1)
-            this.onCollision(ground[i]);
-    }
+    var collisionChecker = function (self, pool) {
+        for (var i = 0; i < pool.length; ++i) {
+            if (self.position.x - pool[i].position.x <= 1 && self.position.y - pool[i].position.y <= 1)
+                self.onCollision(pool[i]);
+        }
+    };
+
+    collisionChecker(this, game.scene.ground);
+    collisionChecker(this, game.scene.pickups);
 };
 
 MovableObject.prototype.onCollision = function (other) {
     var direction = this.collider.checkForCollision(other.collider);
     if (direction == "NONE") return;
+
+    // Extract this to Player later
+    if (this.tag == "Player" && other.tag == "PickUp") {
+        other.pickup();
+        return;
+    }
 
     var tPos = this.position.get(),
         tCol = this.collider,

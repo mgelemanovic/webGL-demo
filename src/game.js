@@ -65,7 +65,8 @@ Game.prototype.saveScene = function (path) {
     var data = {
         checksum: 36479732,
         ground: [],
-        decor: []
+        decor: [],
+        coins: []
     };
 
     var fillData = function (data, scenePool) {
@@ -76,6 +77,9 @@ Game.prototype.saveScene = function (path) {
                     y: scenePool[i].position.y
                 }
             };
+            if (scenePool[i].tag != "StaticObject") {
+                tmp.tag = scenePool[i].tag;
+            }
             if (scenePool[i].textureIndex != 0) {
                 tmp.texture = scenePool[i].textureIndex;
             }
@@ -88,10 +92,13 @@ Game.prototype.saveScene = function (path) {
             data.push(tmp);
         }
     };
+
     fillData(data.ground, this.scene.ground);
     fillData(data.decor, this.scene.decor);
+    fillData(data.coins, this.scene.pickups);
     if (this.scene.player.respawnPosition.x != 0 || this.scene.player.respawnPosition.y != 0)
         data.respawn = this.scene.player.respawnPosition;
+
     var a = document.createElement("a");
     var file = new Blob([JSON.stringify(data)], {type: "text/json"});
     a.href = URL.createObjectURL(file);

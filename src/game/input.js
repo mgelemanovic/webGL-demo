@@ -55,7 +55,7 @@ Input.prototype.handleInput = function () {
     }
     // Save scene
     if (currentlyPressedKeys[this.commands.save]) {
-        game.saveScene("newScene.json");
+        game.saveScene("scene.json");
         currentlyPressedKeys[this.commands.save] = false;
     }
     // Turn editor mode on

@@ -2,7 +2,7 @@ var Editor = function () {
     this.isOn = false;
     this.textureIndex = 0;
     this.switchStopper = false;
-    this.pools = ['GROUND', 'DECOR'];
+    this.pools = ['GROUND', 'DECOR', 'PICKUP'];
     this.currentPool = 0;
 };
 
@@ -17,7 +17,11 @@ Editor.prototype.changeOnOff = function () {
 };
 
 Editor.prototype.drawUsedObject = function () {
-    var editorBlock = new GameObject(game.textureManager.ground, this.textureIndex);
+    var texture = game.textureManager.ground;
+    if (this.currentPool == 2)
+        texture = game.textureManager.hud;
+
+    var editorBlock = new GameObject(texture, this.textureIndex);
     editorBlock.drawDistance = -10;
     editorBlock.position.set(game.scene.camera.x - 6.5, game.scene.camera.y + 4.5);
     editorBlock.draw();
@@ -25,13 +29,25 @@ Editor.prototype.drawUsedObject = function () {
 
 Editor.prototype.changeTextureIndex = function (inc) {
     this.textureIndex += inc;
-    if (this.textureIndex == -1) this.textureIndex += game.textureManager.ground.length;
-    if (this.textureIndex == game.textureManager.ground.length) this.textureIndex = 0;
+
+    var texture = game.textureManager.ground;
+    if (this.currentPool == 2) {
+        // Only show coin pickup for now
+        this.textureIndex = 14;
+        texture = game.textureManager.hud;
+    }
+
+    if (this.textureIndex < 0) this.textureIndex += texture.length;
+    if (this.textureIndex >= texture.length) this.textureIndex = 0;
     game.hud.updateEditor(this.pools[this.currentPool], this.textureIndex + 1);
 };
 
 Editor.prototype.changeObjectPool = function () {
     this.currentPool = (this.currentPool + 1) % this.pools.length;
+    // Only show coin pickup for now
+    if (this.currentPool == 2) {
+        this.textureIndex = 14;
+    }
     game.hud.updateEditor(this.pools[this.currentPool], this.textureIndex + 1);
 };
 
@@ -43,8 +59,7 @@ Editor.prototype.handleMouseDown = function (event) {
         },
         pool = null,
         texture = game.textureManager.ground,
-        object = GameObject,
-        scale = {x: 1, y: 1};
+        object = GameObject;
 
     switch (game.editor.currentPool) {
         case 0:
@@ -53,14 +68,19 @@ Editor.prototype.handleMouseDown = function (event) {
         case 1:
             pool = scene.decor;
             break;
+        case 2:
+            pool = scene.pickups;
+            texture = game.textureManager.hud;
+            object = PickUpObject;
+            break;
     }
 
     switch (event.which) {
         case 1:
-            scene.addObjectToScene(pool, new object(texture, game.editor.textureIndex), mouse, scale);
+            scene.addObjectToScene(pool, new object(texture, game.editor.textureIndex), mouse);
             break;
         case 2:
-            scene.removeObjectFromScene(pool, scene.checkForCoords(pool, mouse));
+            scene.removeObjectFromScene(pool, mouse);
             break;
     }
 

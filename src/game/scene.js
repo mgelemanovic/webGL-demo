@@ -15,14 +15,21 @@ var Scene = function (sceneInfo) {
     this.player.respawn();
 
     var fillUp = function (self, objectPool, sceneInfo) {
+        if (!sceneInfo) return;
         for (var i = 0; i < sceneInfo.length; ++i) {
-            var tmpScale = {x: 1, y: 1};
-            var tmpTexture = 0;
-            if (sceneInfo[i].scale)
-                tmpScale = sceneInfo[i].scale;
+            var texture = 0,
+                object = GameObject,
+                texturePool = game.textureManager.ground;
             if (sceneInfo[i].texture)
-                tmpTexture = sceneInfo[i].texture;
-            self.addObjectToScene(objectPool, new GameObject(game.textureManager.ground, tmpTexture), sceneInfo[i].pos, tmpScale);
+                texture = sceneInfo[i].texture;
+            if (sceneInfo[i].tag)
+                if (sceneInfo[i].tag == "PickUp") {
+                    object = PickUpObject;
+                    texturePool = game.textureManager.hud;
+                }
+            self.addObjectToScene(objectPool, new object(texturePool, texture), sceneInfo[i].pos);
+            if (sceneInfo[i].scale)
+                objectPool[i].scale.set(sceneInfo[i].scale.x, sceneInfo[i].scale.y);
         }
     };
 
@@ -33,26 +40,22 @@ var Scene = function (sceneInfo) {
     //Decor info
     this.decor = [];
     fillUp(this, this.decor, sceneInfo.decor);
+
+    this.pickups = [];
+    fillUp(this, this.pickups, sceneInfo.coins);
 };
 
-Scene.prototype.addObjectToScene = function (objectPool, newObject, position, scale) {
+Scene.prototype.addObjectToScene = function (objectPool, newObject, position) {
     objectPool.push(newObject);
-    objectPool[objectPool.length - 1].setScale(scale.x, scale.y);
     objectPool[objectPool.length - 1].position.setv(position);
 };
 
-Scene.prototype.removeObjectFromScene = function (objectPool, index) {
-    if (index > -1 && index < objectPool.length)
-        objectPool.splice(index, 1);
-};
-
-Scene.prototype.checkForCoords = function (objectPool, coords) {
-    for (var i = 0; i < this.ground.length; ++i) {
+Scene.prototype.removeObjectFromScene = function (objectPool, coords) {
+    for (var i = 0; i < objectPool.length; ++i) {
         if (coords.x == objectPool[i].position.x && coords.y == objectPool[i].position.y) {
-            return i;
+            objectPool.splice(i, 1);
         }
     }
-    return -1;
 };
 
 //Clears the scene, sets the perspective and moves the camera
@@ -79,16 +82,17 @@ Scene.prototype.render = function () {
     this.background.draw();
     ++n;
 
-    var drawPool = function(objectPool, camera) {
+    var drawPool = function (objectPool) {
         for (var i = 0; i < objectPool.length; ++i) {
-            if (Math.abs(objectPool[i].position.x - camera.x) < 6) {
+            if (Math.abs(objectPool[i].position.x - game.scene.camera.x) < 6) {
                 objectPool[i].draw();
                 ++n;
             }
         }
     };
-    drawPool(this.decor, this.camera);
-    drawPool(this.ground, this.camera);
+    drawPool(this.decor);
+    drawPool(this.ground);
+    drawPool(this.pickups);
 
     if (!game.editor.isOn) {
         this.player.draw();
