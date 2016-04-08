@@ -28,12 +28,12 @@ Game.prototype.loadTextures = function () {
         biomes = ['grass', 'snow', 'desert'],
         biome = biomes[Math.floor(Math.random() * biomes.length)];
 
-    textures.initTexture(textures.background, "textures/bg/" + biome + ".png");
-    textures.initSpriteSheet(textures.player.idle, "textures/robot.png", 0, 2, 0, 5, 128, 128);
-    textures.initSpriteSheet(textures.player.run, "textures/robot.png", 2, 4, 0, 4, 128, 128);
-    textures.initSpriteSheet(textures.player.jump, "textures/robot.png", 4, 6, 0, 5, 128, 128);
-    textures.initSpriteSheet(textures.hud, "textures/hud.png", 0, 3, 0, 5, 128, 128);
-    textures.initSpriteSheet(textures.ground, "textures/tiles/" + biome + ".png", 0, 3, 0, 6, 128, 128);
+    textures.getSprite(textures.background, "textures/bg/" + biome + ".png");
+    textures.getSpriteSheet(textures.player.idle, "textures/robot.png", 0, 2, 0, 5, 128, 128);
+    textures.getSpriteSheet(textures.player.run, "textures/robot.png", 2, 4, 0, 4, 128, 128);
+    textures.getSpriteSheet(textures.player.jump, "textures/robot.png", 4, 6, 0, 5, 128, 128);
+    textures.getSpriteSheet(textures.hud, "textures/hud.png", 0, 3, 0, 5, 128, 128);
+    textures.getSpriteSheet(textures.ground, "textures/tiles/" + biome + ".png", 0, 3, 0, 6, 128, 128);
 };
 
 Game.prototype.loadScene = function (path) {

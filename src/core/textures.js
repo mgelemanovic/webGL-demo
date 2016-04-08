@@ -11,7 +11,7 @@ var TextureManager = function () {
     this.items = [];
 };
 
-TextureManager.prototype.setTexture = function (texture) {
+TextureManager.prototype.setActiveTexture = function (texture) {
     if (this.currentTexture != texture) { // Set as current texture, only if it's not already being used
         this.currentTexture = texture;
         // I'm only using one texture buffer, so activating and updating shader is not needed
@@ -21,55 +21,49 @@ TextureManager.prototype.setTexture = function (texture) {
     }
 };
 
-TextureManager.prototype.initTexture = function (pool, path) {
+TextureManager.prototype.initTexture = function (src) {
     var newTexture = GL.createTexture();
 
-    newTexture.image = new Image();
-    newTexture.image.onload = function () {
-        GL.bindTexture(GL.TEXTURE_2D, newTexture);
+    GL.bindTexture(GL.TEXTURE_2D, newTexture);
 
-        GL.pixelStorei(GL.UNPACK_FLIP_Y_WEBGL, true);
-        GL.texImage2D(GL.TEXTURE_2D, 0, GL.RGBA, GL.RGBA, GL.UNSIGNED_BYTE, newTexture.image);
+    GL.pixelStorei(GL.UNPACK_FLIP_Y_WEBGL, true);
+    GL.texImage2D(GL.TEXTURE_2D, 0, GL.RGBA, GL.RGBA, GL.UNSIGNED_BYTE, src);
 
-        GL.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_MAG_FILTER, GL.LINEAR);
-        GL.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_MIN_FILTER, GL.LINEAR);
+    GL.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_MAG_FILTER, GL.LINEAR);
+    GL.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_MIN_FILTER, GL.LINEAR);
 
-        GL.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_WRAP_S, GL.CLAMP_TO_EDGE);
-        GL.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_WRAP_T, GL.CLAMP_TO_EDGE);
+    GL.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_WRAP_S, GL.CLAMP_TO_EDGE);
+    GL.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_WRAP_T, GL.CLAMP_TO_EDGE);
 
-        game.finishedLoadingResource();
-    };
-    newTexture.image.src = path;
-
-    pool.push(newTexture);
+    return newTexture;
 };
 
-TextureManager.prototype.initSpriteSheet = function (pool, path, iMIN, iMAX, jMIN, jMAX, w, h) {
-    var image = new Image();
+TextureManager.prototype.getSprite = function (pool, path) {
+    var image = new Image(),
+        self = this;
+
+    image.onload = function () {
+        pool.push(self.initTexture(image));
+        game.finishedLoadingResource();
+    };
+    image.src = path;
+
+};
+
+TextureManager.prototype.getSpriteSheet = function (pool, path, iMIN, iMAX, jMIN, jMAX, w, h) {
+    var image = new Image(),
+        self = this,
+        canvas = document.createElement("canvas"),
+        ctx = canvas.getContext("2d");
 
     image.onload = function () {
         for (var i = iMIN; i < iMAX; ++i) {
             for (var j = jMIN; j < jMAX; ++j) {
-                var canvas = document.createElement("canvas");
-                var ctx = canvas.getContext("2d");
                 canvas.height = h;
                 canvas.width = w;
-
                 ctx.drawImage(image, w * j, h * i, w, h, 0, 0, w, h);
 
-                var newTexture = GL.createTexture();
-                GL.bindTexture(GL.TEXTURE_2D, newTexture);
-
-                GL.pixelStorei(GL.UNPACK_FLIP_Y_WEBGL, true);
-                GL.texImage2D(GL.TEXTURE_2D, 0, GL.RGBA, GL.RGBA, GL.UNSIGNED_BYTE, canvas);
-
-                GL.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_MAG_FILTER, GL.LINEAR);
-                GL.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_MIN_FILTER, GL.LINEAR);
-
-                GL.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_WRAP_S, GL.CLAMP_TO_EDGE);
-                GL.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_WRAP_T, GL.CLAMP_TO_EDGE);
-
-                pool.push(newTexture);
+                pool.push(self.initTexture(canvas));
             }
         }
 
