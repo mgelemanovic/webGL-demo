@@ -24,32 +24,22 @@ TextureManager.prototype.setTexture = function (texture) {
 TextureManager.prototype.initTexture = function (pool, path) {
     var newTexture = GL.createTexture();
 
-    // Set temporary texture to background color, also used if no image is given for texture
-    GL.bindTexture(GL.TEXTURE_2D, newTexture);
-    GL.texImage2D(GL.TEXTURE_2D, 0, GL.RGBA, 1, 1, 0, GL.RGBA, GL.UNSIGNED_BYTE,
-        new Uint8Array([backgroundColor.r, backgroundColor.g, backgroundColor.b, backgroundColor.a]));
-    GL.bindTexture(GL.TEXTURE_2D, null);
+    newTexture.image = new Image();
+    newTexture.image.onload = function () {
+        GL.bindTexture(GL.TEXTURE_2D, newTexture);
 
-    if (path != null) {
-        newTexture.image = new Image();
-        newTexture.image.onload = function () {
-            GL.bindTexture(GL.TEXTURE_2D, newTexture);
+        GL.pixelStorei(GL.UNPACK_FLIP_Y_WEBGL, true);
+        GL.texImage2D(GL.TEXTURE_2D, 0, GL.RGBA, GL.RGBA, GL.UNSIGNED_BYTE, newTexture.image);
 
-            GL.pixelStorei(GL.UNPACK_FLIP_Y_WEBGL, true);
-            GL.texImage2D(GL.TEXTURE_2D, 0, GL.RGBA, GL.RGBA, GL.UNSIGNED_BYTE, newTexture.image);
+        GL.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_MAG_FILTER, GL.LINEAR);
+        GL.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_MIN_FILTER, GL.LINEAR);
 
-            GL.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_MAG_FILTER, GL.LINEAR);
-            GL.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_MIN_FILTER, GL.LINEAR);
+        GL.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_WRAP_S, GL.CLAMP_TO_EDGE);
+        GL.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_WRAP_T, GL.CLAMP_TO_EDGE);
 
-            GL.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_WRAP_S, GL.CLAMP_TO_EDGE);
-            GL.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_WRAP_T, GL.CLAMP_TO_EDGE);
-
-            GL.bindTexture(GL.TEXTURE_2D, null);
-
-            game.finishedLoadingResource();
-        };
-        newTexture.image.src = path;
-    }
+        game.finishedLoadingResource();
+    };
+    newTexture.image.src = path;
 
     pool.push(newTexture);
 };

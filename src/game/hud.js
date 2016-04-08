@@ -20,7 +20,8 @@ HUD.prototype.render = function() {
         camera = game.scene.camera,
         maxLives = game.scene.player.maxLives,
         currentLives = game.scene.player.currentLives,
-        score = game.score;
+        score = game.score,
+        i;
 
     var drawElement = function(offset) {
         hudElement.position.x = camera.x + offset;
@@ -31,7 +32,6 @@ HUD.prototype.render = function() {
     hudElement.drawDistance = -10;
 
     // Health rendering
-    var i;
     for (i = 0; i < Math.floor(currentLives); ++i) {
         drawElement(-6.5 + i);
     }

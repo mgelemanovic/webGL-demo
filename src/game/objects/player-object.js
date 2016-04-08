@@ -1,5 +1,6 @@
 var Player = function (texturePool, textureIndex, mass) {
     MovableObject.call(this, texturePool, textureIndex, mass);
+    this.tag = "Player";
     this.animator = new Animator(this, game.textureManager.player);
     this.respawnPosition = new Vector(0, 0);
     this.currentLives = this.maxLives = 3;

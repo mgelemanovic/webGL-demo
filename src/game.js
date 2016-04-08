@@ -24,9 +24,9 @@ Game.prototype.changeScene = function (newScene) {
 };
 
 Game.prototype.loadTextures = function () {
-    var textures = this.textureManager;
-    var biomes = ['grass', 'snow', 'desert'];
-    var biome = biomes[Math.floor(Math.random() * biomes.length)];
+    var textures = this.textureManager,
+        biomes = ['grass', 'snow', 'desert'],
+        biome = biomes[Math.floor(Math.random() * biomes.length)];
 
     textures.initTexture(textures.background, "textures/bg/" + biome + ".png");
     textures.initSpriteSheet(textures.player.idle, "textures/robot.png", 0, 2, 0, 5, 128, 128);
@@ -115,12 +115,13 @@ function gameLoop() {
     requestAnimFrame(gameLoop);
 
     if (game.waitToLoad == 0) {
-        if (game.editor.isOn) {
+        if (game.editor.isOn)
             game.editor.handleInput();
-        }
         else
             game.inputManager.handleInput();
+
         game.scene.update();
+
         game.scene.render();
         if (game.editor.isOn) {
             game.editor.drawUsedObject();

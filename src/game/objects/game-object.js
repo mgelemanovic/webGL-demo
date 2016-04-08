@@ -1,4 +1,5 @@
 var GameObject = function (texturePool, textureIndex) {
+    this.tag = "StaticObject";
     this.position = new Vector(0.0, 0.0);
     this.drawDistance = game.drawDistance;
     this.scale = new Vector(1.0, 1.0);

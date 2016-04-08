@@ -2,13 +2,6 @@ var canvas;
 
 var GL;
 
-var backgroundColor = {
-    r: 135,
-    g: 206,
-    b: 250,
-    a: 255
-};
-
 function webGLStart() {
     canvas = document.getElementById("webgl-context");
     GL = initGL();
@@ -16,7 +9,7 @@ function webGLStart() {
     vertexBuffer = initBuffers();
 
     //WebGL state setup
-    GL.clearColor(backgroundColor.r / 255, backgroundColor.g / 255, backgroundColor.b / 255, backgroundColor.a / 255);
+    GL.clearColor(0.0, 0.0, 0.0, 1.0);
     GL.viewport(0, 0, GL.viewportWidth, GL.viewportHeight);
     GL.enable(GL.BLEND);
     GL.blendFunc(GL.SRC_ALPHA, GL.ONE_MINUS_SRC_ALPHA);

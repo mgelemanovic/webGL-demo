@@ -7,9 +7,9 @@ var RigidBody = function (attachedTo, mass) {
 };
 
 RigidBody.prototype.applyForce = function () {
-    var elapsed = game.scene.elapsed;
-    var gAcc = -0.00001;    // Kinda low? Maybe?
-    var acc = new Vector(this.force.x / this.mass, this.force.y / this.mass);
+    var elapsed = game.scene.elapsed,
+        gAcc = -0.00001,    // Kinda low? Maybe?
+        acc = new Vector(this.force.x / this.mass, this.force.y / this.mass);
     this.force.set(0, 0);    // Turn off forces
 
     this.speed.add(acc.x * elapsed, (gAcc + acc.y) * elapsed);
@@ -39,30 +39,28 @@ var Collider = function (attachedTo, width, height) {
 };
 
 Collider.prototype.checkForCollision = function (other) {
-    var actorPos = this.attachedTo.position.get();
-    var otherPos = other.attachedTo.position.get();
+    var tPos = this.attachedTo.position.get(),
+        oPos = other.attachedTo.position.get();
 
-    if (actorPos.x - this.w / 2 < otherPos.x + other.w / 2 &&
-        actorPos.x + this.w / 2 > otherPos.x - other.w / 2 &&
-        actorPos.y - this.h / 2 < otherPos.y + other.h / 2 &&
-        actorPos.y + this.h / 2 > otherPos.y - other.h / 2) {
+    if (tPos.x - this.w / 2 < oPos.x + other.w / 2 &&
+        tPos.x + this.w / 2 > oPos.x - other.w / 2 &&
+        tPos.y - this.h / 2 < oPos.y + other.h / 2 &&
+        tPos.y + this.h / 2 > oPos.y - other.h / 2) {
 
-        var deltaX = actorPos.x - otherPos.x;
-        var deltaY = actorPos.y - otherPos.y;
+        var deltaX = tPos.x - oPos.x,
+            deltaY = tPos.y - oPos.y;
 
         if (Math.abs(deltaY) > Math.abs(deltaX)) {
-            if (deltaY > 0) {
-                this.attachedTo.rigidBody.onGround();
-                this.attachedTo.position.set(actorPos.x, otherPos.y + (other.h + this.h) / 2);
-            } else {
-                this.attachedTo.position.set(actorPos.x, otherPos.y - (other.h + this.h) / 2);
-            }
+            if (deltaY > 0)
+                return "UP";
+            else
+                return "DOWN";
         } else {
-            if (deltaX > 0) {
-                this.attachedTo.position.set(otherPos.x + (other.w + this.w) / 2, actorPos.y);
-            } else {
-                this.attachedTo.position.set(otherPos.x - (other.w + this.w) / 2, actorPos.y);
-            }
+            if (deltaX > 0)
+                return "RIGHT";
+            else
+                return "LEFT";
         }
     }
+    return "NONE";
 };
