@@ -7,6 +7,7 @@ var Game = function (scene) {
     this.editor = new Editor();
     this.waitToLoad = 7;
     this.drawDistance = -7;
+    this.score = 0;
     this.loadTextures();
     this.loadScene(scene);
 };

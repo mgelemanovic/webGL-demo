@@ -34,19 +34,21 @@ Player.prototype.jump = function () {
     }
 };
 
-Player.prototype.checkForDeath = function() {
-    if (this.position.y < -4 || this.position.y > 5) {
-        this.currentLives -= 0.5;
-        if (this.currentLives <= 0) {
-            // Game over
-            this.currentLives = 1;
-        }
+Player.prototype.hurt = function (dmg) {
+    this.currentLives -= dmg;
+};
+
+Player.prototype.checkForDeath = function () {
+    // If the player falls from the map, or his health reaches 0
+    // Respawn the player and put his health to 20% of his max HP
+    if (this.position.y < -4 || this.position.y > 5 || this.currentLives <= 0) {
         this.respawn();
+        this.currentLives = Math.ceil(this.maxLives * 0.2);
     }
 };
 
-Player.prototype.respawn = function() {
-    this.position.set(this.respawnPosition.x, this.respawnPosition.y);
+Player.prototype.respawn = function () {
+    this.position.setv(this.respawnPosition);
     this.rigidBody.isGrounded = false;
     this.rigidBody.resetSpeedAndForce();
 };

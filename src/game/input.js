@@ -46,6 +46,7 @@ Input.prototype.handleInput = function () {
     // Respawn player
     if (currentlyPressedKeys[this.commands.respawn]) {
         game.scene.player.respawn();
+        game.scene.player.hurt(0.5);    // Temporary
         currentlyPressedKeys[this.commands.respawn] = false;
     }
     // Save scene

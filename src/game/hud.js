@@ -16,25 +16,44 @@ var HUD = function () {
 };
 
 HUD.prototype.render = function() {
-    var heart = new GameObject(game.textureManager.hud, 13);
-    var maxLives = game.scene.player.maxLives, currentLives = game.scene.player.currentLives;
-    heart.drawDistance = -10;
+    var hudElement = new GameObject(game.textureManager.hud, 13),
+        camera = game.scene.camera,
+        maxLives = game.scene.player.maxLives,
+        currentLives = game.scene.player.currentLives,
+        score = game.score;
+
+    var drawElement = function(offset) {
+        hudElement.position.x = camera.x + offset;
+        hudElement.draw();
+    };
+
+    hudElement.position.y = camera.y + 4.5;
+    hudElement.drawDistance = -10;
+
+    // Health rendering
     var i;
     for (i = 0; i < Math.floor(currentLives); ++i) {
-        heart.position.set(game.scene.camera.x - 6.5 + i, game.scene.camera.y + 4.5);
-        heart.draw();
+        drawElement(-6.5 + i);
     }
     if (currentLives - i == 0.5) {
-        heart.textureIndex = 12;
-        heart.position.set(game.scene.camera.x - 6.5 + i, game.scene.camera.y + 4.5);
-        heart.draw();
+        hudElement.textureIndex = 12;
+        drawElement(-6.5 + i);
         ++i;
     }
-    heart.textureIndex = 11;
+    hudElement.textureIndex = 11;
     for (; i < maxLives; ++i) {
-        heart.position.set(game.scene.camera.x - 6.5 + i, game.scene.camera.y + 4.5);
-        heart.draw();
+        drawElement(-6.5 + i);
     }
+
+    // Score rendering
+    hudElement.textureIndex = 14;
+    drawElement(4.5);
+    hudElement.textureIndex = 10;
+    drawElement(5.25);
+    hudElement.textureIndex = Math.floor(score / 10) % 10;
+    drawElement(6);
+    hudElement.textureIndex = score % 10;
+    drawElement(6.5);
 };
 
 // Debug info
