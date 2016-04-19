@@ -16,24 +16,18 @@ MovableObject.prototype = Object.assign(Object.create(GameObject.prototype), {
         // Check for collisions
         var collisionChecker = function (self, pool) {
             for (var i = 0; i < pool.length; ++i) {
-                if (self.position.x - pool[i].position.x <= 1 && self.position.y - pool[i].position.y <= 1)
-                    self.onCollision(pool[i]);
+                if (self.position.x - pool[i].position.x <= 1 && self.position.y - pool[i].position.y <= 1) {
+                    var direction = self.collider.checkForCollision(pool[i].collider);
+                    if (direction == "NONE") continue;
+                    self.onCollision(pool[i], direction);
+                }
             }
         };
 
         collisionChecker(this, game.scene.ground);
         collisionChecker(this, game.scene.pickups);
     },
-    onCollision: function (other) {
-        var direction = this.collider.checkForCollision(other.collider);
-        if (direction == "NONE") return;
-
-        // Extract this to Player later
-        if (this.tag == "Player" && other.tag == "PickUp") {
-            other.pickup();
-            return;
-        }
-
+    onCollision: function (other, direction) {
         var tPos = this.position.get(),
             tCol = this.collider,
             oPos = other.position.get(),

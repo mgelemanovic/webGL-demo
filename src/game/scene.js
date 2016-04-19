@@ -4,56 +4,26 @@ var Scene = function (sceneInfo) {
     this.lastTime = 0;
     this.elapsed = 0;
 
-    //Background info
-    this.background = new GameObject(game.textureManager.background, 0);
-    this.background.drawDistance = -0.5;
-
-    //Player info
-    this.player = new Player(game.textureManager.player.idle, 0, 50);
-    if (sceneInfo.respawn)
-        this.player.respawnPosition.setv(sceneInfo.respawn);
-    this.player.respawn();
-
-    var fillUp = function (self, objectPool, sceneInfo) {
+    var factory = new Factory();
+    var fillUp = function (objectPool, sceneInfo) {
         if (!sceneInfo) return;
-        for (var i = 0; i < sceneInfo.length; ++i) {
-            var texture = 0,
-                object = GameObject,
-                texturePool = game.textureManager.ground;
-            if (sceneInfo[i].texture)
-                texture = sceneInfo[i].texture;
-            if (sceneInfo[i].tag)
-                if (sceneInfo[i].tag == "PickUp") {
-                    object = PickUpObject;
-                    texturePool = game.textureManager.hud;
-                }
-            var createdObject = new object(texturePool, texture);
-            if (sceneInfo[i].tag == "PickUp") {
-                createdObject.value = 5;
-            }
-            self.addObjectToScene(objectPool, createdObject, sceneInfo[i].pos);
-            if (sceneInfo[i].scale)
-                objectPool[i].scale.set(sceneInfo[i].scale.x, sceneInfo[i].scale.y);
-        }
+        for (var i = 0; i < sceneInfo.length; ++i)
+            objectPool.push(factory.create(sceneInfo[i].tag, sceneInfo[i]));
     };
 
-    //Ground info
-    this.ground = [];
-    fillUp(this, this.ground, sceneInfo.ground);
+    this.background = factory.createBackground();
+    this.player = factory.createPlayer(50, sceneInfo.respawn);
 
-    //Decor info
+    this.ground = [];
+    fillUp(this.ground, sceneInfo.ground);
     this.decor = [];
-    fillUp(this, this.decor, sceneInfo.decor);
+    fillUp(this.decor, sceneInfo.decor);
 
     this.pickups = [];
-    fillUp(this, this.pickups, sceneInfo.coins);
+    fillUp(this.pickups, sceneInfo.coins);
 };
 
 Scene.prototype = {
-    addObjectToScene: function (objectPool, newObject, position) {
-        objectPool.push(newObject);
-        objectPool[objectPool.length - 1].position.setv(position);
-    },
     removeObjectFromScene: function (objectPool, coords) {
         for (var i = 0; i < objectPool.length; ++i) {
             if (coords.x == objectPool[i].position.x && coords.y == objectPool[i].position.y) {
@@ -79,10 +49,8 @@ Scene.prototype = {
     render: function () {
         this.prepare(45, GL.viewportWidth / GL.viewportHeight, 0.1, 100.0);
 
-        var n = 0;
-
         this.background.draw();
-        ++n;
+        var n = 1;
 
         var drawPool = function (objectPool) {
             for (var i = 0; i < objectPool.length; ++i) {

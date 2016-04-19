@@ -1,5 +1,5 @@
-var Player = function (texturePool, textureIndex, mass) {
-    MovableObject.call(this, texturePool, textureIndex, mass);
+var Player = function (mass) {
+    MovableObject.call(this, game.textureManager.player.idle, 0, mass);
     this.tag = "Player";
     this.animator = new Animator(this, game.textureManager.player);
     this.respawnPosition = new Vector(0, 0);
@@ -47,5 +47,12 @@ Player.prototype = Object.assign(Object.create(MovableObject.prototype), {
         this.position.setv(this.respawnPosition);
         this.rigidBody.isGrounded = false;
         this.rigidBody.resetSpeedAndForce();
+    },
+    onCollision: function (other, direction) {
+        if (other instanceof PickUpObject) {
+            other.pickup();
+            return;
+        }
+        MovableObject.prototype.onCollision.call(this, other, direction);
     }
 });

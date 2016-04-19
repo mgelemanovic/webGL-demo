@@ -73,9 +73,6 @@ Game.prototype = {
                         y: scenePool[i].position.y
                     }
                 };
-                if (scenePool[i].tag != "StaticObject") {
-                    tmp.tag = scenePool[i].tag;
-                }
                 if (scenePool[i].textureIndex != 0) {
                     tmp.texture = scenePool[i].textureIndex;
                 }
@@ -84,6 +81,9 @@ Game.prototype = {
                         x: scenePool[i].scale.x,
                         y: scenePool[i].scale.y
                     };
+                }
+                if (scenePool[i].tag != "StaticObject") {
+                    tmp.tag = scenePool[i].tag;
                 }
                 data.push(tmp);
             }
