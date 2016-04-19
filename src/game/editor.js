@@ -14,7 +14,7 @@ Editor.prototype = {
             canvas.onmousedown = this.handleMouseDown;
         else
             canvas.onmousedown = null;
-        game.hud.updateEditor(this.pools[this.currentPool], this.textureIndex + 1);
+        game.hud.updateEditor();
     },
     drawUsedObject: function () {
         var texture = game.textureManager.ground;
@@ -23,7 +23,8 @@ Editor.prototype = {
 
         var editorBlock = new GameObject(texture, this.textureIndex);
         editorBlock.drawDistance = -10;
-        editorBlock.position.set(game.scene.camera.x - 6.5, game.scene.camera.y + 4.5);
+        editorBlock.position.setv(game.scene.camera);
+        editorBlock.position.add(-6.5, 4.5);
         editorBlock.draw();
     },
     changeTextureIndex: function (inc) {
@@ -38,7 +39,7 @@ Editor.prototype = {
 
         if (this.textureIndex < 0) this.textureIndex += texture.length;
         if (this.textureIndex >= texture.length) this.textureIndex = 0;
-        game.hud.updateEditor(this.pools[this.currentPool], this.textureIndex + 1);
+        game.hud.updateEditor();
     },
     changeObjectPool: function () {
         this.currentPool = (this.currentPool + 1) % this.pools.length;
@@ -46,17 +47,16 @@ Editor.prototype = {
         if (this.currentPool == 2) {
             this.textureIndex = 14;
         }
-        game.hud.updateEditor(this.pools[this.currentPool], this.textureIndex + 1);
+        game.hud.updateEditor();
     },
     handleMouseDown: function (event) {
         var scene = game.scene,
+            pool = null,
+            tag = "",
             mouse = {
                 x: Math.round(scene.camera.x + (event.pageX - canvas.offsetLeft - canvas.width / 2) / 75),
                 y: Math.round(scene.camera.y + (event.pageY - canvas.offsetTop - canvas.height / 2) / -75)
-            },
-            pool = null,
-            texture = game.textureManager.ground,
-            object = GameObject;
+            };
 
         switch (game.editor.currentPool) {
             case 0:
@@ -67,14 +67,13 @@ Editor.prototype = {
                 break;
             case 2:
                 pool = scene.pickups;
-                texture = game.textureManager.hud;
-                object = PickUpObject;
+                tag = "CoinPickUp";
                 break;
         }
 
         switch (event.which) {
             case 1:
-                scene.addObjectToScene(pool, new object(texture, game.editor.textureIndex), mouse);
+                pool.push(Factory.create(tag, {pos: mouse, texture: game.editor.textureIndex}));
                 break;
             case 2:
                 scene.removeObjectFromScene(pool, mouse);
@@ -91,11 +90,6 @@ Editor.prototype = {
         if (currentlyPressedKeys[37]) {
             game.scene.camera.x -= 0.05;
         }
-        // Pressed s
-        if (currentlyPressedKeys[83]) {
-            game.saveScene("scene.json");
-            currentlyPressedKeys[83] = false;
-        }
         // Pressed e
         if (currentlyPressedKeys[69]) {
             var player = game.scene.player;
@@ -105,31 +99,22 @@ Editor.prototype = {
             currentlyPressedKeys[69] = false;
         }
         // Pressed f
-        if (currentlyPressedKeys[70]) {
-            if (!this.switchStopper) {
-                game.editor.changeTextureIndex(-1);
-                this.switchStopper = true;
-            }
+        if (currentlyPressedKeys[70] && !this.switchStopper) {
+            game.editor.changeTextureIndex(-1);
+            this.switchStopper = true;
         }
-
         // Pressed g
-        if (currentlyPressedKeys[71]) {
-            if (!this.switchStopper) {
-                game.editor.changeTextureIndex(1);
-                this.switchStopper = true;
-            }
+        if (currentlyPressedKeys[71] && !this.switchStopper) {
+            game.editor.changeTextureIndex(1);
+            this.switchStopper = true;
         }
-
         // Pressed h
-        if (currentlyPressedKeys[72]) {
-            if (!this.switchStopper) {
-                game.editor.changeObjectPool();
-                this.switchStopper = true;
-            }
+        if (currentlyPressedKeys[72] && !this.switchStopper) {
+            game.editor.changeObjectPool();
+            this.switchStopper = true;
         }
 
-        if (!currentlyPressedKeys[70] && !currentlyPressedKeys[71] && !currentlyPressedKeys[72]) {
+        if (!currentlyPressedKeys[70] && !currentlyPressedKeys[71] && !currentlyPressedKeys[72])
             this.switchStopper = false;
-        }
     }
 };

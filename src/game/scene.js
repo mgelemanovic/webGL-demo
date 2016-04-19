@@ -4,15 +4,14 @@ var Scene = function (sceneInfo) {
     this.lastTime = 0;
     this.elapsed = 0;
 
-    var factory = new Factory();
     var fillUp = function (objectPool, sceneInfo) {
         if (!sceneInfo) return;
         for (var i = 0; i < sceneInfo.length; ++i)
-            objectPool.push(factory.create(sceneInfo[i].tag, sceneInfo[i]));
+            objectPool.push(Factory.create(sceneInfo[i].tag, sceneInfo[i]));
     };
 
-    this.background = factory.createBackground();
-    this.player = factory.createPlayer(50, sceneInfo.respawn);
+    this.background = Factory.createBackground();
+    this.player = Factory.createPlayer(50, sceneInfo.respawn);
 
     this.ground = [];
     fillUp(this.ground, sceneInfo.ground);

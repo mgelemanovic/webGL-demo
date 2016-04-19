@@ -1,6 +1,4 @@
-var Factory = function () {};
-
-Factory.prototype = {
+Factory = {
     create: function (tag, info) {
         var object;
         switch (tag) {

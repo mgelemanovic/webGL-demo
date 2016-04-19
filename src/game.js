@@ -39,7 +39,6 @@ Game.prototype = {
         var http_request = new XMLHttpRequest();
         http_request.onreadystatechange = function () {
             if (http_request.readyState == 4) {
-                // Javascript function JSON.parse to parse JSON data
                 self.scene = new Scene(JSON.parse(http_request.responseText));
                 self.finishedLoadingResource();
             }
@@ -57,7 +56,7 @@ Game.prototype = {
         };
         reader.readAsText(document.getElementById("fileSelecter").files[0]);
     },
-    saveScene: function (path) {
+    saveScene: function () {
         var data = {
             checksum: 36479732,
             ground: [],
@@ -96,9 +95,8 @@ Game.prototype = {
             data.respawn = this.scene.player.respawnPosition;
 
         var a = document.createElement("a");
-        var file = new Blob([JSON.stringify(data)], {type: "text/json"});
-        a.href = URL.createObjectURL(file);
-        a.download = path;
+        a.href = URL.createObjectURL(new Blob([JSON.stringify(data)], {type: "text/json"}));
+        a.download = "scene.json";
         a.click();
     },
     pause: function () {
@@ -118,14 +116,19 @@ function gameLoop() {
     requestAnimFrame(gameLoop);
 
     if (game.waitToLoad == 0) {
+        // Handle player input
         if (game.editor.isOn)
             game.editor.handleInput();
         else
             game.inputManager.handleInput();
 
+        // Update game world
         game.scene.update();
 
+        // Render game world
         game.scene.render();
+
+        // Render HUD
         if (game.editor.isOn) {
             game.editor.drawUsedObject();
         } else {

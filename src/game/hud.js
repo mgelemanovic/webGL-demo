@@ -1,5 +1,4 @@
 var HUD = function () {
-    // Debug info
     this.resourceLoading = document.createTextNode("0");
     document.getElementById("resourceLoading").appendChild(this.resourceLoading);
 
@@ -61,10 +60,11 @@ HUD.prototype = {
         this.textureID.nodeValue = "";
         this.objects.nodeValue = "";
     },
-    updateEditor: function (objectPool, index) {
-        if (game.editor.isOn) {
+    updateEditor: function () {
+        var editor = game.editor;
+        if (editor.isOn) {
             this.editor.nodeValue = "ON";
-            this.textureID.nodeValue = objectPool + ": " + index;
+            this.textureID.nodeValue = editor.pools[editor.currentPool] + ": " + (editor.textureIndex + 1);
         }
         else {
             this.editor.nodeValue = "OFF";
