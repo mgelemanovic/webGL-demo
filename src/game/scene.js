@@ -27,7 +27,11 @@ var Scene = function (sceneInfo) {
                     object = PickUpObject;
                     texturePool = game.textureManager.hud;
                 }
-            self.addObjectToScene(objectPool, new object(texturePool, texture), sceneInfo[i].pos);
+            var createdObject = new object(texturePool, texture);
+            if (sceneInfo[i].tag == "PickUp") {
+                createdObject.value = 5;
+            }
+            self.addObjectToScene(objectPool, createdObject, sceneInfo[i].pos);
             if (sceneInfo[i].scale)
                 objectPool[i].scale.set(sceneInfo[i].scale.x, sceneInfo[i].scale.y);
         }
@@ -45,74 +49,72 @@ var Scene = function (sceneInfo) {
     fillUp(this, this.pickups, sceneInfo.coins);
 };
 
-Scene.prototype.addObjectToScene = function (objectPool, newObject, position) {
-    objectPool.push(newObject);
-    objectPool[objectPool.length - 1].position.setv(position);
-};
-
-Scene.prototype.removeObjectFromScene = function (objectPool, coords) {
-    for (var i = 0; i < objectPool.length; ++i) {
-        if (coords.x == objectPool[i].position.x && coords.y == objectPool[i].position.y) {
-            objectPool.splice(i, 1);
-        }
-    }
-};
-
-//Clears the scene, sets the perspective and moves the camera
-Scene.prototype.prepare = function (fovy, aspect, near, far) {
-    GL.clear(GL.COLOR_BUFFER_BIT);
-
-    mat4.perspective(pMatrix, fovy, aspect, near, far);
-    GL.uniformMatrix4fv(shaderProgram.pMatrixUniform, false, pMatrix);
-    mat4.identity(mvMatrix);
-
-    // Position the camera to follow the player or move it independently in editor mode
-    if (!game.editor.isOn) {
-        this.camera.x = this.player.position.x;
-    }
-    this.background.position.x = this.camera.x;
-    mat4.translate(mvMatrix, mvMatrix, [-this.camera.x, -this.camera.y, 0]);
-};
-
-Scene.prototype.render = function () {
-    this.prepare(45, GL.viewportWidth / GL.viewportHeight, 0.1, 100.0);
-
-    var n = 0;
-
-    this.background.draw();
-    ++n;
-
-    var drawPool = function (objectPool) {
+Scene.prototype = {
+    addObjectToScene: function (objectPool, newObject, position) {
+        objectPool.push(newObject);
+        objectPool[objectPool.length - 1].position.setv(position);
+    },
+    removeObjectFromScene: function (objectPool, coords) {
         for (var i = 0; i < objectPool.length; ++i) {
-            if (Math.abs(objectPool[i].position.x - game.scene.camera.x) < 6) {
-                objectPool[i].draw();
-                ++n;
+            if (coords.x == objectPool[i].position.x && coords.y == objectPool[i].position.y) {
+                objectPool.splice(i, 1);
             }
         }
-    };
-    drawPool(this.decor);
-    drawPool(this.ground);
-    drawPool(this.pickups);
+    },
+    //Clears the scene, sets the perspective and moves the camera
+    prepare: function (fovy, aspect, near, far) {
+        GL.clear(GL.COLOR_BUFFER_BIT);
 
-    if (!game.editor.isOn) {
-        this.player.draw();
+        mat4.perspective(pMatrix, fovy, aspect, near, far);
+        GL.uniformMatrix4fv(shaderProgram.pMatrixUniform, false, pMatrix);
+        mat4.identity(mvMatrix);
+
+        // Position the camera to follow the player or move it independently in editor mode
+        if (!game.editor.isOn) {
+            this.camera.x = this.player.position.x;
+        }
+        this.background.position.x = this.camera.x;
+        mat4.translate(mvMatrix, mvMatrix, [-this.camera.x, -this.camera.y, 0]);
+    },
+    render: function () {
+        this.prepare(45, GL.viewportWidth / GL.viewportHeight, 0.1, 100.0);
+
+        var n = 0;
+
+        this.background.draw();
         ++n;
+
+        var drawPool = function (objectPool) {
+            for (var i = 0; i < objectPool.length; ++i) {
+                if (Math.abs(objectPool[i].position.x - game.scene.camera.x) < 6) {
+                    objectPool[i].draw();
+                    ++n;
+                }
+            }
+        };
+        drawPool(this.decor);
+        drawPool(this.ground);
+        drawPool(this.pickups);
+
+        if (!game.editor.isOn) {
+            this.player.draw();
+            ++n;
+        }
+
+        game.hud.updateLoadedObjects(n);
+    },
+    update: function () {
+        var timeNow = new Date().getTime();
+        if (this.lastTime != 0) {
+            this.elapsed = timeNow - this.lastTime;
+            // Time step correction
+            if (this.elapsed > 60) this.elapsed = 60;
+
+            this.player.update();
+        }
+        this.lastTime = timeNow;
+
+        //Check for death
+        this.player.checkForDeath();
     }
-
-    game.hud.updateLoadedObjects(n);
-};
-
-Scene.prototype.update = function () {
-    var timeNow = new Date().getTime();
-    if (this.lastTime != 0) {
-        this.elapsed = timeNow - this.lastTime;
-        // Time step correction
-        if (this.elapsed > 60) this.elapsed = 60;
-
-        this.player.update();
-    }
-    this.lastTime = timeNow;
-
-    //Check for death
-    this.player.checkForDeath();
 };
