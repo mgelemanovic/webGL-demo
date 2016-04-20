@@ -5,7 +5,7 @@ var Game = function (scene) {
     this.textureManager = new TextureManager();
     this.hud = new HUD();
     this.editor = new Editor();
-    this.waitToLoad = 7;
+    this.waitToLoad = 8;
     this.drawDistance = -7;
     this.score = 0;
     this.loadTextures();
@@ -32,6 +32,7 @@ Game.prototype = {
         textures.getSpriteSheet(textures.player.run, "textures/robot.png", 2, 4, 0, 4, 128, 128);
         textures.getSpriteSheet(textures.player.jump, "textures/robot.png", 4, 6, 0, 5, 128, 128);
         textures.getSpriteSheet(textures.hud, "textures/hud.png", 0, 3, 0, 5, 128, 128);
+        textures.getSpriteSheet(textures.items, "textures/items.png", 0, 5, 0, 4, 128, 128);
         textures.getSpriteSheet(textures.ground, "textures/tiles/" + biome + ".png", 0, 3, 0, 6, 128, 128);
     },
     loadScene: function (path) {

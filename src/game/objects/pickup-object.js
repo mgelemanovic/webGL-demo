@@ -1,6 +1,7 @@
 var PickUpObject = function(texturePool, textureIndex) {
     GameObject.call(this, texturePool, textureIndex);
     this.tag = "PickUp";
+    this.setScale(0.75, 0.75);
 };
 
 PickUpObject.prototype = Object.assign(Object.create(GameObject.prototype), {
@@ -11,7 +12,10 @@ PickUpObject.prototype = Object.assign(Object.create(GameObject.prototype), {
 });
 
 var CoinPickUpObject = function(value) {
-    PickUpObject.call(this, game.textureManager.hud, 14);
+    var index = 0;
+    if (value == 2) index = 1;
+    else if (value == 5) index = 2;
+    PickUpObject.call(this, game.textureManager.items, index);
     this.tag = "CoinPickUp";
     this.value = value;
 };

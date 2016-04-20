@@ -75,7 +75,7 @@ HUD.prototype = {
         this.objects.nodeValue = n;
     },
     updateResourceLoading: function () {
-        var total = 6;
+        var total = 8;
         this.resourceLoading.nodeValue = (100.0 * ((total - game.waitToLoad) / total)).toFixed(0);
     }
 };

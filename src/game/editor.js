@@ -19,7 +19,7 @@ Editor.prototype = {
     drawUsedObject: function () {
         var texture = game.textureManager.ground;
         if (this.currentPool == 2)
-            texture = game.textureManager.hud;
+            texture = game.textureManager.items;
 
         var editorBlock = new GameObject(texture, this.textureIndex);
         editorBlock.drawDistance = -10;
@@ -33,8 +33,8 @@ Editor.prototype = {
         var texture = game.textureManager.ground;
         if (this.currentPool == 2) {
             // Only show coin pickup for now
-            this.textureIndex = 14;
-            texture = game.textureManager.hud;
+            this.textureIndex = 2;
+            texture = game.textureManager.items;
         }
 
         if (this.textureIndex < 0) this.textureIndex += texture.length;
@@ -45,7 +45,7 @@ Editor.prototype = {
         this.currentPool = (this.currentPool + 1) % this.pools.length;
         // Only show coin pickup for now
         if (this.currentPool == 2) {
-            this.textureIndex = 14;
+            this.textureIndex = 2;
         }
         game.hud.updateEditor();
     },
