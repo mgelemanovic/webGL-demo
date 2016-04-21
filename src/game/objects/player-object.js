@@ -11,6 +11,10 @@ var Player = function (mass) {
 
 Player.prototype = Object.assign(Object.create(MovableObject.prototype), {
     constructor: Player,
+    update: function() {
+        MovableObject.prototype.update.call(this);
+        this.checkForDeath();   //Check for death
+    },
     move: function (direction) {
         if (direction == "STOP") {
             this.rigidBody.speed.x = 0;
@@ -44,6 +48,7 @@ Player.prototype = Object.assign(Object.create(MovableObject.prototype), {
         }
     },
     respawn: function () {
+        game.inputManager.clearInput();
         this.position.setv(this.respawnPosition);
         this.rigidBody.isGrounded = false;
         this.rigidBody.resetSpeedAndForce();

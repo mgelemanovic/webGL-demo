@@ -1,15 +1,6 @@
 var HUD = function () {
     this.resourceLoading = document.createTextNode("0");
     document.getElementById("resourceLoading").appendChild(this.resourceLoading);
-
-    this.editor = document.createTextNode("OFF");
-    document.getElementById("editorMode").appendChild(this.editor);
-
-    this.textureID = document.createTextNode("");
-    document.getElementById("textureID").appendChild(this.textureID);
-
-    this.objects = document.createTextNode("0");
-    document.getElementById("loadedObjects").appendChild(this.objects);
 };
 
 HUD.prototype = {
@@ -56,23 +47,6 @@ HUD.prototype = {
     // Debug info
     clearHUD: function () {
         this.resourceLoading.nodeValue = "";
-        this.editor.nodeValue = "";
-        this.textureID.nodeValue = "";
-        this.objects.nodeValue = "";
-    },
-    updateEditor: function () {
-        var editor = game.editor;
-        if (editor.isOn) {
-            this.editor.nodeValue = "ON";
-            this.textureID.nodeValue = editor.pools[editor.currentPool] + ": " + (editor.textureIndex + 1);
-        }
-        else {
-            this.editor.nodeValue = "OFF";
-            this.textureID.nodeValue = "";
-        }
-    },
-    updateLoadedObjects: function (n) {
-        this.objects.nodeValue = n;
     },
     updateResourceLoading: function () {
         var total = 8;

@@ -46,29 +46,16 @@ Scene.prototype = {
         mat4.translate(mvMatrix, mvMatrix, [-this.camera.x, -this.camera.y, 0]);
     },
     render: function () {
-        this.prepare(45, GL.viewportWidth / GL.viewportHeight, 0.1, 100.0);
-
-        this.background.draw();
-        var n = 1;
-
         var drawPool = function (objectPool) {
             for (var i = 0; i < objectPool.length; ++i) {
-                if (Math.abs(objectPool[i].position.x - game.scene.camera.x) < 6) {
+                if (Math.abs(objectPool[i].position.x - game.scene.camera.x) < 6)
                     objectPool[i].draw();
-                    ++n;
-                }
             }
         };
+
         drawPool(this.decor);
         drawPool(this.ground);
         drawPool(this.pickups);
-
-        if (!game.editor.isOn) {
-            this.player.draw();
-            ++n;
-        }
-
-        game.hud.updateLoadedObjects(n);
     },
     update: function () {
         var timeNow = new Date().getTime();
@@ -80,8 +67,5 @@ Scene.prototype = {
             this.player.update();
         }
         this.lastTime = timeNow;
-
-        //Check for death
-        this.player.checkForDeath();
     }
 };

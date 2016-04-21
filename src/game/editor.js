@@ -1,85 +1,108 @@
 var Editor = function () {
     this.isOn = false;
-    this.textureIndex = 0;
+    this.selectOn = false;
     this.switchStopper = false;
-    this.pools = ['GROUND', 'DECOR', 'PICKUP'];
-    this.currentPool = 0;
+    this.decorFlag = false;
+    this.usedObj = {tag: "StaticObject", texture: null, index: 0};
+    this.allObj = [];
 };
 
 Editor.prototype = {
-    changeOnOff: function () {
+    initEditor: function () {
+        if (this.allObj.length != 0) return;
+        var self = this,
+            textMng = game.textureManager,
+            fillUp = function (start, end, tag, texture) {
+                for (var j = start; j < end; ++j) {
+                    self.allObj.push({tag: tag, texture: texture, index: j});
+                }
+            };
+        this.usedObj = {tag: "StaticObject", pool: game.scene.ground, texture: game.textureManager.ground, index: 0};
+        fillUp(0, textMng.ground.length, "StaticObject", textMng.ground);
+        fillUp(0, 3, "CoinPickUp", textMng.items);
+    },
+    turnOn: function () {
         game.inputManager.clearInput();
-        this.isOn = !this.isOn;
-        if (this.isOn)
-            canvas.onmousedown = this.handleMouseDown;
-        else
-            canvas.onmousedown = null;
-        game.hud.updateEditor();
+        this.isOn = true;
+        canvas.onmousedown = this.putNewBlock;
+        this.initEditor();
+    },
+    turnOff: function () {
+        game.inputManager.clearInput();
+        this.isOn = false;
+        this.selectOn = false;
+        canvas.onmousedown = null;
     },
     drawUsedObject: function () {
-        var texture = game.textureManager.ground;
-        if (this.currentPool == 2)
-            texture = game.textureManager.items;
-
-        var editorBlock = new GameObject(texture, this.textureIndex);
+        var editorBlock = new GameObject(this.usedObj.texture, this.usedObj.index);
         editorBlock.drawDistance = -10;
         editorBlock.position.setv(game.scene.camera);
-        editorBlock.position.add(-6.5, 4.5);
+        editorBlock.position.add(6.5, -4.5);
         editorBlock.draw();
     },
-    changeTextureIndex: function (inc) {
-        this.textureIndex += inc;
+    drawObjectSelection: function () {
+        var shadow;
+        if (this.decorFlag)
+            shadow = new GameObject(game.textureManager.colors, 1);
+        else
+            shadow = new GameObject(game.textureManager.colors, 0);
+        shadow.drawDistance = -0.1;
+        shadow.position.setv(game.scene.camera);
+        shadow.draw();
 
-        var texture = game.textureManager.ground;
-        if (this.currentPool == 2) {
-            // Only show coin pickup for now
-            this.textureIndex = 2;
-            texture = game.textureManager.items;
+        var len = Math.ceil(this.allObj.length / 9);
+        for (var i = 0; i < len; ++i) {
+            for (var j = 0; j < 9; ++j) {
+                var index = i * 9 + j;
+                if (index == this.allObj.length) return;
+                var objInfo = this.allObj[index];
+                var obj = new GameObject(objInfo.texture, objInfo.index);
+                obj.drawDistance = -7;
+                obj.position.setv(game.scene.camera);
+                obj.position.add(j - 4, 3 - i);
+                obj.draw();
+            }
         }
-
-        if (this.textureIndex < 0) this.textureIndex += texture.length;
-        if (this.textureIndex >= texture.length) this.textureIndex = 0;
-        game.hud.updateEditor();
     },
-    changeObjectPool: function () {
-        this.currentPool = (this.currentPool + 1) % this.pools.length;
-        // Only show coin pickup for now
-        if (this.currentPool == 2) {
-            this.textureIndex = 2;
-        }
-        game.hud.updateEditor();
-    },
-    handleMouseDown: function (event) {
+    putNewBlock: function (event) {
         var scene = game.scene,
+            obj = game.editor.usedObj,
             pool = null,
-            tag = "",
+            factor = 75,
             mouse = {
-                x: Math.round(scene.camera.x + (event.pageX - canvas.offsetLeft - canvas.width / 2) / 75),
-                y: Math.round(scene.camera.y + (event.pageY - canvas.offsetTop - canvas.height / 2) / -75)
+                x: Math.round(scene.camera.x + (event.pageX - canvas.offsetLeft - canvas.width / 2) / factor),
+                y: Math.round(scene.camera.y + (event.pageY - canvas.offsetTop - canvas.height / 2) / -factor)
             };
 
-        switch (game.editor.currentPool) {
-            case 0:
-                pool = scene.ground;
+        switch (obj.tag) {
+            case "CoinPickUp":
+                pool = game.scene.pickups;
                 break;
-            case 1:
-                pool = scene.decor;
-                break;
-            case 2:
-                pool = scene.pickups;
-                tag = "CoinPickUp";
+            default:
+                if (game.editor.decorFlag)
+                    pool = game.scene.decor;
+                else
+                    pool = game.scene.ground;
                 break;
         }
 
         switch (event.which) {
             case 1:
-                pool.push(Factory.create(tag, {pos: mouse, texture: game.editor.textureIndex}));
+                pool.push(Factory.create(obj.tag, {pos: mouse, texture: obj.index}));
                 break;
             case 2:
                 scene.removeObjectFromScene(pool, mouse);
                 break;
         }
-
+    },
+    selectNewBlock: function (event) {
+        var mouse = {
+            x: 4 + Math.round((event.pageX - canvas.offsetLeft - canvas.width / 2) / 75),
+            y: 3 - Math.round((event.pageY - canvas.offsetTop - canvas.height / 2) / -75)
+        };
+        var index = mouse.y * 9 + mouse.x;
+        if (index > game.editor.allObj.length || index < 0) return;
+        game.editor.usedObj = game.editor.allObj[index];
     },
     handleInput: function () {
         // Pressed right
@@ -95,26 +118,25 @@ Editor.prototype = {
             var player = game.scene.player;
             player.respawn();
             player.currentLives = player.maxLives;
-            game.editor.changeOnOff();
+            game.editor.turnOff();
             currentlyPressedKeys[69] = false;
         }
-        // Pressed f
-        if (currentlyPressedKeys[70] && !this.switchStopper) {
-            game.editor.changeTextureIndex(-1);
+        // Pressed h
+        if (currentlyPressedKeys[72] && !this.switchStopper) {
+            this.selectOn = !this.selectOn;
+            if (this.selectOn)
+                canvas.onmousedown = this.selectNewBlock;
+            else
+                canvas.onmousedown = this.putNewBlock;
             this.switchStopper = true;
         }
         // Pressed g
         if (currentlyPressedKeys[71] && !this.switchStopper) {
-            game.editor.changeTextureIndex(1);
-            this.switchStopper = true;
-        }
-        // Pressed h
-        if (currentlyPressedKeys[72] && !this.switchStopper) {
-            game.editor.changeObjectPool();
+            this.decorFlag = !this.decorFlag;
             this.switchStopper = true;
         }
 
-        if (!currentlyPressedKeys[70] && !currentlyPressedKeys[71] && !currentlyPressedKeys[72])
+        if (!currentlyPressedKeys[71] && !currentlyPressedKeys[72])
             this.switchStopper = false;
     }
 };

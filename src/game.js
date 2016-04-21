@@ -34,6 +34,8 @@ Game.prototype = {
         textures.getSpriteSheet(textures.hud, "textures/hud.png", 0, 3, 0, 5, 128, 128);
         textures.getSpriteSheet(textures.items, "textures/items.png", 0, 5, 0, 4, 128, 128);
         textures.getSpriteSheet(textures.ground, "textures/tiles/" + biome + ".png", 0, 3, 0, 6, 128, 128);
+        textures.getColor([0, 0, 0, 200]);
+        textures.getColor([0, 0, 50, 200]);
     },
     loadScene: function (path) {
         var self = this;
@@ -117,23 +119,33 @@ function gameLoop() {
     requestAnimFrame(gameLoop);
 
     if (game.waitToLoad == 0) {
-        // Handle player input
-        if (game.editor.isOn)
-            game.editor.handleInput();
-        else
-            game.inputManager.handleInput();
+        input();    // Handle player input
+        game.scene.update();    // Update game world
+        render();   // Render game world and HUD
+    }
+}
 
-        // Update game world
-        game.scene.update();
+function input() {
+    if (game.editor.isOn)
+        game.editor.handleInput();
+    else
+        game.inputManager.handleInput();
+}
 
-        // Render game world
-        game.scene.render();
+function render() {
+    game.scene.prepare(45, GL.viewportWidth / GL.viewportHeight, 0.1, 100.0);   // Prepare camera
+    game.scene.background.draw();   // Background
+    game.scene.render();    // Game world
 
-        // Render HUD
-        if (game.editor.isOn) {
-            game.editor.drawUsedObject();
-        } else {
-            game.hud.render();
-        }
+    if (!game.editor.isOn) {
+        // In-game HUD and player
+        game.scene.player.draw();
+        game.hud.render();
+
+    } else {
+        // Editor HUD
+        if (game.editor.selectOn)
+            game.editor.drawObjectSelection();
+        game.editor.drawUsedObject();
     }
 }

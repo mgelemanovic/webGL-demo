@@ -54,7 +54,7 @@ Input.prototype = {
         if (currentlyPressedKeys[this.commands.editor]) {
             if (confirm("Create new scene?"))
                 game.changeScene("empty");
-            game.editor.changeOnOff();
+            game.editor.turnOn();
             currentlyPressedKeys[this.commands.editor] = false;
         }
     }

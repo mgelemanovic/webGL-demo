@@ -9,6 +9,7 @@ var TextureManager = function () {
     this.hud = [];
     this.ground = [];
     this.items = [];
+    this.colors = [];
 };
 
 TextureManager.prototype = {
@@ -70,5 +71,14 @@ TextureManager.prototype = {
         };
 
         image.src = path;
+    },
+    getColor: function (color) {
+        var newTexture = GL.createTexture();
+
+        GL.bindTexture(GL.TEXTURE_2D, newTexture);
+        GL.texImage2D(GL.TEXTURE_2D, 0, GL.RGBA, 1, 1, 0, GL.RGBA, GL.UNSIGNED_BYTE, new Uint8Array(color));
+        GL.bindTexture(GL.TEXTURE_2D, null);
+
+        this.colors.push(newTexture);
     }
 };
