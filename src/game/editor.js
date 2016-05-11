@@ -21,6 +21,7 @@ Editor.prototype = {
         fillUp(0, textMng.ground.length, "StaticObject", textMng.ground);
         fillUp(0, 3, "CoinPickUp", textMng.items);
         fillUp(3, 4, "StarPickUp", textMng.items);
+        fillUp(7, 8, "Spikes", textMng.items);
     },
     turnOn: function () {
         game.inputManager.clearInput();
@@ -80,6 +81,9 @@ Editor.prototype = {
             case "CoinPickUp":
             case "StarPickUp":
                 pool = game.scene.pickups;
+                break;
+            case "Spikes":
+                pool = game.scene.environment;
                 break;
             default:
                 if (game.editor.decorFlag)

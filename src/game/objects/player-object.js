@@ -4,15 +4,17 @@ var Player = function (mass) {
     this.animator = new Animator(this, game.textureManager.player);
     this.respawnPosition = new Vector(0, 0);
     this.currentLives = this.maxLives = 3;
-
+    this.immunityPeriod = 0;
     this.collider.w = 0.45;
     this.collider.h = 0.8;
 };
 
 Player.prototype = Object.assign(Object.create(MovableObject.prototype), {
     constructor: Player,
-    update: function() {
+    update: function () {
         MovableObject.prototype.update.call(this);
+        if (this.immunityPeriod > 0)
+            this.immunityPeriod--;
         this.checkForDeath();   //Check for death
     },
     move: function (direction) {
@@ -37,14 +39,23 @@ Player.prototype = Object.assign(Object.create(MovableObject.prototype), {
         }
     },
     hurt: function (dmg) {
-        this.currentLives -= dmg;
+        if (this.immunityPeriod == 0) {
+            this.currentLives -= dmg;
+            this.immunityPeriod = 10;
+        }
     },
     checkForDeath: function () {
-        // If the player falls from the map, or his health reaches 0
-        // Respawn the player and put his health to 20% of his max HP
-        if (this.position.y < -4 || this.position.y > 5 || this.currentLives <= 0) {
+        // If the player falls from the map, respawn and take 1 heart
+        if (this.position.y < -4) {
             this.respawn();
-            this.currentLives = Math.ceil(this.maxLives * 0.2);
+            this.hurt(1);
+        }
+        // If health reaches 0, reset current level
+        if (this.currentLives <= 0) {
+            alert("Too bad, you died!\nYour score: " + game.score);
+            game.score = 0;
+            game.waitToLoad++;
+            game.loadScene(game.currentLevel + "");
         }
     },
     respawn: function () {
@@ -56,6 +67,10 @@ Player.prototype = Object.assign(Object.create(MovableObject.prototype), {
     onCollision: function (other, direction) {
         if (other instanceof PickUpObject) {
             other.pickup();
+            return;
+        }
+        if (other instanceof EnvironmentObject) {
+            other.interact(direction);
             return;
         }
         MovableObject.prototype.onCollision.call(this, other, direction);

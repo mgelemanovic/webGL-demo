@@ -16,10 +16,14 @@ var Scene = function (sceneInfo) {
     this.ground = [];
     this.decor = [];
     this.pickups = [];
-    
+    this.environment = [];
+    this.enemies = [];
+
     fillUp(this.ground, sceneInfo.ground);
     fillUp(this.decor, sceneInfo.decor);
     fillUp(this.pickups, sceneInfo.pickups);
+    fillUp(this.environment, sceneInfo.environment);
+    fillUp(this.enemies, sceneInfo.enemies);
 };
 
 Scene.prototype = {
@@ -56,6 +60,8 @@ Scene.prototype = {
         drawPool(this.decor);
         drawPool(this.ground);
         drawPool(this.pickups);
+        drawPool(this.environment);
+        drawPool(this.enemies);
     },
     update: function () {
         var timeNow = new Date().getTime();
@@ -65,6 +71,7 @@ Scene.prototype = {
             if (this.elapsed > 60) this.elapsed = 60;
 
             this.player.update();
+            // Update enemies, maybe even environment
         }
         this.lastTime = timeNow;
     }

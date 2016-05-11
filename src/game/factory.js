@@ -8,6 +8,9 @@ Factory = {
             case "StarPickUp":
                 object = new StarPickUpObject();
                 break;
+            case "Spikes":
+                object = new SpikesObject();
+                break;
             default:
                 object = this.createStaticObject(info);
         }
@@ -16,7 +19,7 @@ Factory = {
             object.scale.setv(info.scale);
         return object;
     },
-    createBackground: function() {
+    createBackground: function () {
         var bg = new GameObject(game.textureManager.background, 0);
         bg.drawDistance = -0.5;
         return bg;

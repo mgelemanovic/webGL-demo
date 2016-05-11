@@ -19,13 +19,13 @@ Game.prototype = {
         --this.waitToLoad;
         this.hud.updateResourceLoading();
     },
-    nextLevel: function() {
+    nextLevel: function () {
         this.currentLevel = (this.currentLevel + 1) % this.numberOfLevels;
         this.changeScene(this.currentLevel + "");
     },
     changeScene: function (newScene) {
         this.hud.clearHUD();
-        this.waitToLoad = 1;
+        this.waitToLoad++;
         this.loadScene(newScene);
     },
     loadTextures: function () {
@@ -70,7 +70,9 @@ Game.prototype = {
             checksum: 36479732,
             ground: [],
             decor: [],
-            pickups: []
+            pickups: [],
+            environment: [],
+            enemies: []
         };
 
         var fillData = function (data, scenePool) {
@@ -98,6 +100,8 @@ Game.prototype = {
         fillData(data.ground, this.scene.ground);
         fillData(data.decor, this.scene.decor);
         fillData(data.pickups, this.scene.pickups);
+        fillData(data.environment, this.scene.environment);
+        fillData(data.enemies, this.scene.enemies);
         if (this.scene.player.respawnPosition.x != 0 || this.scene.player.respawnPosition.y != 0)
             data.respawn = this.scene.player.respawnPosition;
 

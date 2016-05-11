@@ -26,6 +26,7 @@ MovableObject.prototype = Object.assign(Object.create(GameObject.prototype), {
 
         collisionChecker(this, game.scene.ground);
         collisionChecker(this, game.scene.pickups);
+        collisionChecker(this, game.scene.environment);
     },
     onCollision: function (other, direction) {
         var tPos = this.position.get(),
