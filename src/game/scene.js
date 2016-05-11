@@ -14,12 +14,12 @@ var Scene = function (sceneInfo) {
     this.player = Factory.createPlayer(50, sceneInfo.respawn);
 
     this.ground = [];
-    fillUp(this.ground, sceneInfo.ground);
     this.decor = [];
-    fillUp(this.decor, sceneInfo.decor);
-
     this.pickups = [];
-    fillUp(this.pickups, sceneInfo.coins);
+    
+    fillUp(this.ground, sceneInfo.ground);
+    fillUp(this.decor, sceneInfo.decor);
+    fillUp(this.pickups, sceneInfo.pickups);
 };
 
 Scene.prototype = {

@@ -70,7 +70,7 @@ Game.prototype = {
             checksum: 36479732,
             ground: [],
             decor: [],
-            coins: []
+            pickups: []
         };
 
         var fillData = function (data, scenePool) {
@@ -97,7 +97,7 @@ Game.prototype = {
 
         fillData(data.ground, this.scene.ground);
         fillData(data.decor, this.scene.decor);
-        fillData(data.coins, this.scene.pickups);
+        fillData(data.pickups, this.scene.pickups);
         if (this.scene.player.respawnPosition.x != 0 || this.scene.player.respawnPosition.y != 0)
             data.respawn = this.scene.player.respawnPosition;
 
