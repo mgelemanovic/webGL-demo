@@ -3,7 +3,10 @@ Factory = {
         var object;
         switch (tag) {
             case "CoinPickUp":
-                object = this.createCoinPickUp(info);
+                object = new CoinPickUpObject(info.texture);
+                break;
+            case "StarPickUp":
+                object = new StarPickUpObject();
                 break;
             default:
                 object = this.createStaticObject(info);
@@ -30,8 +33,5 @@ Factory = {
         if (info.texture)
             textureIndex = info.texture;
         return new GameObject(game.textureManager.ground, textureIndex);
-    },
-    createCoinPickUp: function (info) {
-        return new CoinPickUpObject(info.texture);
     }
 };

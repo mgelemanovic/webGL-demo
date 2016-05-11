@@ -27,3 +27,17 @@ CoinPickUpObject.prototype = Object.assign(Object.create(PickUpObject.prototype)
         game.score += this.value;
     }
 });
+
+var StarPickUpObject = function() {
+    PickUpObject.call(this, game.textureManager.items, 3);
+    this.tag = "StarPickUp";
+};
+
+StarPickUpObject.prototype = Object.assign(Object.create(PickUpObject.prototype), {
+    constructor: StarPickUpObject,
+    pickup: function() {
+        PickUpObject.prototype.pickup.call(this);
+        alert("Great job!\nYour score: " + game.score);
+        game.nextLevel();
+    }
+});

@@ -8,6 +8,8 @@ var Game = function (scene) {
     this.waitToLoad = 8;
     this.drawDistance = -7;
     this.score = 0;
+    this.currentLevel = 0;
+    this.numberOfLevels = 2;
     this.loadTextures();
     this.loadScene(scene);
 };
@@ -16,6 +18,10 @@ Game.prototype = {
     finishedLoadingResource: function () {
         --this.waitToLoad;
         this.hud.updateResourceLoading();
+    },
+    nextLevel: function() {
+        this.currentLevel = (this.currentLevel + 1) % this.numberOfLevels;
+        this.changeScene(this.currentLevel + "");
     },
     changeScene: function (newScene) {
         this.hud.clearHUD();
@@ -109,7 +115,7 @@ Game.prototype = {
 var game;
 
 function startGame() {
-    game = new Game("demo");
+    game = new Game("0");
     gameLoop();
 }
 

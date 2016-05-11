@@ -20,6 +20,7 @@ Editor.prototype = {
         this.usedObj = {tag: "StaticObject", pool: game.scene.ground, texture: game.textureManager.ground, index: 0};
         fillUp(0, textMng.ground.length, "StaticObject", textMng.ground);
         fillUp(0, 3, "CoinPickUp", textMng.items);
+        fillUp(3, 4, "StarPickUp", textMng.items);
     },
     turnOn: function () {
         game.inputManager.clearInput();
@@ -77,6 +78,7 @@ Editor.prototype = {
 
         switch (obj.tag) {
             case "CoinPickUp":
+            case "StarPickUp":
                 pool = game.scene.pickups;
                 break;
             default:
