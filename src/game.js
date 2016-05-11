@@ -75,9 +75,7 @@ Game.prototype = {
                         y: scenePool[i].position.y
                     }
                 };
-                if (scenePool[i].textureIndex != 0) {
-                    tmp.texture = scenePool[i].textureIndex;
-                }
+                tmp.texture = scenePool[i].textureIndex;
                 if (scenePool[i].scale.x != 1.0 || scenePool[i].scale.y != 1.0) {
                     tmp.scale = {
                         x: scenePool[i].scale.x,
@@ -120,7 +118,8 @@ function gameLoop() {
 
     if (game.waitToLoad == 0) {
         input();    // Handle player input
-        game.scene.update();    // Update game world
+        if (!game.editor.isOn)
+            game.scene.update();    // Update game world
         render();   // Render game world and HUD
     }
 }

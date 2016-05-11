@@ -7,6 +7,7 @@ var Animator = function (attachedTo, textures) {
 
 Animator.prototype = {
     animate: function () {
+        if (this.textures == null) return;
         var speed = this.attachedTo.rigidBody.speed.get(),
             texturePool = this.textures.idle;
         if (Math.abs(speed.x) > 0.0005)

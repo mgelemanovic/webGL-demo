@@ -60,6 +60,7 @@ Editor.prototype = {
                 obj.drawDistance = -7;
                 obj.position.setv(game.scene.camera);
                 obj.position.add(j - 4, 3 - i);
+                obj.scale.set(0.8, 0.8);
                 obj.draw();
             }
         }

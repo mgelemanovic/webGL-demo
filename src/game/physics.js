@@ -27,7 +27,7 @@ RigidBody.prototype = {
         this.resetSpeedAndForce();
     },
     resetSpeedAndForce: function () {
-        this.speed.set(0.0, 0.0);
+        this.speed.y = 0.0;
         this.force.set(0.0, 0.0);
     }
 };

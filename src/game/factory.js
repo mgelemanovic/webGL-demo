@@ -32,7 +32,6 @@ Factory = {
         return new GameObject(game.textureManager.ground, textureIndex);
     },
     createCoinPickUp: function (info) {
-        var coinValues = [1, 1, 1, 1, 1, 2, 2, 2, 5, 5];
-        return new CoinPickUpObject(coinValues[Math.floor(Math.random() * 10)]);
+        return new CoinPickUpObject(info.texture);
     }
 };
