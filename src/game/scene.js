@@ -44,7 +44,7 @@ Scene.prototype = {
 
         // Position the camera to follow the player or move it independently in editor mode
         if (!game.editor.isOn) {
-            this.camera.x = this.player.position.x;
+            this.camera.x = Math.max(4, this.player.position.x);
         }
         this.background.position.x = this.camera.x;
         mat4.translate(mvMatrix, mvMatrix, [-this.camera.x, -this.camera.y, 0]);
@@ -52,7 +52,7 @@ Scene.prototype = {
     render: function () {
         var drawPool = function (objectPool) {
             for (var i = 0; i < objectPool.length; ++i) {
-                if (Math.abs(objectPool[i].position.x - game.scene.camera.x) < 6)
+                if (Math.abs(objectPool[i].position.x - game.scene.camera.x) < 9)
                     objectPool[i].draw();
             }
         };

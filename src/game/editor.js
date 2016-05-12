@@ -40,7 +40,7 @@ Editor.prototype = {
         var editorBlock = new GameObject(this.usedObj.texture, this.usedObj.index);
         editorBlock.drawDistance = -10;
         editorBlock.position.setv(game.scene.camera);
-        editorBlock.position.add(6.5, -4.5);
+        editorBlock.position.add(10.5, -4.5);
         editorBlock.draw();
     },
     drawObjectSelection: function () {
