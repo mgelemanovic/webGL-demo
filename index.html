@@ -66,11 +66,11 @@
 <body onload="startGame();">
 <div id="container">
     <canvas id="webgl-context" width="1280" height="600"></canvas>
-    <div id="hud">
-        READY: <span id="resourceLoading"></span>%<br/>
-        <input id="fileSelecter" type="file"><br/>
-        <button onclick="game.uploadScene();">LOAD SCENE</button><br/><br/>
-        <button onclick="game.saveScene();">SAVE SCENE</button>
+    <div id="menu">
+        <button onclick="game.editor.changeMode();">EDITOR MODE</button><br/>
+        <button onclick="game.uploadScene();">LOAD SCENE</button>
+        <button onclick="game.saveScene();">SAVE SCENE</button><br/><br/>
+        <input id="fileSelecter" type="file">
     </div>
 </div>
 </body>

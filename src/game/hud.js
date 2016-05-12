@@ -1,6 +1,6 @@
 var HUD = function () {
-    this.resourceLoading = document.createTextNode("0");
-    document.getElementById("resourceLoading").appendChild(this.resourceLoading);
+    this.visibility = ["hidden", "visible"];
+    this.mainMenuStatus = 0;
 };
 
 HUD.prototype = {
@@ -10,6 +10,7 @@ HUD.prototype = {
             maxLives = game.scene.player.maxLives,
             currentLives = game.scene.player.currentLives,
             score = game.score,
+            position = 10.5,
             i;
 
         var drawElement = function (offset) {
@@ -22,34 +23,31 @@ HUD.prototype = {
 
         // Health rendering
         for (i = 0; i < Math.floor(currentLives); ++i) {
-            drawElement(-10.5 + i);
+            drawElement(i - position);
         }
         if (currentLives - i == 0.5) {
             hudElement.textureIndex = 12;
-            drawElement(-10.5 + i);
+            drawElement(i - position);
             ++i;
         }
         hudElement.textureIndex = 11;
         for (; i < maxLives; ++i) {
-            drawElement(-10.5 + i);
+            drawElement(i - position);
         }
 
         // Score rendering
         hudElement.textureIndex = 14;
-        drawElement(8.5);
+        drawElement(position - 2);
         hudElement.textureIndex = 10;
-        drawElement(9.25);
+        drawElement(position - 1.25);
         hudElement.textureIndex = Math.floor(score / 10) % 10;
-        drawElement(10);
+        drawElement(position - 0.5);
         hudElement.textureIndex = score % 10;
-        drawElement(10.5);
+        drawElement(position);
     },
-    // Debug info
-    clearHUD: function () {
-        this.resourceLoading.nodeValue = "";
-    },
-    updateResourceLoading: function () {
-        var total = 8;
-        this.resourceLoading.nodeValue = (100.0 * ((total - game.waitToLoad) / total)).toFixed(0);
+    mainMenu: function () {
+        this.mainMenuStatus = 1 - this.mainMenuStatus;
+        document.getElementById("menu").style.visibility = this.visibility[this.mainMenuStatus];
+        game.pause();
     }
 };

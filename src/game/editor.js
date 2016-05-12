@@ -24,17 +24,22 @@ Editor.prototype = {
         fillUp(7, 8, "Spikes", textMng.items);
         fillUp(3, 4, "StarPickUp", textMng.items);
     },
-    turnOn: function () {
+    changeMode: function() {
+        game.hud.mainMenu();
         game.inputManager.clearInput();
-        this.isOn = true;
-        canvas.onmousedown = this.putNewBlock;
-        this.initEditor();
-    },
-    turnOff: function () {
-        game.inputManager.clearInput();
-        this.isOn = false;
-        this.selectOn = false;
-        canvas.onmousedown = null;
+        this.isOn = !this.isOn;
+        if (this.isOn) {
+            if (confirm("Create new scene?"))
+                game.changeScene("empty");
+            canvas.onmousedown = this.putNewBlock;
+            this.initEditor();
+        } else {
+            var player = game.scene.player;
+            player.respawn();
+            player.currentLives = player.maxLives;
+            this.selectOn = false;
+            canvas.onmousedown = null;
+        }
     },
     drawUsedObject: function () {
         var editorBlock = new GameObject(this.usedObj.texture, this.usedObj.index);
@@ -123,14 +128,6 @@ Editor.prototype = {
         // Pressed left
         if (currentlyPressedKeys[37]) {
             game.scene.camera.x -= 0.05;
-        }
-        // Pressed e
-        if (currentlyPressedKeys[69]) {
-            var player = game.scene.player;
-            player.respawn();
-            player.currentLives = player.maxLives;
-            game.editor.turnOff();
-            currentlyPressedKeys[69] = false;
         }
         // Pressed h
         if (currentlyPressedKeys[72] && !this.switchStopper) {

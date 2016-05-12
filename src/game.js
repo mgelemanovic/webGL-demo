@@ -24,7 +24,6 @@ Game.prototype = {
         this.changeScene(this.currentLevel + "");
     },
     changeScene: function (newScene) {
-        this.hud.clearHUD();
         this.waitToLoad++;
         this.loadScene(newScene);
     },
@@ -60,8 +59,10 @@ Game.prototype = {
         var reader = new FileReader();
         reader.onload = function () {
             var data = JSON.parse(reader.result);
-            if (data.checksum == 36479732)
+            if (data.checksum == 36479732) {
                 game.scene = new Scene(data);
+                game.hud.mainMenu();
+            }
         };
         reader.readAsText(document.getElementById("fileSelecter").files[0]);
     },
