@@ -23,7 +23,7 @@ Game.prototype = {
     },
     nextLevel: function () {
         this.currentLevel = (this.currentLevel + 1) % this.numberOfLevels;
-        this.changeScene(this.currentLevel + "");
+        this.loadScene(this.currentLevel + "");
     },
     loadTextures: function () {
         var textures = this.textureManager,
