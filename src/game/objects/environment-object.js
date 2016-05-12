@@ -19,7 +19,7 @@ var SpikesObject = function () {
 SpikesObject.prototype = Object.assign(Object.create(EnvironmentObject.prototype), {
     constructor: SpikesObject,
     interact: function (direction) {
-        if (direction == "UP" && game.scene.player.rigidBody.speed.y < 0)
+        if (game.scene.player.rigidBody.speed.y < 0)
             game.scene.player.hurt(1);
     }
 });

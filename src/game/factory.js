@@ -11,8 +11,12 @@ Factory = {
             case "Spikes":
                 object = new SpikesObject();
                 break;
+            case "DecorObject":
+                object = this.createStaticObject(game.textureManager.items, info);
+                object.tag = "DecorObject";
+                break;
             default:
-                object = this.createStaticObject(info);
+                object = this.createStaticObject(game.textureManager.ground, info);
         }
         object.position.setv(info.pos);
         if (info.scale)
@@ -31,10 +35,10 @@ Factory = {
         player.respawn();
         return player;
     },
-    createStaticObject: function (info) {
+    createStaticObject: function (textures, info) {
         var textureIndex = 0;
         if (info.texture)
             textureIndex = info.texture;
-        return new GameObject(game.textureManager.ground, textureIndex);
+        return new GameObject(textures, textureIndex);
     }
 };

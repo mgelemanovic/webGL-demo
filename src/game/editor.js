@@ -19,9 +19,10 @@ Editor.prototype = {
             };
         this.usedObj = {tag: "StaticObject", pool: game.scene.ground, texture: game.textureManager.ground, index: 0};
         fillUp(0, textMng.ground.length, "StaticObject", textMng.ground);
+        fillUp(16, 20, "DecorObject", textMng.items);
         fillUp(0, 3, "CoinPickUp", textMng.items);
-        fillUp(3, 4, "StarPickUp", textMng.items);
         fillUp(7, 8, "Spikes", textMng.items);
+        fillUp(3, 4, "StarPickUp", textMng.items);
     },
     turnOn: function () {
         game.inputManager.clearInput();
@@ -84,6 +85,9 @@ Editor.prototype = {
                 break;
             case "Spikes":
                 pool = game.scene.environment;
+                break;
+            case "DecorObject":
+                pool = game.scene.decor;
                 break;
             default:
                 if (game.editor.decorFlag)
