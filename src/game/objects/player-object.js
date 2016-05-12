@@ -54,7 +54,6 @@ Player.prototype = Object.assign(Object.create(MovableObject.prototype), {
         if (this.currentLives <= 0) {
             alert("Too bad, you died!\nYour score: " + game.score);
             game.score = 0;
-            game.waitToLoad++;
             game.loadScene(game.currentLevel + "");
         }
     },

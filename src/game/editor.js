@@ -30,7 +30,7 @@ Editor.prototype = {
         this.isOn = !this.isOn;
         if (this.isOn) {
             if (confirm("Create new scene?"))
-                game.changeScene("empty");
+                game.loadScene("empty");
             canvas.onmousedown = this.putNewBlock;
             this.initEditor();
         } else {

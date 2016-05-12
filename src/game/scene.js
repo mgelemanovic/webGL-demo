@@ -56,6 +56,8 @@ Scene.prototype = {
                     objectPool[i].draw();
             }
         };
+        this.prepare(45, GL.viewportWidth / GL.viewportHeight, 0.1, 100.0);   // Prepare camera
+        this.background.draw();   // Background
 
         drawPool(this.decor);
         drawPool(this.ground);

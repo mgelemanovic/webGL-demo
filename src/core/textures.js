@@ -40,6 +40,7 @@ TextureManager.prototype = {
         return newTexture;
     },
     getSprite: function (pool, path) {
+        game.waitToLoad++;
         var image = new Image(),
             self = this;
 
@@ -51,6 +52,7 @@ TextureManager.prototype = {
 
     },
     getSpriteSheet: function (pool, path, iMIN, iMAX, jMIN, jMAX, w, h) {
+        game.waitToLoad++;
         var image = new Image(),
             self = this,
             canvas = document.createElement("canvas"),

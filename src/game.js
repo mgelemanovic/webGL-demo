@@ -1,31 +1,29 @@
-var Game = function (scene) {
+var Game = function () {
     webGLStart();
     this.scene = null;
-    this.inputManager = new Input();
     this.textureManager = new TextureManager();
     this.hud = new HUD();
+    this.inputManager = new Input();
     this.editor = new Editor();
-    this.waitToLoad = 8;
     this.drawDistance = -7;
+    this.waitToLoad = 0;
     this.score = 0;
     this.currentLevel = 0;
     this.numberOfLevels = 2;
-    this.loadTextures();
-    this.loadScene(scene);
 };
 
 Game.prototype = {
+    start: function () {
+        this.loadTextures();
+        this.loadScene("0");
+        gameLoop();
+    },
     finishedLoadingResource: function () {
-        --this.waitToLoad;
-        this.hud.updateResourceLoading();
+        this.waitToLoad--;
     },
     nextLevel: function () {
         this.currentLevel = (this.currentLevel + 1) % this.numberOfLevels;
         this.changeScene(this.currentLevel + "");
-    },
-    changeScene: function (newScene) {
-        this.waitToLoad++;
-        this.loadScene(newScene);
     },
     loadTextures: function () {
         var textures = this.textureManager,
@@ -43,6 +41,7 @@ Game.prototype = {
         textures.getColor([0, 0, 50, 200]);
     },
     loadScene: function (path) {
+        this.waitToLoad++;
         var self = this;
         var http_request = new XMLHttpRequest();
         http_request.onreadystatechange = function () {
@@ -120,42 +119,30 @@ Game.prototype = {
 var game;
 
 function startGame() {
-    game = new Game("0");
-    gameLoop();
+    game = new Game();
+    game.start();
 }
 
 function gameLoop() {
     requestAnimFrame(gameLoop);
 
     if (game.waitToLoad == 0) {
-        input();    // Handle player input
-        if (!game.editor.isOn)
-            game.scene.update();    // Update game world
-        render();   // Render game world and HUD
-    }
-}
+        game.scene.render();                    // Render game world
 
-function input() {
-    if (game.editor.isOn)
-        game.editor.handleInput();
-    else
-        game.inputManager.handleInput();
-}
+        if (game.editor.isOn) {
+            game.editor.handleInput();          // Handle editor input
 
-function render() {
-    game.scene.prepare(45, GL.viewportWidth / GL.viewportHeight, 0.1, 100.0);   // Prepare camera
-    game.scene.background.draw();   // Background
-    game.scene.render();    // Game world
+            if (game.editor.selectOn)
+                game.editor.drawObjectSelection();
+            game.editor.drawUsedObject();
+        }
+        else {
+            game.inputManager.handleInput();    // Handle player input
+            game.scene.update();                // Update game world
 
-    if (!game.editor.isOn) {
-        // In-game HUD and player
-        game.scene.player.draw();
-        game.hud.render();
-
-    } else {
-        // Editor HUD
-        if (game.editor.selectOn)
-            game.editor.drawObjectSelection();
-        game.editor.drawUsedObject();
+            // Render in-game HUD and player
+            game.scene.player.draw();
+            game.hud.render();
+        }
     }
 }
