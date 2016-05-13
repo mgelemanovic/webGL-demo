@@ -29,13 +29,6 @@ Factory = {
         bg.scale.x = 1.19;
         return bg;
     },
-    createPlayer: function (mass, respawn) {
-        var player = new Player(mass);
-        if (respawn)
-            player.respawnPosition.setv(respawn);
-        player.respawn();
-        return player;
-    },
     createStaticObject: function (textures, info) {
         var textureIndex = 0;
         if (info.texture)

@@ -12,7 +12,10 @@ var Scene = function (sceneInfo) {
     };
 
     this.background = Factory.createBackground();
-    this.player = Factory.createPlayer(50, sceneInfo.respawn);
+    this.player = new Player(50);
+    if (sceneInfo.respawn)
+        this.player.respawnPosition.setv(sceneInfo.respawn);
+    this.player.respawn();
 
     this.ground = [];
     this.decor = [];

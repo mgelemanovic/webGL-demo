@@ -13,11 +13,15 @@ Player.prototype = Object.assign(Object.create(MovableObject.prototype), {
     constructor: Player,
     update: function () {
         MovableObject.prototype.update.call(this);
+
+        // Additional collision checking for player
         this.checkForCollisionWith(game.scene.pickups);
         this.checkForCollisionWith(game.scene.environment);
+
         if (this.immunityPeriod > 0)
             this.immunityPeriod--;
-        this.checkForDeath();   //Check for death
+
+        this.checkForDeath();
     },
     move: function (direction) {
         if (direction == "STOP") {
