@@ -1,5 +1,6 @@
 var Scene = function (sceneInfo) {
     this.camera = new Vector(0.0, 0.0);
+    this.range = 9;
 
     this.lastTime = 0;
     this.elapsed = 0;
@@ -42,17 +43,15 @@ Scene.prototype = {
         GL.uniformMatrix4fv(shaderProgram.pMatrixUniform, false, pMatrix);
         mat4.identity(mvMatrix);
 
-        // Position the camera to follow the player or move it independently in editor mode
-        if (!game.editor.isOn) {
+        if (!game.editor.isOn)      // Position the camera to follow the player or move it independently in editor mode
             this.camera.x = Math.max(4, this.player.position.x);
-        }
         this.background.position.x = this.camera.x;
         mat4.translate(mvMatrix, mvMatrix, [-this.camera.x, -this.camera.y, 0]);
     },
     render: function () {
         var drawPool = function (objectPool) {
             for (var i = 0; i < objectPool.length; ++i) {
-                if (Math.abs(objectPool[i].position.x - game.scene.camera.x) < 9)
+                if (Math.abs(objectPool[i].position.x - game.scene.camera.x) < game.scene.range)
                     objectPool[i].draw();
             }
         };

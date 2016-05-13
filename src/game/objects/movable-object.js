@@ -8,25 +8,18 @@ var MovableObject = function (texturePool, textureIndex, mass) {
 MovableObject.prototype = Object.assign(Object.create(GameObject.prototype), {
     constructor: MovableObject,
     update: function () {
-        // Update physics
-        this.rigidBody.applyForce();
-        // Animate sprite
-        this.animator.animate();
-
-        // Check for collisions
-        var collisionChecker = function (self, pool) {
-            for (var i = 0; i < pool.length; ++i) {
-                if (self.position.x - pool[i].position.x <= 1 && self.position.y - pool[i].position.y <= 1) {
-                    var direction = self.collider.checkForCollision(pool[i].collider);
-                    if (direction == "NONE") continue;
-                    self.onCollision(pool[i], direction);
-                }
+        this.rigidBody.applyForce();                    // Update physics
+        this.animator.animate();                        // Animate sprite
+        this.checkForCollisionWith(game.scene.ground);  // Check for collisions with ground
+    },
+    checkForCollisionWith: function(pool) {
+        for (var i = 0; i < pool.length; ++i) {
+            if (this.position.x - pool[i].position.x <= 1 && this.position.y - pool[i].position.y <= 1) {
+                var direction = this.collider.checkForCollision(pool[i].collider);
+                if (direction == "NONE") continue;
+                this.onCollision(pool[i], direction);
             }
-        };
-
-        collisionChecker(this, game.scene.ground);
-        collisionChecker(this, game.scene.pickups);
-        collisionChecker(this, game.scene.environment);
+        }
     },
     onCollision: function (other, direction) {
         var tPos = this.position.get(),
