@@ -1,15 +1,5 @@
 var TextureManager = function () {
     this.currentTexture = null;
-    this.background = [];
-    this.player = {
-        idle: [],
-        run: [],
-        jump: []
-    };
-    this.hud = [];
-    this.ground = [];
-    this.items = [];
-    this.colors = [];
 };
 
 TextureManager.prototype = {
@@ -46,7 +36,7 @@ TextureManager.prototype = {
 
         image.onload = function () {
             pool.push(self.initTexture(image));
-            game.finishedLoadingResource();
+            game.waitToLoad--;
         };
         image.src = path;
 
@@ -69,7 +59,7 @@ TextureManager.prototype = {
                 }
             }
 
-            game.finishedLoadingResource();
+            game.waitToLoad--;
         };
 
         image.src = path;

@@ -18,9 +18,15 @@ var Game = function () {
 
 Game.prototype = {
     start: function () {
-        this.loadTextures();
+        // Texture loading
+        this.loadBiomeTextures("grass");
+        this.loadPlayerTextures("robot");
+        this.loadOtherTextures();
+        // Player creation
         this.player = new Player();
+        // First level loading
         this.loadScene("0");
+
         gameLoop();
     },
     tick: function () {
@@ -32,36 +38,49 @@ Game.prototype = {
         }
         this.lastTime = timeNow;
     },
-    finishedLoadingResource: function () {
-        this.waitToLoad--;
-    },
     nextLevel: function () {
         this.currentLevel = (this.currentLevel + 1) % this.numberOfLevels;
         this.loadScene(this.currentLevel + "");
     },
-    loadTextures: function () {
-        var textures = this.textureManager,
-            biomes = ['grass', 'snow', 'desert'],
-            biome = biomes[Math.floor(Math.random() * biomes.length)];
+    loadBiomeTextures: function(biome) {
+        var textures = this.textureManager;
 
+        textures.background = [];
+        textures.ground = [];
         textures.getSprite(textures.background, "textures/bg/" + biome + ".png");
-        textures.getSpriteSheet(textures.player.idle, "textures/robot.png", 0, 2, 0, 5, 128, 128);
-        textures.getSpriteSheet(textures.player.run, "textures/robot.png", 2, 4, 0, 4, 128, 128);
-        textures.getSpriteSheet(textures.player.jump, "textures/robot.png", 4, 6, 0, 5, 128, 128);
+        textures.getSpriteSheet(textures.ground, "textures/tiles/" + biome + ".png", 0, 3, 0, 6, 128, 128);
+    },
+    loadPlayerTextures: function(player) {
+        var textures = this.textureManager;
+
+        textures.player = {
+            idle: [],
+            run: [],
+            jump: []
+        };
+        textures.getSpriteSheet(textures.player.idle, "textures/" + player + ".png", 0, 2, 0, 5, 128, 128);
+        textures.getSpriteSheet(textures.player.run, "textures/" + player + ".png", 2, 4, 0, 4, 128, 128);
+        textures.getSpriteSheet(textures.player.jump, "textures/" + player + ".png", 4, 6, 0, 5, 128, 128);
+    },
+    loadOtherTextures: function () {
+        var textures = this.textureManager;
+
+        textures.hud = [];
+        textures.items = [];
+        textures.colors = [];
         textures.getSpriteSheet(textures.hud, "textures/hud.png", 0, 3, 0, 5, 128, 128);
         textures.getSpriteSheet(textures.items, "textures/items.png", 0, 5, 0, 4, 128, 128);
-        textures.getSpriteSheet(textures.ground, "textures/tiles/" + biome + ".png", 0, 3, 0, 6, 128, 128);
         textures.getColor([0, 0, 0, 200]);
         textures.getColor([0, 0, 50, 200]);
     },
     loadScene: function (path) {
-        this.waitToLoad++;
+        game.waitToLoad++;
         var self = this;
         var http_request = new XMLHttpRequest();
         http_request.onreadystatechange = function () {
             if (http_request.readyState == 4) {
                 self.scene = new Scene(JSON.parse(http_request.responseText));
-                self.finishedLoadingResource();
+                game.waitToLoad--;
             }
         };
 
