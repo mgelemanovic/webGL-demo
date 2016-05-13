@@ -9,8 +9,9 @@
 
 .menu {
     position: absolute;
-    left: 550px;
-    top: 200px;
+    left: 500px;
+    top: 150px;
+    width: 300px;
     background-color: rgba(0, 0, 0, 0.7);
     color: white;
     font-family: monospace;

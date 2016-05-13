@@ -58,7 +58,7 @@ Player.prototype = Object.assign(Object.create(MovableObject.prototype), {
         }
         // If health reaches 0, reset current level
         if (this.currentLives <= 0) {
-            game.hud.deathMenu();
+            game.hud.menuContent('death');
             game.score = 0;
             this.currentLives = this.maxLives = 3;
             game.loadScene(game.currentLevel + "");

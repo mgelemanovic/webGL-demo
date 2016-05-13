@@ -160,7 +160,7 @@ function gameLoop() {
     requestAnimFrame(gameLoop);
 
     if (game.waitToLoad == 0) {
-        game.tick();                          // Update game world
+        game.tick();                            // Update game world
 
         game.scene.render();                    // Render game world
 

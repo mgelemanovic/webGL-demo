@@ -3,6 +3,24 @@ var HUD = function () {
 };
 
 HUD.prototype = {
+    init: function (id) {
+        switch (id) {
+            case "death":
+                return "<p>Too bad, you died!<br/>Your score: " + game.score + "</p>" +
+                    "<button onclick='game.hud.closeMenu();'>TRY AGAIN</button>";
+            case "victory":
+                return "<p>Great job!<br/>Your score: " + game.score + "</p>" +
+                    "<button onclick='game.hud.closeMenu();'>NEXT LEVEL</button>";
+            case "scene":
+                return "<h1>SCENE MANAGEMENT</h1><hr/>" +
+                    "<p onclick='game.saveScene();'>SAVE SCENE</p>" +
+                    "<input id='fileSelecter' type='file'><br/>" +
+                    "<p onclick='game.uploadScene();'>LOAD SCENE</p>" +
+                    "<p onclick='game.hud.closeMenu();'>BACK</p>";
+            default:
+                return "";
+        }
+    },
     render: function () {
         var hudElement = new GameObject(game.textureManager.hud, 13),
             camera = game.scene.camera,
@@ -75,24 +93,13 @@ HUD.prototype = {
         } else
             game.pause();
     },
-    deathMenu: function () {
-        var deathScreen = document.createElement("DIV");
-        deathScreen.className = "menu";
-        deathScreen.id = "death";
-        deathScreen.innerHTML += "<p>Too bad, you died!<br/>Your score: " + game.score + "</p>";
-        deathScreen.innerHTML += "<button onclick='game.hud.closeMenu();'>TRY AGAIN</button>";
+    menuContent: function (id) {
+        var menu = document.createElement("DIV");
+        menu.className = "menu";
+        menu.id = id;
+        menu.innerHTML = this.init(id);
         var div = document.getElementById("container");
-        div.replaceChild(deathScreen, div.childNodes[2]);
-        this.showMenu("death");
-    },
-    victoryMenu: function () {
-        var deathScreen = document.createElement("DIV");
-        deathScreen.className = "menu";
-        deathScreen.id = "victory";
-        deathScreen.innerHTML += "<p>Great job!<br/>Your score: " + game.score + "</p>";
-        deathScreen.innerHTML += "<button onclick='game.hud.closeMenu();'>NEXT LEVEL</button>";
-        var div = document.getElementById("container");
-        div.replaceChild(deathScreen, div.childNodes[2]);
-        this.showMenu("victory");
+        div.replaceChild(menu, div.childNodes[2]);
+        this.showMenu(id);
     }
 };

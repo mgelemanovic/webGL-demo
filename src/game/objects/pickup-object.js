@@ -37,7 +37,7 @@ StarPickUpObject.prototype = Object.assign(Object.create(PickUpObject.prototype)
     constructor: StarPickUpObject,
     pickup: function () {
         PickUpObject.prototype.pickup.call(this);
-        game.hud.victoryMenu();
+        game.hud.menuContent('victory');
         game.nextLevel();
     }
 });
