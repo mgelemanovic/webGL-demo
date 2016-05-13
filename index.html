@@ -66,11 +66,15 @@
 <body onload="startGame();">
 <div id="container">
     <canvas id="webgl-context" width="1280" height="600"></canvas>
-    <div id="menu">
+    <div class="menu" id="mainMenu">
         <button onclick="game.editor.changeMode();">EDITOR MODE</button><br/>
         <button onclick="game.uploadScene();">LOAD SCENE</button>
         <button onclick="game.saveScene();">SAVE SCENE</button><br/><br/>
         <input id="fileSelecter" type="file">
+    </div>
+    <div class="menu" id="victory">
+        <p>Great job!<br/>Your score: </p>
+        <button>NEXT</button>
     </div>
 </div>
 </body>

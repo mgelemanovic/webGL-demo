@@ -7,7 +7,7 @@
     border: none;
 }
 
-#menu {
+.menu {
     position: absolute;
     left: 550px;
     top: 200px;

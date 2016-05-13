@@ -34,7 +34,7 @@ Editor.prototype = {
             canvas.onmousedown = this.putNewBlock;
             this.initEditor();
         } else {
-            var player = game.scene.player;
+            var player = game.player;
             player.respawn();
             player.currentLives = player.maxLives;
             this.selectOn = false;
