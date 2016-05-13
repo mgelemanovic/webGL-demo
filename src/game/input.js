@@ -14,7 +14,7 @@ Input.prototype = {
     handleKeyDown: function (event) {
         // Pause the game and show the menu if escape is pressed
         if (event.keyCode == 27)
-            game.hud.mainMenu();
+            game.hud.menu("mainMenu");
 
         currentlyPressedKeys[event.keyCode] = true;
     },

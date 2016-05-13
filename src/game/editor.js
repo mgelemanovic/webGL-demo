@@ -25,7 +25,7 @@ Editor.prototype = {
         fillUp(3, 4, "StarPickUp", textMng.items);
     },
     changeMode: function() {
-        game.hud.mainMenu();
+        game.hud.menu("mainMenu");
         game.inputManager.clearInput();
         this.isOn = !this.isOn;
         if (this.isOn) {

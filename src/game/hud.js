@@ -1,6 +1,5 @@
 var HUD = function () {
-    this.visibility = ["hidden", "visible"];
-    this.mainMenuStatus = 0;
+    this.menus = [];
 };
 
 HUD.prototype = {
@@ -45,9 +44,55 @@ HUD.prototype = {
         hudElement.textureIndex = score % 10;
         drawElement(position);
     },
-    mainMenu: function () {
-        this.mainMenuStatus = 1 - this.mainMenuStatus;
-        document.getElementById("menu").style.visibility = this.visibility[this.mainMenuStatus];
-        game.pause();
+    menu: function (menu) {
+        if (this.menus.length == 0)
+            this.showMenu(menu);
+        else while (this.menus.length > 0)
+            this.closeMenu();
+    },
+    showMenu: function (menu) {
+        var n = this.menus.length;
+        if (n == 0)
+            game.pause();
+        else {
+            var last = this.menus.pop();
+            document.getElementById(last).style.visibility = "hidden";
+            this.menus.push(last);
+        }
+        document.getElementById(menu).style.visibility = "visible";
+        this.menus.push(menu);
+    },
+    closeMenu: function () {
+        var last;
+        if (this.menus.length > 0) {
+            last = this.menus.pop();
+            document.getElementById(last).style.visibility = "hidden";
+        }
+        if (this.menus.length > 0) {
+            last = this.menus.pop();
+            document.getElementById(last).style.visibility = "visible";
+            this.menus.push(last);
+        } else
+            game.pause();
+    },
+    deathMenu: function () {
+        var deathScreen = document.createElement("DIV");
+        deathScreen.className = "menu";
+        deathScreen.id = "death";
+        deathScreen.innerHTML += "<p>Too bad, you died!<br/>Your score: " + game.score + "</p>";
+        deathScreen.innerHTML += "<button onclick='game.hud.closeMenu();'>TRY AGAIN</button>";
+        var div = document.getElementById("container");
+        div.replaceChild(deathScreen, div.childNodes[2]);
+        this.showMenu("death");
+    },
+    victoryMenu: function () {
+        var deathScreen = document.createElement("DIV");
+        deathScreen.className = "menu";
+        deathScreen.id = "victory";
+        deathScreen.innerHTML += "<p>Great job!<br/>Your score: " + game.score + "</p>";
+        deathScreen.innerHTML += "<button onclick='game.hud.closeMenu();'>NEXT LEVEL</button>";
+        var div = document.getElementById("container");
+        div.replaceChild(deathScreen, div.childNodes[2]);
+        this.showMenu("victory");
     }
 };

@@ -93,7 +93,7 @@ Game.prototype = {
             var data = JSON.parse(reader.result);
             if (data.checksum == 36479732) {
                 game.scene = new Scene(data);
-                game.hud.mainMenu();
+                game.hud.menu("mainMenu");
             }
         };
         reader.readAsText(document.getElementById("fileSelecter").files[0]);
