@@ -81,7 +81,15 @@ Player.prototype = Object.assign(Object.create(MovableObject.prototype), {
             return;
         }
         if (other instanceof Enemy) {
-            this.hurt(0.5);
+            if (direction == "UP") {
+                game.scene.removeObjectFromScene(game.scene.enemies, other.position);
+                this.rigidBody.force.y += 0.05;
+            }
+            else {
+                this.hurt(0.5);
+                if (this.immunityPeriod > 0)
+                    other.rigidBody.speed.x *= -1;
+            }
             return;
         }
         MovableObject.prototype.onCollision.call(this, other, direction);

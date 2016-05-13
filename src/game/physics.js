@@ -41,27 +41,23 @@ var Collider = function (attachedTo, width, height) {
 Collider.prototype = {
     checkForCollision: function (other) {
         var tPos = this.attachedTo.position.get(),
-            oPos = other.attachedTo.position.get();
+            oPos = other.attachedTo.position.get(),
+            T = new Vector(oPos.x + other.w / 2, oPos.y + other.h / 2),
+            B = new Vector(oPos.x - other.w / 2, oPos.y - other.h / 2);
 
-        if (tPos.x - this.w / 2 < oPos.x + other.w / 2 &&
-            tPos.x + this.w / 2 > oPos.x - other.w / 2 &&
-            tPos.y - this.h / 2 < oPos.y + other.h / 2 &&
-            tPos.y + this.h / 2 > oPos.y - other.h / 2) {
+        if (tPos.x - this.w / 2 < T.x &&
+            tPos.x + this.w / 2 > B.x &&
+            tPos.y - this.h / 2 < T.y &&
+            tPos.y + this.h / 2 > B.y) {
 
-            var deltaX = tPos.x - oPos.x,
-                deltaY = tPos.y - oPos.y;
-
-            if (Math.abs(deltaY) > Math.abs(deltaX)) {
-                if (deltaY > 0)
-                    return "UP";
-                else
-                    return "DOWN";
-            } else {
-                if (deltaX > 0)
-                    return "RIGHT";
-                else
-                    return "LEFT";
-            }
+            if (tPos.y > T.y)
+                return "UP";
+            else if (tPos.y < B.y)
+                return "DOWN";
+            else if (tPos.x > T.x)
+                return "RIGHT";
+            else if (tPos.x < B.x)
+                return "LEFT";
         }
         return "NONE";
     }
