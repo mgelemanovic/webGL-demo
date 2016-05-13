@@ -132,6 +132,10 @@ Game.prototype = {
                 if (scenePool[i].tag != "StaticObject") {
                     tmp.tag = scenePool[i].tag;
                 }
+                if (scenePool[i] instanceof Enemy) {
+                    tmp.pos.x = scenePool[i].spawn.x;
+                    tmp.pos.y = scenePool[i].spawn.y;
+                }
                 data.push(tmp);
             }
         };

@@ -17,6 +17,7 @@ Player.prototype = Object.assign(Object.create(MovableObject.prototype), {
         // Additional collision checking for player
         this.checkForCollisionWith(game.scene.pickups);
         this.checkForCollisionWith(game.scene.environment);
+        this.checkForCollisionWith(game.scene.enemies);
 
         if (this.immunityPeriod > 0)
             this.immunityPeriod--;
@@ -77,6 +78,10 @@ Player.prototype = Object.assign(Object.create(MovableObject.prototype), {
         }
         if (other instanceof EnvironmentObject) {
             other.interact(this, direction);
+            return;
+        }
+        if (other instanceof Enemy) {
+            this.hurt(0.5);
             return;
         }
         MovableObject.prototype.onCollision.call(this, other, direction);
