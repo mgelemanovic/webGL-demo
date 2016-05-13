@@ -1,5 +1,5 @@
-var Player = function (mass) {
-    MovableObject.call(this, game.textureManager.player.idle, 0, mass);
+var Player = function () {
+    MovableObject.call(this, game.textureManager.player.idle, 0, 50);
     this.tag = "Player";
     this.animator = new Animator(this, game.textureManager.player);
     this.respawnPosition = new Vector(0, 0);
@@ -60,6 +60,7 @@ Player.prototype = Object.assign(Object.create(MovableObject.prototype), {
         if (this.currentLives <= 0) {
             alert("Too bad, you died!\nYour score: " + game.score);
             game.score = 0;
+            this.currentLives = this.maxLives = 3;
             game.loadScene(game.currentLevel + "");
         }
     },
@@ -75,7 +76,7 @@ Player.prototype = Object.assign(Object.create(MovableObject.prototype), {
             return;
         }
         if (other instanceof EnvironmentObject) {
-            other.interact(direction);
+            other.interact(this, direction);
             return;
         }
         MovableObject.prototype.onCollision.call(this, other, direction);

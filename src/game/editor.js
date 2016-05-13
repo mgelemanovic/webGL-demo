@@ -46,7 +46,7 @@ Editor.prototype = {
         editorBlock.drawDistance = -10;
         editorBlock.position.setv(game.scene.camera);
         editorBlock.position.add(10.5, -4.5);
-        editorBlock.draw();
+        editorBlock.render();
     },
     drawObjectSelection: function () {
         var shadow;
@@ -56,7 +56,7 @@ Editor.prototype = {
             shadow = new GameObject(game.textureManager.colors, 0);
         shadow.drawDistance = -0.1;
         shadow.position.setv(game.scene.camera);
-        shadow.draw();
+        shadow.render();
 
         var len = Math.ceil(this.allObj.length / 9);
         for (var i = 0; i < len; ++i) {
@@ -69,7 +69,7 @@ Editor.prototype = {
                 obj.position.setv(game.scene.camera);
                 obj.position.add(j - 4, 3 - i);
                 obj.scale.set(0.8, 0.8);
-                obj.draw();
+                obj.render();
             }
         }
     },

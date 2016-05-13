@@ -31,16 +31,16 @@ Input.prototype = {
         if (currentlyPressedKeys[this.commands.moveRight] || currentlyPressedKeys[this.commands.moveLeft]) {
             // Pressed right
             if (currentlyPressedKeys[this.commands.moveRight])
-                game.scene.player.move("RIGHT");
+                game.player.move("RIGHT");
             // Pressed left
             else if (currentlyPressedKeys[this.commands.moveLeft])
-                game.scene.player.move("LEFT");
+                game.player.move("LEFT");
         } else
-            game.scene.player.move("STOP");
+            game.player.move("STOP");
 
         // Jump handling
         if (currentlyPressedKeys[this.commands.jump]) {
-            game.scene.player.jump();
+            game.player.jump();
         }
     }
 };

@@ -1,22 +1,36 @@
 var Game = function () {
     webGLStart();
-    this.scene = null;
     this.textureManager = new TextureManager();
     this.hud = new HUD();
     this.inputManager = new Input();
     this.editor = new Editor();
-    this.drawDistance = -7;
+
     this.waitToLoad = 0;
+    this.drawDistance = -7;
     this.score = 0;
+
     this.currentLevel = 0;
     this.numberOfLevels = 2;
+
+    this.lastTime = 0;
+    this.elapsed = 0;
 };
 
 Game.prototype = {
     start: function () {
         this.loadTextures();
+        this.player = new Player();
         this.loadScene("0");
         gameLoop();
+    },
+    tick: function () {
+        var timeNow = new Date().getTime();
+        if (this.lastTime != 0) {
+            this.elapsed = timeNow - this.lastTime;
+            // Time step correction
+            if (this.elapsed > 60) this.elapsed = 60;
+        }
+        this.lastTime = timeNow;
     },
     finishedLoadingResource: function () {
         this.waitToLoad--;
@@ -102,8 +116,8 @@ Game.prototype = {
         fillData(data.pickups, this.scene.pickups);
         fillData(data.environment, this.scene.environment);
         fillData(data.enemies, this.scene.enemies);
-        if (this.scene.player.respawnPosition.x != 0 || this.scene.player.respawnPosition.y != 0)
-            data.respawn = this.scene.player.respawnPosition;
+        if (this.player.respawnPosition.x != 0 || this.player.respawnPosition.y != 0)
+            data.respawn = this.player.respawnPosition;
 
         var a = document.createElement("a");
         a.href = URL.createObjectURL(new Blob([JSON.stringify(data)], {type: "text/json"}));
@@ -127,6 +141,8 @@ function gameLoop() {
     requestAnimFrame(gameLoop);
 
     if (game.waitToLoad == 0) {
+        game.tick();                          // Update game world
+
         game.scene.render();                    // Render game world
 
         if (game.editor.isOn) {
@@ -138,11 +154,12 @@ function gameLoop() {
         }
         else {
             game.inputManager.handleInput();    // Handle player input
-            game.scene.update();                // Update game world
 
-            // Render in-game HUD and player
-            game.scene.player.draw();
-            game.hud.render();
+            game.player.update();               // Update player
+            game.scene.update();                // Update scene
+
+            game.player.render();               // Render player
+            game.hud.render();                  // Render in-game HUD
         }
     }
 }

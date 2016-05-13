@@ -5,7 +5,7 @@ var EnvironmentObject = function (texturePool, textureIndex) {
 
 EnvironmentObject.prototype = Object.assign(Object.create(GameObject.prototype), {
     constructor: EnvironmentObject,
-    interact: function (direction) {
+    interact: function (other, direction) {
         console.log(direction);
     }
 });
@@ -18,8 +18,8 @@ var SpikesObject = function () {
 
 SpikesObject.prototype = Object.assign(Object.create(EnvironmentObject.prototype), {
     constructor: SpikesObject,
-    interact: function (direction) {
-        if (game.scene.player.rigidBody.speed.y < 0)
-            game.scene.player.hurt(1);
+    interact: function (other, direction) {
+        if (other.rigidBody.speed.y < 0)
+            other.hurt(1);
     }
 });

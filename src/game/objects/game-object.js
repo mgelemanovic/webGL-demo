@@ -12,7 +12,7 @@ var GameObject = function (texturePool, textureIndex) {
 };
 
 GameObject.prototype = {
-    draw: function () {
+    render: function () {
         game.textureManager.setActiveTexture(this.texturePool[this.textureIndex]);
         mvPushMatrix();
         mat4.translate(mvMatrix, mvMatrix, [this.position.x, this.position.y, this.drawDistance]);

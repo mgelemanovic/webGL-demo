@@ -8,7 +8,7 @@ var RigidBody = function (attachedTo, mass) {
 
 RigidBody.prototype = {
     applyForce: function () {
-        var elapsed = game.scene.elapsed,
+        var elapsed = game.elapsed,
             gAcc = -0.00001,    // Kinda low? Maybe?
             acc = new Vector(this.force.x / this.mass, this.force.y / this.mass);
         this.force.set(0, 0);    // Turn off forces

@@ -7,15 +7,15 @@ HUD.prototype = {
     render: function () {
         var hudElement = new GameObject(game.textureManager.hud, 13),
             camera = game.scene.camera,
-            maxLives = game.scene.player.maxLives,
-            currentLives = game.scene.player.currentLives,
+            maxLives = game.player.maxLives,
+            currentLives = game.player.currentLives,
             score = game.score,
             position = 10.5,
             i;
 
         var drawElement = function (offset) {
             hudElement.position.x = camera.x + offset;
-            hudElement.draw();
+            hudElement.render();
         };
 
         hudElement.position.y = camera.y + 4.5;
