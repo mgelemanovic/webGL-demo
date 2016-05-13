@@ -13,9 +13,8 @@ HUD.prototype = {
                     "<button onclick='game.hud.closeMenu();'>NEXT LEVEL</button>";
             case "scene":
                 return "<h1>SCENE MANAGEMENT</h1><hr/>" +
-                    "<p onclick='game.saveScene();'>SAVE SCENE</p>" +
-                    "<input id='fileSelecter' type='file'><br/>" +
-                    "<p onclick='game.uploadScene();'>LOAD SCENE</p>" +
+                    "<p onclick='game.saveScene();'>DOWNLOAD SCENE</p>" +
+                    "<p onclick='game.uploadScene();'>UPLOAD SCENE</p>" +
                     "<p onclick='game.hud.closeMenu();'>BACK</p>";
             default:
                 return "";

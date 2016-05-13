@@ -96,7 +96,13 @@ Game.prototype = {
                 game.hud.menu("mainMenu");
             }
         };
-        reader.readAsText(document.getElementById("fileSelecter").files[0]);
+        
+        var input = document.createElement("input");
+        input.type = "file";
+        input.click();
+        input.onchange  = function(event) {
+            reader.readAsText(input.files[0]);
+        };
     },
     saveScene: function () {
         var data = {
