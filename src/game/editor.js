@@ -29,8 +29,6 @@ Editor.prototype = {
         game.inputManager.clearInput();
         this.isOn = !this.isOn;
         if (this.isOn) {
-            if (confirm("Create new scene?"))
-                game.loadScene("empty");
             canvas.onmousedown = this.putNewBlock;
             this.initEditor();
         } else {

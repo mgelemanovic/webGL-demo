@@ -16,6 +16,16 @@ HUD.prototype = {
                     "<p onclick='game.saveScene();'>DOWNLOAD SCENE</p>" +
                     "<p onclick='game.uploadScene();'>UPLOAD SCENE</p>" +
                     "<p onclick='game.hud.closeMenu();'>BACK</p>";
+            case "editorIntro":
+                if (!game.editor.isOn)
+                    return "<h1>Create a new scene?</h1>" +
+                        "<p><span onclick='game.editor.changeMode(); game.loadScene(\"empty\");'>YES </span>" +
+                        "<span onclick='game.editor.changeMode();'>NO </span>" +
+                        "<span onclick='game.hud.closeMenu();'>Cancel</span></p>";
+                else {
+                    game.editor.changeMode();
+                    return "";
+                }
             default:
                 return "";
         }
@@ -97,6 +107,7 @@ HUD.prototype = {
         menu.className = "menu";
         menu.id = id;
         menu.innerHTML = this.init(id);
+        if (menu.innerHTML == "") return;
         var div = document.getElementById("container");
         div.replaceChild(menu, div.childNodes[2]);
         this.showMenu(id);

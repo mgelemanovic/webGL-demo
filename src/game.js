@@ -96,7 +96,7 @@ Game.prototype = {
                 game.hud.menu("mainMenu");
             }
         };
-        
+
         var input = document.createElement("input");
         input.type = "file";
         input.click();
