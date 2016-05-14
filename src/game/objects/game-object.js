@@ -9,10 +9,20 @@ var GameObject = function (texturePool, textureIndex) {
     this.textureIndex = textureIndex;
 
     this.collider = new Collider(this, 1, 1);
+    this.debug = false;
 };
 
 GameObject.prototype = {
     render: function () {
+        if (this.debug) {
+            game.textureManager.setActiveTexture(game.textureManager.colors[2]);
+            mvPushMatrix();
+            mat4.translate(mvMatrix, mvMatrix, [this.position.x, this.position.y, this.drawDistance]);
+            mat4.scale(mvMatrix, mvMatrix, [this.collider.w, this.collider.h, 1.0]);
+            GL.uniformMatrix4fv(shaderProgram.mvMatrixUniform, false, mvMatrix);
+            GL.drawArrays(GL.TRIANGLE_STRIP, 0, 4);
+            mvPopMatrix();
+        }
         game.textureManager.setActiveTexture(this.texturePool[this.textureIndex]);
         mvPushMatrix();
         mat4.translate(mvMatrix, mvMatrix, [this.position.x, this.position.y, this.drawDistance]);

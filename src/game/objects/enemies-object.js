@@ -3,6 +3,7 @@ var Enemy = function (spawn) {
     this.tag = "Enemy";
     this.rigidBody.speed.x = -0.002;
     this.spawn = spawn;
+    this.debug = true;
 };
 
 Enemy.prototype = Object.assign(Object.create(MovableObject.prototype), {
