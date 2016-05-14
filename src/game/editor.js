@@ -25,7 +25,15 @@ Editor.prototype = {
         fillUp(5, 6, "Enemy", textMng.items);
         fillUp(3, 4, "StarPickUp", textMng.items);
     },
-    changeMode: function() {
+    loop: function () {
+        this.handleInput();          // Handle editor input
+
+        game.scene.render();         // Render game world
+        if (this.selectOn)
+            this.drawObjectSelection();
+        this.drawUsedObject();
+    },
+    changeMode: function () {
         game.hud.menu("mainMenu");
         game.inputManager.clearInput();
         this.isOn = !this.isOn;

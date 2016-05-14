@@ -45,11 +45,21 @@ Game.prototype = {
         }
         this.lastTime = timeNow;
     },
+    loop: function () {
+        this.inputManager.handleInput();    // Handle player input
+
+        this.player.update();               // Update player
+        this.scene.update();                // Update scene
+
+        this.scene.render();                // Render game world
+        this.player.render();               // Render player
+        this.hud.render();                  // Render in-game HUD
+    },
     nextLevel: function () {
         this.currentLevel = (this.currentLevel + 1) % this.numberOfLevels;
         this.loadScene(this.currentLevel + "");
     },
-    loadBiomeTextures: function(biome) {
+    loadBiomeTextures: function (biome) {
         var textures = this.textureManager;
         textures.background = [];
         textures.ground = [];
@@ -57,7 +67,7 @@ Game.prototype = {
         textures.getSprite(textures.background, "textures/bg/" + biome + ".png");
         textures.getSpriteSheet(textures.ground, "textures/tiles/" + biome + ".png", 0, 3, 0, 6, 128, 128);
     },
-    loadPlayerTextures: function(player) {
+    loadPlayerTextures: function (player) {
         var textures = this.textureManager;
         textures.player = {
             idle: [],
@@ -107,7 +117,7 @@ Game.prototype = {
         var input = document.createElement("input");
         input.type = "file";
         input.click();
-        input.onchange  = function(event) {
+        input.onchange = function (event) {
             reader.readAsText(input.files[0]);
         };
     },
@@ -170,25 +180,11 @@ function gameLoop() {
     requestAnimFrame(gameLoop);
 
     if (game.waitToLoad == 0) {
-        game.tick();                            // Update game world
+        game.tick();        // Update game world
 
-        game.scene.render();                    // Render game world
-
-        if (game.editor.isOn) {
-            game.editor.handleInput();          // Handle editor input
-
-            if (game.editor.selectOn)
-                game.editor.drawObjectSelection();
-            game.editor.drawUsedObject();
-        }
-        else {
-            game.inputManager.handleInput();    // Handle player input
-
-            game.player.update();               // Update player
-            game.scene.update();                // Update scene
-
-            game.player.render();               // Render player
-            game.hud.render();                  // Render in-game HUD
-        }
+        if (game.editor.isOn)
+            game.editor.loop();
+        else
+            game.loop();
     }
 }
