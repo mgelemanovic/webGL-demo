@@ -13,7 +13,8 @@ EnvironmentObject.prototype = Object.assign(Object.create(GameObject.prototype),
 var SpikesObject = function () {
     EnvironmentObject.call(this, game.textureManager.items, 7);
     this.tag = "Spikes";
-    this.collider.h = 0.005;
+    this.collider.offset.y = -0.25;
+    this.collider.h = 0.5;
 };
 
 SpikesObject.prototype = Object.assign(Object.create(EnvironmentObject.prototype), {
