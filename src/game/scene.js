@@ -9,8 +9,7 @@ var Scene = function (sceneInfo) {
     };
 
     this.background = Factory.createBackground();
-    if (sceneInfo.respawn)
-        game.player.respawnPosition.setv(sceneInfo.respawn);
+    game.player.respawnPosition.set(0, 0);
     game.player.respawn();
 
     this.ground = [];
@@ -72,5 +71,6 @@ Scene.prototype = {
         };
 
         updatePool(this.enemies);
+        updatePool(this.environment);
     }
 };

@@ -22,6 +22,7 @@ Enemy.prototype = Object.assign(Object.create(MovableObject.prototype), {
 var SlimeEnemy = function (spawn) {
     Enemy.call(this, game.textureManager.enemy.slime.normal, 0, spawn);
     this.tag = "SlimeEnemy";
+    this.animator = new Animator(20);
     this.rigidBody.speed.x = -0.002;
     this.collider.offset.y = -0.25;
     this.collider.h = 0.5;
@@ -30,8 +31,13 @@ var SlimeEnemy = function (spawn) {
 
 SlimeEnemy.prototype = Object.assign(Object.create(Enemy.prototype), {
     constructor: SlimeEnemy,
+    update: function () {
+        MovableObject.prototype.update.call(this);
+        this.checkForCollisionWith(game.scene.enemies);
+        this.animator.animate(this, game.textureManager.enemy.slime.normal);
+    },
     changeDirection: function () {
-        this.position.y += 0.25;
+        this.position.y += 0.25;        // Little bounce when changing direction
         this.rigidBody.speed.x *= -1;
         this.scale.x *= -1;
     },

@@ -11,6 +11,9 @@ Factory = {
             case "Spikes":
                 object = new SpikesObject();
                 break;
+            case "Checkpoint":
+                object = new CheckpointObject();
+                break;
             case "SlimeEnemy":
                 object = new SlimeEnemy(info.pos);
                 break;

@@ -169,8 +169,6 @@ Game.prototype = {
         fillData(data.pickups, this.scene.pickups);
         fillData(data.environment, this.scene.environment);
         fillData(data.enemies, this.scene.enemies);
-        if (this.player.respawnPosition.x != 0 || this.player.respawnPosition.y != 0)
-            data.respawn = this.player.respawnPosition;
 
         var a = document.createElement("a");
         a.href = URL.createObjectURL(new Blob([JSON.stringify(data)], {type: "text/json"}));
