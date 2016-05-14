@@ -3,9 +3,6 @@ var game;
 var Game = function () {
     webGLStart();
     this.textureManager = new TextureManager();
-    this.hud = new HUD();
-    this.inputManager = new Input();
-    this.editor = new Editor();
 
     this.waitToLoad = 0;
     this.drawDistance = -7;
@@ -21,6 +18,10 @@ var Game = function () {
 Game.prototype = {
     start: function () {
         document.getElementById("startMenu").style.visibility = "hidden";
+
+        this.hud = new HUD();
+        this.inputManager = new Input();
+        this.editor = new Editor();
 
         // Texture loading
         if (!this.textureManager.background)

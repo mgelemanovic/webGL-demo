@@ -31,6 +31,7 @@ var SlimeEnemy = function (spawn) {
 SlimeEnemy.prototype = Object.assign(Object.create(Enemy.prototype), {
     constructor: SlimeEnemy,
     changeDirection: function () {
+        this.position.y += 0.25;
         this.rigidBody.speed.x *= -1;
         this.scale.x *= -1;
     },
