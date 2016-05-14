@@ -12,7 +12,7 @@ MovableObject.prototype = Object.assign(Object.create(GameObject.prototype), {
     },
     checkForCollisionWith: function(pool) {
         for (var i = 0; i < pool.length; ++i) {
-            if (this.position.x - pool[i].position.x <= 1 && this.position.y - pool[i].position.y <= 1) {
+            if (Math.abs(this.position.x - pool[i].position.x) <= 1 && Math.abs(this.position.y - pool[i].position.y) <= 1) {
                 var direction = this.collider.checkForCollision(pool[i].collider);
                 if (direction == "NONE") continue;
                 this.onCollision(pool[i], direction);
@@ -20,7 +20,7 @@ MovableObject.prototype = Object.assign(Object.create(GameObject.prototype), {
         }
     },
     onCollision: function (other, direction) {
-        var tPos = this.position.get(),
+        var tPos = this.collider.center(),
             tCol = this.collider,
             oPos = other.collider.center(),
             oCol = other.collider;
@@ -40,5 +40,6 @@ MovableObject.prototype = Object.assign(Object.create(GameObject.prototype), {
                 this.position.set(oPos.x - (oCol.w + tCol.w) / 2, tPos.y);
                 break;
         }
+        this.position.add(-tCol.offset.x, -tCol.offset.y);
     }
 });

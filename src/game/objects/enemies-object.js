@@ -25,7 +25,7 @@ var SlimeEnemy = function (spawn) {
     this.rigidBody.speed.x = -0.002;
     this.collider.offset.y = -0.25;
     this.collider.h = 0.5;
-    this.debug = true;
+    this.collider.w = 0.8;
 };
 
 SlimeEnemy.prototype = Object.assign(Object.create(Enemy.prototype), {

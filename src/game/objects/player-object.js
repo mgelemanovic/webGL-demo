@@ -7,7 +7,6 @@ var Player = function () {
     this.immunityPeriod = 0;
     this.collider.w = 0.45;
     this.collider.h = 0.8;
-    this.debug = true;
 };
 
 Player.prototype = Object.assign(Object.create(MovableObject.prototype), {
