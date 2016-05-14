@@ -1,3 +1,5 @@
+var game;
+
 var Game = function () {
     webGLStart();
     this.textureManager = new TextureManager();
@@ -18,10 +20,15 @@ var Game = function () {
 
 Game.prototype = {
     start: function () {
+        document.getElementById("startMenu").style.visibility = "hidden";
+
         // Texture loading
-        this.loadBiomeTextures("grass");
-        this.loadPlayerTextures("robot");
+        if (!this.textureManager.background)
+            this.loadBiomeTextures("grass");
+        if (!this.textureManager.player)
+            this.loadPlayerTextures("robot");
         this.loadOtherTextures();
+
         // Player creation
         this.player = new Player();
         // First level loading
@@ -44,30 +51,30 @@ Game.prototype = {
     },
     loadBiomeTextures: function(biome) {
         var textures = this.textureManager;
-
         textures.background = [];
         textures.ground = [];
+
         textures.getSprite(textures.background, "textures/bg/" + biome + ".png");
         textures.getSpriteSheet(textures.ground, "textures/tiles/" + biome + ".png", 0, 3, 0, 6, 128, 128);
     },
     loadPlayerTextures: function(player) {
         var textures = this.textureManager;
-
         textures.player = {
             idle: [],
             run: [],
             jump: []
         };
+
         textures.getSpriteSheet(textures.player.idle, "textures/" + player + ".png", 0, 2, 0, 5, 128, 128);
         textures.getSpriteSheet(textures.player.run, "textures/" + player + ".png", 2, 4, 0, 4, 128, 128);
         textures.getSpriteSheet(textures.player.jump, "textures/" + player + ".png", 4, 6, 0, 5, 128, 128);
     },
     loadOtherTextures: function () {
         var textures = this.textureManager;
-
         textures.hud = [];
         textures.items = [];
         textures.colors = [];
+
         textures.getSpriteSheet(textures.hud, "textures/hud.png", 0, 3, 0, 5, 128, 128);
         textures.getSpriteSheet(textures.items, "textures/items.png", 0, 5, 0, 4, 128, 128);
         textures.getColor([0, 0, 0, 200]);
@@ -158,13 +165,6 @@ Game.prototype = {
         this.scene.lastTime = new Date().getTime();
     }
 };
-
-var game;
-
-function startGame() {
-    game = new Game();
-    game.start();
-}
 
 function gameLoop() {
     requestAnimFrame(gameLoop);

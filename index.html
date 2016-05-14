@@ -1,5 +1,4 @@
 <html>
-
 <head>
     <title>WebGL Platformer</title>
     <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
@@ -43,7 +42,6 @@
         void main(void) {
             gl_FragColor = texture2D(uSampler, vTextureCoord);
         }
-
     </script>
 
     <script id="shader-vs" type="x-shader/x-vertex">
@@ -59,13 +57,27 @@
             gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
             vTextureCoord = aTextureCoord;
         }
-
     </script>
 </head>
 
-<body onload="startGame();">
+<body onload="game = new Game();">
 <div id="container">
     <canvas id="webgl-context" width="1280" height="600"></canvas>
+    <div class="menu" id="startMenu" style="visibility: visible">
+        <h1>WEBGL PLATFORMER v1</h1>
+        <p>Author: Mladen Gelemanovic</p><hr/>
+        <p onclick="game.start();">PLAY</p>
+        <p><hr/>
+            <h3>BIOME</h3>
+            <span onclick="game.loadBiomeTextures('grass');">GRASS</span>
+            <span onclick="game.loadBiomeTextures('snow');">SNOW</span>
+            <span onclick="game.loadBiomeTextures('desert');">DESERT</span>
+        </p>
+        <p><hr/>
+            <h3>PLAYER</h3>
+            <span onclick="game.loadPlayerTextures('robot');">ROBOT</span>
+        </p>
+    </div>
     <div class="menu" id="mainMenu">
         <h1>WEBGL PLATFORMER v1</h1>
         <p>Author: Mladen Gelemanovic</p><hr/>
