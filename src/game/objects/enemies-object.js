@@ -11,5 +11,11 @@ Enemy.prototype = Object.assign(Object.create(MovableObject.prototype), {
         if (direction == "LEFT" || direction == "RIGHT")
             this.rigidBody.speed.x *= -1;
         MovableObject.prototype.onCollision.call(this, other, direction);
+    },
+    writeData: function () {
+        var data = GameObject.prototype.writeData.call(this);
+        data.pos.x = this.spawn.x;
+        data.pos.y = this.spawn.y;
+        return data;
     }
 });

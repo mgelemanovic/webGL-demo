@@ -27,5 +27,24 @@ GameObject.prototype = {
         this.scale.set(newX, newY);
         this.collider.w = Math.abs(newX);
         this.collider.h = Math.abs(newY);
+    },
+    writeData: function() {
+        var data = {
+            pos: {
+                x: this.position.x,
+                y: this.position.y
+            }
+        };
+        data.texture = this.textureIndex;
+        if (this.scale.x != 1.0 || this.scale.y != 1.0) {
+            data.scale = {
+                x: this.scale.x,
+                y: this.scale.y
+            };
+        }
+        if (this.tag != "StaticObject") {
+            data.tag = this.tag;
+        }
+        return data;
     }
 };

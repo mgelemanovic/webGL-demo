@@ -133,27 +133,7 @@ Game.prototype = {
 
         var fillData = function (data, scenePool) {
             for (var i = 0; i < scenePool.length; ++i) {
-                var tmp = {
-                    pos: {
-                        x: scenePool[i].position.x,
-                        y: scenePool[i].position.y
-                    }
-                };
-                tmp.texture = scenePool[i].textureIndex;
-                if (scenePool[i].scale.x != 1.0 || scenePool[i].scale.y != 1.0) {
-                    tmp.scale = {
-                        x: scenePool[i].scale.x,
-                        y: scenePool[i].scale.y
-                    };
-                }
-                if (scenePool[i].tag != "StaticObject") {
-                    tmp.tag = scenePool[i].tag;
-                }
-                if (scenePool[i] instanceof Enemy) {
-                    tmp.pos.x = scenePool[i].spawn.x;
-                    tmp.pos.y = scenePool[i].spawn.y;
-                }
-                data.push(tmp);
+                data.push(scenePool[i].writeData());
             }
         };
 
