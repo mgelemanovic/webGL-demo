@@ -48,7 +48,7 @@ Player.prototype = Object.assign(Object.create(MovableObject.prototype), {
             this.rigidBody.force.y = jumpForce;
         }
     },
-    animate: function() {
+    animate: function () {
         var textures = game.textureManager.player,
             speed = this.rigidBody.speed.get(),
             texturePool = textures.idle;
@@ -85,24 +85,8 @@ Player.prototype = Object.assign(Object.create(MovableObject.prototype), {
         this.rigidBody.resetSpeedAndForce();
     },
     onCollision: function (other, direction) {
-        if (other instanceof PickUpObject) {
-            other.pickup();
-            return;
-        }
-        if (other instanceof EnvironmentObject) {
+        if (other instanceof PickUpObject || other instanceof EnvironmentObject || other instanceof Enemy) {
             other.interact(this, direction);
-            return;
-        }
-        if (other instanceof Enemy) {
-            if (direction == "UP") {
-                game.scene.removeObjectFromScene(game.scene.enemies, other.position);
-                this.rigidBody.force.y += 0.05;
-            }
-            else {
-                this.hurt(0.5);
-                if (this.immunityPeriod > 0)
-                    other.changeDirection();
-            }
             return;
         }
         MovableObject.prototype.onCollision.call(this, other, direction);

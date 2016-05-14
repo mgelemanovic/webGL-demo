@@ -22,7 +22,7 @@ MovableObject.prototype = Object.assign(Object.create(GameObject.prototype), {
     onCollision: function (other, direction) {
         var tPos = this.position.get(),
             tCol = this.collider,
-            oPos = other.position.get(),
+            oPos = other.collider.center(),
             oCol = other.collider;
 
         switch (direction) {

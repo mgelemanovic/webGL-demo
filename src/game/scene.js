@@ -66,7 +66,7 @@ Scene.prototype = {
     update: function() {
         var updatePool = function (objectPool) {
             for (var i = 0; i < objectPool.length; ++i) {
-                if (Math.abs(objectPool[i].position.x - game.scene.camera.x) < 2 * game.scene.range)
+                if (Math.abs(objectPool[i].position.x - game.scene.camera.x) < 1.5 * game.scene.range)
                     objectPool[i].update();
             }
         };

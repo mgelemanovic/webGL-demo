@@ -11,8 +11,8 @@ Factory = {
             case "Spikes":
                 object = new SpikesObject();
                 break;
-            case "Enemy":
-                object = new Enemy(info.pos);
+            case "SlimeEnemy":
+                object = new SlimeEnemy(info.pos);
                 break;
             case "DecorObject":
                 object = this.createStaticObject(game.textureManager.items, info);

@@ -6,7 +6,6 @@ var EnvironmentObject = function (texturePool, textureIndex) {
 EnvironmentObject.prototype = Object.assign(Object.create(GameObject.prototype), {
     constructor: EnvironmentObject,
     interact: function (other, direction) {
-        console.log(direction);
     }
 });
 

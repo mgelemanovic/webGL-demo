@@ -22,7 +22,7 @@ Editor.prototype = {
         fillUp(16, 20, "DecorObject", textMng.items);
         fillUp(0, 3, "CoinPickUp", textMng.items);
         fillUp(7, 8, "Spikes", textMng.items);
-        fillUp(0, 1, "Enemy", textMng.enemy.slime.normal);
+        fillUp(0, 1, "SlimeEnemy", textMng.enemy.slime.normal);
         fillUp(3, 4, "StarPickUp", textMng.items);
     },
     loop: function () {
@@ -101,7 +101,7 @@ Editor.prototype = {
             case "DecorObject":
                 pool = game.scene.decor;
                 break;
-            case "Enemy":
+            case "SlimeEnemy":
                 pool = game.scene.enemies;
                 break;
             default:

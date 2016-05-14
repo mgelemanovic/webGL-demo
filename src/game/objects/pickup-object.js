@@ -6,7 +6,7 @@ var PickUpObject = function (texturePool, textureIndex) {
 
 PickUpObject.prototype = Object.assign(Object.create(GameObject.prototype), {
     constructor: PickUpObject,
-    pickup: function () {
+    interact: function (other, direction) {
         game.scene.removeObjectFromScene(game.scene.pickups, this.position);
     }
 });
@@ -22,8 +22,8 @@ var CoinPickUpObject = function (index) {
 
 CoinPickUpObject.prototype = Object.assign(Object.create(PickUpObject.prototype), {
     constructor: CoinPickUpObject,
-    pickup: function () {
-        PickUpObject.prototype.pickup.call(this);
+    interact: function (other, direction) {
+        PickUpObject.prototype.interact.call(this, other, direction);
         game.score += this.value;
     }
 });
@@ -35,8 +35,8 @@ var StarPickUpObject = function () {
 
 StarPickUpObject.prototype = Object.assign(Object.create(PickUpObject.prototype), {
     constructor: StarPickUpObject,
-    pickup: function () {
-        PickUpObject.prototype.pickup.call(this);
+    interact: function (other, direction) {
+        PickUpObject.prototype.interact.call(this, other, direction);
         game.hud.menuContent('victory');
         game.nextLevel();
     }
