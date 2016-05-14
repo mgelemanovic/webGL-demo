@@ -23,14 +23,6 @@ Game.prototype = {
         this.inputManager = new Input();
         this.editor = new Editor();
 
-        // Texture loading
-        if (!this.textureManager.background)
-            this.loadBiomeTextures("grass");
-        if (!this.textureManager.player)
-            this.loadPlayerTextures("robot");
-        this.loadEnemyTextures();
-        this.loadOtherTextures();
-
         // Player creation
         this.player = new Player();
         // First level loading
@@ -61,6 +53,12 @@ Game.prototype = {
         this.currentLevel = (this.currentLevel + 1) % this.numberOfLevels;
         this.loadScene(this.currentLevel + "");
     },
+    loadTextures: function() {
+        this.loadPlayerTextures("robot");
+        this.loadBiomeTextures("grass");
+        this.loadEnemyTextures();
+        this.loadOtherTextures();
+    },
     loadBiomeTextures: function (biome) {
         var textures = this.textureManager;
         textures.background = [];
@@ -71,39 +69,21 @@ Game.prototype = {
     },
     loadPlayerTextures: function (player) {
         var textures = this.textureManager;
-        textures.player = {
-            idle: [],
-            run: [],
-            jump: []
-        };
+        textures.player = [];
 
-        textures.getSpriteSheet(textures.player.idle, "textures/players/" + player + ".png", 0, 2, 0, 5, 128, 128);
-        textures.getSpriteSheet(textures.player.run, "textures/players/" + player + ".png", 2, 4, 0, 4, 128, 128);
-        textures.getSpriteSheet(textures.player.jump, "textures/players/" + player + ".png", 4, 6, 0, 5, 128, 128);
+        textures.getSpriteSheet(textures.player, "textures/players/" + player + ".png", 0, 6, 0, 5, 128, 128);
     },
-    loadEnemyTextures: function() {
+    loadEnemyTextures: function () {
         var textures = this.textureManager;
         textures.enemy = {
-            slime: {
-                normal: [],
-                dead: []
-            },
-            ghost: {
-                normal: [],
-                dead: []
-            },
-            fish: {
-                normal: [],
-                dead: []
-            }
+            slime: [],
+            ghost: [],
+            fish: []
         };
 
-        textures.getSpriteSheet(textures.enemy.slime.normal, "textures/enemies.png", 0, 1, 0, 2, 128, 128);
-        textures.getSpriteSheet(textures.enemy.slime.dead, "textures/enemies.png", 0, 1, 2, 4, 128, 128);
-        textures.getSpriteSheet(textures.enemy.ghost.normal, "textures/enemies.png", 1, 2, 0, 2, 128, 128);
-        textures.getSpriteSheet(textures.enemy.ghost.dead, "textures/enemies.png", 1, 2, 2, 4, 128, 128);
-        textures.getSpriteSheet(textures.enemy.fish.normal, "textures/enemies.png", 2, 3, 0, 2, 128, 128);
-        textures.getSpriteSheet(textures.enemy.fish.dead, "textures/enemies.png", 2, 3, 2, 4, 128, 128);
+        textures.getSpriteSheet(textures.enemy.slime, "textures/enemies.png", 0, 1, 0, 4, 128, 128);
+        textures.getSpriteSheet(textures.enemy.ghost, "textures/enemies.png", 1, 2, 0, 3, 128, 128);
+        textures.getSpriteSheet(textures.enemy.fish, "textures/enemies.png", 2, 3, 0, 3, 128, 128);
     },
     loadOtherTextures: function () {
         var textures = this.textureManager;

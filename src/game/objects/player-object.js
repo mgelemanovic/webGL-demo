@@ -1,5 +1,5 @@
 var Player = function () {
-    MovableObject.call(this, game.textureManager.player.idle, 0, 50);
+    MovableObject.call(this, game.textureManager.player, 0, 50);
     this.tag = "Player";
     this.animator = new Animator(5);
     this.respawnPosition = new Vector(0, 0);
@@ -7,6 +7,18 @@ var Player = function () {
     this.immunityPeriod = 0;
     this.collider.w = 0.45;
     this.collider.h = 0.8;
+
+    this.idle_textures = [];
+    for (var i = 0; i < 10; ++i)
+        this.idle_textures.push(game.textureManager.player[i]);
+    this.run_textures = [];
+    for (i = 10; i < 18; ++i) {
+        if (i == 14) continue;
+        this.run_textures.push(game.textureManager.player[i]);
+    }
+    this.jump_textures = [];
+    for (i = 20; i < 30; ++i)
+        this.jump_textures.push(game.textureManager.player[i]);
 };
 
 Player.prototype = Object.assign(Object.create(MovableObject.prototype), {
@@ -48,13 +60,12 @@ Player.prototype = Object.assign(Object.create(MovableObject.prototype), {
         }
     },
     animate: function () {
-        var textures = game.textureManager.player,
-            speed = this.rigidBody.speed.get(),
-            texturePool = textures.idle;
+        var speed = this.rigidBody.speed.get(),
+            texturePool = this.idle_textures;
         if (Math.abs(speed.x) > 0.0005)
-            texturePool = textures.run;
+            texturePool = this.run_textures;
         if (Math.abs(speed.y) > 0.0005)
-            texturePool = textures.jump;
+            texturePool = this.jump_textures;
         this.animator.animate(this, texturePool);         // Animate sprite
     },
     hurt: function (dmg) {
