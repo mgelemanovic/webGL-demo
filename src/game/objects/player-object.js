@@ -100,7 +100,7 @@ Player.prototype = Object.assign(Object.create(MovableObject.prototype), {
             else {
                 this.hurt(0.5);
                 if (this.immunityPeriod > 0)
-                    other.rigidBody.speed.x *= -1;
+                    other.changeDirection();
             }
             return;
         }

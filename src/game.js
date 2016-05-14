@@ -27,6 +27,7 @@ Game.prototype = {
             this.loadBiomeTextures("grass");
         if (!this.textureManager.player)
             this.loadPlayerTextures("robot");
+        this.loadEnemyTextures();
         this.loadOtherTextures();
 
         // Player creation
@@ -41,7 +42,7 @@ Game.prototype = {
         if (this.lastTime != 0) {
             this.elapsed = timeNow - this.lastTime;
             // Time step correction
-            if (this.elapsed > 60) this.elapsed = 60;
+            if (this.elapsed > 30) this.elapsed = 30;
         }
         this.lastTime = timeNow;
     },
@@ -75,9 +76,33 @@ Game.prototype = {
             jump: []
         };
 
-        textures.getSpriteSheet(textures.player.idle, "textures/" + player + ".png", 0, 2, 0, 5, 128, 128);
-        textures.getSpriteSheet(textures.player.run, "textures/" + player + ".png", 2, 4, 0, 4, 128, 128);
-        textures.getSpriteSheet(textures.player.jump, "textures/" + player + ".png", 4, 6, 0, 5, 128, 128);
+        textures.getSpriteSheet(textures.player.idle, "textures/players/" + player + ".png", 0, 2, 0, 5, 128, 128);
+        textures.getSpriteSheet(textures.player.run, "textures/players/" + player + ".png", 2, 4, 0, 4, 128, 128);
+        textures.getSpriteSheet(textures.player.jump, "textures/players/" + player + ".png", 4, 6, 0, 5, 128, 128);
+    },
+    loadEnemyTextures: function() {
+        var textures = this.textureManager;
+        textures.enemy = {
+            slime: {
+                normal: [],
+                dead: []
+            },
+            ghost: {
+                normal: [],
+                dead: []
+            },
+            fish: {
+                normal: [],
+                dead: []
+            }
+        };
+
+        textures.getSpriteSheet(textures.enemy.slime.normal, "textures/enemies.png", 0, 1, 0, 2, 128, 128);
+        textures.getSpriteSheet(textures.enemy.slime.dead, "textures/enemies.png", 0, 1, 2, 4, 128, 128);
+        textures.getSpriteSheet(textures.enemy.ghost.normal, "textures/enemies.png", 1, 2, 0, 2, 128, 128);
+        textures.getSpriteSheet(textures.enemy.ghost.dead, "textures/enemies.png", 1, 2, 2, 4, 128, 128);
+        textures.getSpriteSheet(textures.enemy.fish.normal, "textures/enemies.png", 2, 3, 0, 2, 128, 128);
+        textures.getSpriteSheet(textures.enemy.fish.dead, "textures/enemies.png", 2, 3, 2, 4, 128, 128);
     },
     loadOtherTextures: function () {
         var textures = this.textureManager;

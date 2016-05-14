@@ -22,7 +22,7 @@ Editor.prototype = {
         fillUp(16, 20, "DecorObject", textMng.items);
         fillUp(0, 3, "CoinPickUp", textMng.items);
         fillUp(7, 8, "Spikes", textMng.items);
-        fillUp(5, 6, "Enemy", textMng.items);
+        fillUp(0, 1, "Enemy", textMng.enemy.slime.normal);
         fillUp(3, 4, "StarPickUp", textMng.items);
     },
     loop: function () {
