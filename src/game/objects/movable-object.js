@@ -2,14 +2,12 @@ var MovableObject = function (texturePool, textureIndex, mass) {
     GameObject.call(this, texturePool, textureIndex);
     this.tag = "DynamicObject";
     this.rigidBody = new RigidBody(this, mass);
-    this.animator = new Animator(this, null);
 };
 
 MovableObject.prototype = Object.assign(Object.create(GameObject.prototype), {
     constructor: MovableObject,
     update: function () {
         this.rigidBody.applyForce();                    // Update physics
-        this.animator.animate();                        // Animate sprite
         this.checkForCollisionWith(game.scene.ground);  // Check for collisions with ground
     },
     checkForCollisionWith: function(pool) {

@@ -1,28 +1,18 @@
-var Animator = function (attachedTo, textures) {
-    this.attachedTo = attachedTo;
-    this.textures = textures;
+var Animator = function (speed) {
     this.frameCount = 0;
-    this.nextFrame = 5;
+    this.nextFrame = speed;
 };
 
 Animator.prototype = {
-    animate: function () {
-        if (this.textures == null) return;
-        var speed = this.attachedTo.rigidBody.speed.get(),
-            texturePool = this.textures.idle;
-        if (Math.abs(speed.x) > 0.0005)
-            texturePool = this.textures.run;
-        if (Math.abs(speed.y) > 0.0005)
-            texturePool = this.textures.jump;
-
-        this.attachedTo.texturePool = texturePool;
-        if (this.attachedTo.textureIndex >= this.attachedTo.texturePool.length)
-            this.attachedTo.textureIndex = 0;
+    animate: function (attachedTo, texturePool) {
+        attachedTo.texturePool = texturePool;
+        if (attachedTo.textureIndex >= attachedTo.texturePool.length)
+            attachedTo.textureIndex = 0;
 
         this.frameCount += 1;
         if (this.frameCount > this.nextFrame) {
             this.frameCount = 0;
-            this.attachedTo.textureIndex = (this.attachedTo.textureIndex + 1) % this.attachedTo.texturePool.length;
+            attachedTo.textureIndex = (attachedTo.textureIndex + 1) % attachedTo.texturePool.length;
         }
     }
 };

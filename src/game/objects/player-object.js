@@ -1,7 +1,7 @@
 var Player = function () {
     MovableObject.call(this, game.textureManager.player.idle, 0, 50);
     this.tag = "Player";
-    this.animator = new Animator(this, game.textureManager.player);
+    this.animator = new Animator(5);
     this.respawnPosition = new Vector(0, 0);
     this.currentLives = this.maxLives = 3;
     this.immunityPeriod = 0;
@@ -23,6 +23,8 @@ Player.prototype = Object.assign(Object.create(MovableObject.prototype), {
             this.immunityPeriod--;
 
         this.checkForDeath();
+
+        this.animate();
     },
     move: function (direction) {
         if (direction == "STOP") {
@@ -44,6 +46,16 @@ Player.prototype = Object.assign(Object.create(MovableObject.prototype), {
             this.rigidBody.isGrounded = false;
             this.rigidBody.force.y = jumpForce;
         }
+    },
+    animate: function() {
+        var textures = game.textureManager.player,
+            speed = this.rigidBody.speed.get(),
+            texturePool = textures.idle;
+        if (Math.abs(speed.x) > 0.0005)
+            texturePool = textures.run;
+        if (Math.abs(speed.y) > 0.0005)
+            texturePool = textures.jump;
+        this.animator.animate(this, texturePool);         // Animate sprite
     },
     hurt: function (dmg) {
         if (this.immunityPeriod == 0) {
