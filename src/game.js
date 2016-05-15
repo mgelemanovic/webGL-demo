@@ -19,6 +19,7 @@ Game.prototype = {
     start: function () {
         document.getElementById("startMenu").style.visibility = "hidden";
 
+        this.scene = new Scene();
         this.hud = new HUD();
         this.inputManager = new Input();
         this.editor = new Editor();
@@ -99,11 +100,10 @@ Game.prototype = {
     },
     loadScene: function (path) {
         game.waitToLoad++;
-        var self = this;
         var http_request = new XMLHttpRequest();
         http_request.onreadystatechange = function () {
             if (http_request.readyState == 4) {
-                self.scene = new Scene(JSON.parse(http_request.responseText));
+                game.scene.init(JSON.parse(http_request.responseText));
                 game.waitToLoad--;
             }
         };
@@ -116,7 +116,7 @@ Game.prototype = {
         reader.onload = function () {
             var data = JSON.parse(reader.result);
             if (data.checksum == 36479732) {
-                game.scene = new Scene(data);
+                game.scene.init(data);
                 game.hud.menu("mainMenu");
             }
         };

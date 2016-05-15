@@ -62,6 +62,9 @@ Player.prototype = Object.assign(Object.create(RigidBody.prototype), {
             this.immunityPeriod = 1000;     // 1 second period
         }
     },
+    heal: function(hp) {
+        this.currentLives = Math.min(this.maxLives, this.currentLives + hp);
+    },
     checkForDeath: function () {
         // If the player falls from the map, respawn and take 1 heart
         if (this.position.y < -4) {

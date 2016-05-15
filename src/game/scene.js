@@ -1,31 +1,32 @@
-var Scene = function (sceneInfo) {
+var Scene = function () {
     this.camera = new Vector(0.0, 0.0);
     this.range = 9;
 
-    var fillUp = function (objectPool, sceneInfo) {
-        if (!sceneInfo) return;
-        for (var i = 0; i < sceneInfo.length; ++i)
-            objectPool.push(Factory.create(sceneInfo[i].tag, sceneInfo[i]));
-    };
-
     this.background = Factory.createBackground();
-    game.player.respawnPosition.set(0, 0);
-    game.player.respawn();
-
-    this.ground = [];
-    this.decor = [];
-    this.pickups = [];
-    this.environment = [];
-    this.enemies = [];
-
-    fillUp(this.ground, sceneInfo.ground);
-    fillUp(this.decor, sceneInfo.decor);
-    fillUp(this.pickups, sceneInfo.pickups);
-    fillUp(this.environment, sceneInfo.environment);
-    fillUp(this.enemies, sceneInfo.enemies);
 };
 
 Scene.prototype = {
+    init: function(sceneInfo) {
+        var fillUp = function (objectPool, sceneInfo) {
+            if (!sceneInfo) return;
+            for (var i = 0; i < sceneInfo.length; ++i)
+                objectPool.push(Factory.create(sceneInfo[i].tag, sceneInfo[i]));
+        };
+        this.ground = [];
+        this.decor = [];
+        this.pickups = [];
+        this.environment = [];
+        this.enemies = [];
+
+        fillUp(this.ground, sceneInfo.ground);
+        fillUp(this.decor, sceneInfo.decor);
+        fillUp(this.pickups, sceneInfo.pickups);
+        fillUp(this.environment, sceneInfo.environment);
+        fillUp(this.enemies, sceneInfo.enemies);
+
+        game.player.respawnPosition.set(0, 0);
+        game.player.respawn();
+    },
     removeObjectFromScene: function (objectPool, coords) {
         for (var i = 0; i < objectPool.length; ++i) {
             if (coords.x == objectPool[i].position.x && coords.y == objectPool[i].position.y) {
