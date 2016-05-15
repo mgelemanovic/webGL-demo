@@ -18,10 +18,10 @@ HUD.prototype = {
                     "<p onclick='game.hud.closeMenu();'>BACK</p>";
             case "editorIntro":
                 if (!game.editor.isOn)
-                    return "<h1>Create a new scene?</h1>" +
-                        "<p><span onclick='game.editor.changeMode(); game.loadScene(\"empty\");'>YES </span>" +
-                        "<span onclick='game.editor.changeMode();'>NO </span>" +
-                        "<span onclick='game.hud.closeMenu();'>Cancel</span></p>";
+                    return "<h1>EDITOR</h1>" +
+                        "<p onclick='game.editor.changeMode(); game.loadScene(\"empty\");'>CREATE NEW SCENE</p>" +
+                        "<p onclick='game.editor.changeMode();'>EDIT CURRENT SCENE</p>" +
+                        "<p onclick='game.hud.closeMenu();'>Back</p>";
                 else {
                     game.editor.changeMode();
                     return "";

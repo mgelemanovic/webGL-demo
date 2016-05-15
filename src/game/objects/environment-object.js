@@ -18,7 +18,8 @@ var SpikesObject = function () {
 
 SpikesObject.prototype = Object.assign(Object.create(EnvironmentObject.prototype), {
     constructor: SpikesObject,
-    update: function() {},
+    update: function () {
+    },
     interact: function (other, direction) {
         if (other.rigidBody.speed.y < 0)
             other.hurt(1);
@@ -29,13 +30,12 @@ var CheckpointObject = function () {
     EnvironmentObject.call(this, game.textureManager.items, 12);
     this.tag = "Checkpoint";
     this.animator = new Animator(30);
-    this.textures = [game.textureManager.items[12], game.textureManager.items[13]];
 };
 
 CheckpointObject.prototype = Object.assign(Object.create(EnvironmentObject.prototype), {
     constructor: CheckpointObject,
-    update: function() {
-        this.animator.animate(this, this.textures);
+    update: function () {
+        this.animator.animate(this, game.textureManager.items.slice(12, 14));
     },
     interact: function (other, direction) {
         other.respawnPosition = this.position;

@@ -7,18 +7,6 @@ var Player = function () {
     this.immunityPeriod = 0;
     this.collider.w = 0.45;
     this.collider.h = 0.8;
-
-    this.idle_textures = [];
-    for (var i = 0; i < 10; ++i)
-        this.idle_textures.push(game.textureManager.player[i]);
-    this.run_textures = [];
-    for (i = 10; i < 18; ++i) {
-        if (i == 14) continue;
-        this.run_textures.push(game.textureManager.player[i]);
-    }
-    this.jump_textures = [];
-    for (i = 20; i < 30; ++i)
-        this.jump_textures.push(game.textureManager.player[i]);
 };
 
 Player.prototype = Object.assign(Object.create(MovableObject.prototype), {
@@ -61,12 +49,12 @@ Player.prototype = Object.assign(Object.create(MovableObject.prototype), {
     },
     animate: function () {
         var speed = this.rigidBody.speed.get(),
-            texturePool = this.idle_textures;
+            texturePool = game.textureManager.player.slice(0, 10);      // Idle textures
         if (Math.abs(speed.x) > 0.0005)
-            texturePool = this.run_textures;
+            texturePool = game.textureManager.player.slice(10, 18);     // Run textures
         if (Math.abs(speed.y) > 0.0005)
-            texturePool = this.jump_textures;
-        this.animator.animate(this, texturePool);         // Animate sprite
+            texturePool = game.textureManager.player.slice(20, 30);     // Jump textures
+        this.animator.animate(this, texturePool);
     },
     hurt: function (dmg) {
         if (this.immunityPeriod == 0) {

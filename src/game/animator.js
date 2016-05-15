@@ -5,7 +5,7 @@ var Animator = function (speed) {
 
 Animator.prototype = {
     animate: function (attachedTo, texturePool) {
-        if (attachedTo.textureIndex >= texturePool.length || attachedTo.texturePool != texturePool)
+        if (attachedTo.textureIndex >= texturePool.length)
             attachedTo.textureIndex = 0;
         attachedTo.texturePool = texturePool;
 

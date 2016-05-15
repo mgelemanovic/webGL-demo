@@ -24,20 +24,22 @@ var SlimeEnemy = function (spawn) {
     this.tag = "SlimeEnemy";
     this.animator = new Animator(20);
     this.rigidBody.speed.x = -0.002;
+
     this.collider.offset.y = -0.25;
     this.collider.h = 0.5;
     this.collider.w = 0.8;
-    this.textures = [];
-    for (var i = 0; i < 2; ++i)
-        this.textures.push(game.textureManager.enemy.slime[i]);
+
+    this.killed = false;
 };
 
 SlimeEnemy.prototype = Object.assign(Object.create(Enemy.prototype), {
     constructor: SlimeEnemy,
     update: function () {
-        MovableObject.prototype.update.call(this);
-        this.checkForCollisionWith(game.scene.enemies);
-        this.animator.animate(this, this.textures);
+        if (!this.killed) {
+            MovableObject.prototype.update.call(this);
+            this.checkForCollisionWith(game.scene.enemies);
+            this.animator.animate(this, game.textureManager.enemy.slime.slice(0, 2));
+        }
     },
     changeDirection: function () {
         this.position.y += 0.25;        // Little bounce when changing direction
@@ -51,10 +53,12 @@ SlimeEnemy.prototype = Object.assign(Object.create(Enemy.prototype), {
     },
     interact: function (other, direction) {
         if (direction == "UP") {
-            this.kill();
+            this.killed = true;
+            this.texturePool = game.textureManager.enemy.slime;
+            this.textureIndex = 2;
             other.rigidBody.force.y += 0.05;
         }
-        else {
+        else if (!this.killed) {
             other.hurt(0.5);
             if (other.immunityPeriod > 0)
                 this.changeDirection();
