@@ -20,7 +20,7 @@ Player.prototype = Object.assign(Object.create(RigidBody.prototype), {
         this.checkForCollisionWith(game.scene.enemies);
 
         if (this.immunityPeriod > 0)
-            this.immunityPeriod--;
+            this.immunityPeriod -= game.elapsed;
 
         this.checkForDeath();
 
@@ -57,9 +57,9 @@ Player.prototype = Object.assign(Object.create(RigidBody.prototype), {
         this.animator.animate(this, texturePool);
     },
     hurt: function (dmg) {
-        if (this.immunityPeriod == 0) {
+        if (this.immunityPeriod <= 0) {
             this.currentLives -= dmg;
-            this.immunityPeriod = 10;
+            this.immunityPeriod = 1000;     // 1 second period
         }
     },
     checkForDeath: function () {

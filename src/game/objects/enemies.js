@@ -59,9 +59,9 @@ SlimeEnemy.prototype = Object.assign(Object.create(Enemy.prototype), {
             other.speed.y = 7.5;
         }
         else if (!this.killed) {
-            other.hurt(0.5);
-            if (other.immunityPeriod > 0)
+            if (other.immunityPeriod <= 0)
                 this.changeDirection();
+            other.hurt(0.5);
         }
     }
 });
