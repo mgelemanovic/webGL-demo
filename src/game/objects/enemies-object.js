@@ -1,10 +1,10 @@
 var Enemy = function (texturePool, textureIndex, spawn) {
-    MovableObject.call(this, texturePool, textureIndex, 50);
+    RigidBody.call(this, texturePool, textureIndex);
     this.tag = "Enemy";
     this.spawn = spawn;
 };
 
-Enemy.prototype = Object.assign(Object.create(MovableObject.prototype), {
+Enemy.prototype = Object.assign(Object.create(RigidBody.prototype), {
     constructor: Enemy,
     writeData: function () {
         var data = GameObject.prototype.writeData.call(this);
@@ -23,7 +23,7 @@ var SlimeEnemy = function (spawn) {
     Enemy.call(this, game.textureManager.enemy.slime, 0, spawn);
     this.tag = "SlimeEnemy";
     this.animator = new Animator(20);
-    this.rigidBody.speed.x = -0.002;
+    this.speed.x = -2;
 
     this.collider.offset.y = -0.25;
     this.collider.h = 0.5;
@@ -36,27 +36,27 @@ SlimeEnemy.prototype = Object.assign(Object.create(Enemy.prototype), {
     constructor: SlimeEnemy,
     update: function () {
         if (!this.killed) {
-            MovableObject.prototype.update.call(this);
+            RigidBody.prototype.update.call(this);
             this.checkForCollisionWith(game.scene.enemies);
             this.animator.animate(this, game.textureManager.enemy.slime.slice(0, 2));
         }
     },
     changeDirection: function () {
         this.position.y += 0.25;        // Little bounce when changing direction
-        this.rigidBody.speed.x *= -1;
+        this.speed.x *= -1;
         this.scale.x *= -1;
     },
     onCollision: function (other, direction) {
         if (direction == "LEFT" || direction == "RIGHT")
             this.changeDirection();
-        MovableObject.prototype.onCollision.call(this, other, direction);
+        RigidBody.prototype.onCollision.call(this, other, direction);
     },
     interact: function (other, direction) {
         if (direction == "UP") {
             this.killed = true;
             this.texturePool = game.textureManager.enemy.slime;
             this.textureIndex = 2;
-            other.rigidBody.force.y += 0.05;
+            other.speed.y = 7.5;
         }
         else if (!this.killed) {
             other.hurt(0.5);

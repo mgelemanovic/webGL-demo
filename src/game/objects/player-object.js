@@ -1,5 +1,5 @@
 var Player = function () {
-    MovableObject.call(this, game.textureManager.player, 0, 50);
+    RigidBody.call(this, game.textureManager.player, 0);
     this.tag = "Player";
     this.animator = new Animator(5);
     this.respawnPosition = new Vector(0, 0);
@@ -9,10 +9,10 @@ var Player = function () {
     this.collider.h = 0.8;
 };
 
-Player.prototype = Object.assign(Object.create(MovableObject.prototype), {
+Player.prototype = Object.assign(Object.create(RigidBody.prototype), {
     constructor: Player,
     update: function () {
-        MovableObject.prototype.update.call(this);
+        RigidBody.prototype.update.call(this);
 
         // Additional collision checking for player
         this.checkForCollisionWith(game.scene.pickups);
@@ -28,31 +28,31 @@ Player.prototype = Object.assign(Object.create(MovableObject.prototype), {
     },
     move: function (direction) {
         if (direction == "STOP") {
-            this.rigidBody.speed.x = 0;
+            this.speed.x = 0;
             return;
         }
-        var moveSpeed = 0.004;
+        var moveSpeed = 4;
         if (direction == "LEFT") {
-            this.rigidBody.speed.x = -moveSpeed;
+            this.speed.x = -moveSpeed;
             this.scale.x = -1;
         } else if (direction == "RIGHT") {
-            this.rigidBody.speed.x = moveSpeed;
+            this.speed.x = moveSpeed;
             this.scale.x = 1;
         }
     },
     jump: function () {
-        var jumpForce = 0.015;
-        if (this.rigidBody.isGrounded) {
-            this.rigidBody.isGrounded = false;
-            this.rigidBody.force.y = jumpForce;
+        var jumpSpeed = 5;
+        if (this.onGround) {
+            this.onGround = false;
+            this.speed.y = jumpSpeed;
         }
     },
     animate: function () {
-        var speed = this.rigidBody.speed.get(),
+        var speed = this.speed.get(),
             texturePool = game.textureManager.player.slice(0, 10);      // Idle textures
-        if (Math.abs(speed.x) > 0.0005)
+        if (Math.abs(speed.x) > 0.5)
             texturePool = game.textureManager.player.slice(10, 18);     // Run textures
-        if (Math.abs(speed.y) > 0.0005)
+        if (Math.abs(speed.y) > 0.5)
             texturePool = game.textureManager.player.slice(20, 30);     // Jump textures
         this.animator.animate(this, texturePool);
     },
@@ -79,14 +79,14 @@ Player.prototype = Object.assign(Object.create(MovableObject.prototype), {
     respawn: function () {
         game.inputManager.clearInput();
         this.position.setv(this.respawnPosition);
-        this.rigidBody.isGrounded = false;
-        this.rigidBody.resetSpeedAndForce();
+        this.onGround = false;
+        this.speed = new Vector(0, 0);
     },
     onCollision: function (other, direction) {
         if (other instanceof PickUpObject || other instanceof EnvironmentObject || other instanceof Enemy) {
             other.interact(this, direction);
             return;
         }
-        MovableObject.prototype.onCollision.call(this, other, direction);
+        RigidBody.prototype.onCollision.call(this, other, direction);
     }
 });

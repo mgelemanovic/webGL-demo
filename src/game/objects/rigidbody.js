@@ -1,14 +1,26 @@
-var MovableObject = function (texturePool, textureIndex, mass) {
+var RigidBody = function (texturePool, textureIndex) {
     GameObject.call(this, texturePool, textureIndex);
-    this.tag = "DynamicObject";
-    this.rigidBody = new RigidBody(this, mass);
+    this.tag = "RigidBody";
+    this.speed = new Vector(0.0, 0.0);
+    this.onGround = false;
 };
 
-MovableObject.prototype = Object.assign(Object.create(GameObject.prototype), {
-    constructor: MovableObject,
+RigidBody.prototype = Object.assign(Object.create(GameObject.prototype), {
+    constructor: RigidBody,
     update: function () {
-        this.rigidBody.applyForce();                    // Update physics
+        this.applyPhysics();                            // Update physics
         this.checkForCollisionWith(game.scene.ground);  // Check for collisions with ground
+    },
+    applyPhysics: function () {
+        var step = game.elapsed / 1000,
+            gravity = -9.81;
+
+        this.speed.y += gravity * step;
+        this.position.add(this.speed.x * step, this.speed.y * step);
+    },
+    grounded: function () {
+        this.onGround = true;
+        this.speed.y = 0;
     },
     checkForCollisionWith: function (pool) {
         for (var i = 0; i < pool.length; ++i) {
@@ -26,7 +38,7 @@ MovableObject.prototype = Object.assign(Object.create(GameObject.prototype), {
 
         switch (direction) {
             case "UP":
-                this.rigidBody.onGround();
+                this.grounded();
                 this.position.y = oPos.y + (oCol.h + tCol.h) / 2 - tCol.offset.y;
                 break;
             case "DOWN":

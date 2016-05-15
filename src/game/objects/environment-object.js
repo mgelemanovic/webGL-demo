@@ -1,9 +1,9 @@
 var EnvironmentObject = function (texturePool, textureIndex) {
-    MovableObject.call(this, texturePool, textureIndex);
+    RigidBody.call(this, texturePool, textureIndex);
     this.tag = "Environment";
 };
 
-EnvironmentObject.prototype = Object.assign(Object.create(MovableObject.prototype), {
+EnvironmentObject.prototype = Object.assign(Object.create(RigidBody.prototype), {
     constructor: EnvironmentObject,
     interact: function (other, direction) {
     }
@@ -21,7 +21,7 @@ SpikesObject.prototype = Object.assign(Object.create(EnvironmentObject.prototype
     update: function () {
     },
     interact: function (other, direction) {
-        if (other.rigidBody.speed.y < 0)
+        if (other.speed.y < 0)
             other.hurt(1);
     }
 });
