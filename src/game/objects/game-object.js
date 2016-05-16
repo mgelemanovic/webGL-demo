@@ -39,12 +39,6 @@ GameObject.prototype = {
             }
         };
         data.texture = this.textureIndex;
-        if (this.scale.x != 1.0 || this.scale.y != 1.0) {
-            data.scale = {
-                x: this.scale.x,
-                y: this.scale.y
-            };
-        }
         if (this.tag != "GameObject") {
             data.tag = this.tag;
         }
@@ -58,6 +52,12 @@ Creator["GameObject"] = {
     },
     pool: function () {
         return game.scene.ground;
+    },
+    editor: function() {
+        var objects = [];
+        for (var i = 0; i < 16; ++i)
+            objects.push(new GameObject(game.textureManager.ground, i));
+        return objects;
     }
 };
 
@@ -69,5 +69,14 @@ Creator["DecorObject"] = {
     },
     pool: function () {
         return game.scene.decor;
+    },
+    editor: function() {
+        var objects = [];
+        for (var i = 16; i < 23; ++i) {
+            var object = new GameObject(game.textureManager.ground, i);
+            object.tag = "DecorObject";
+            objects.push(object);
+        }
+        return objects;
     }
 };

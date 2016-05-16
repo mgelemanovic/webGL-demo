@@ -76,5 +76,8 @@ Creator["SlimeEnemy"] = {
     },
     pool: function () {
         return game.scene.enemies;
+    },
+    editor: function() {
+        return new SlimeEnemy();
     }
 };

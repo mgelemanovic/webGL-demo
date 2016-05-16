@@ -70,6 +70,12 @@ Creator["CoinPickUp"] = {
     },
     pool: function () {
         return game.scene.pickups;
+    },
+    editor: function() {
+        var coins = [];
+        for (var i = 0; i < 4; ++i)
+            coins.push(new CoinPickUpObject(i));
+        return coins;
     }
 };
 
@@ -79,6 +85,9 @@ Creator["StarPickUp"] = {
     },
     pool: function () {
         return game.scene.pickups;
+    },
+    editor: function() {
+        return new StarPickUpObject();
     }
 };
 
@@ -88,5 +97,8 @@ Creator["HeartPickUp"] = {
     },
     pool: function () {
         return game.scene.pickups;
+    },
+    editor: function() {
+        return new HeartPickUpObject();
     }
 };

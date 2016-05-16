@@ -3,29 +3,15 @@ var Editor = function () {
     this.selectOn = false;
     this.switchStopper = false;
     this.decorFlag = false;
-    this.usedObj = {tag: "StaticObject", texture: null, index: 0};
+    this.usedObj = new GameObject(game.textureManager.ground, 0);
     this.allObj = [];
 };
 
 Editor.prototype = {
     initEditor: function () {
         if (this.allObj.length != 0) return;
-        var self = this,
-            textMng = game.textureManager,
-            fillUp = function (start, end, tag, texture) {
-                for (var j = start; j < end; ++j) {
-                    self.allObj.push({tag: tag, texture: texture, index: j});
-                }
-            };
-        this.usedObj = {tag: "GameObject", pool: game.scene.ground, texture: game.textureManager.ground, index: 0};
-        fillUp(0, 16, "GameObject", textMng.ground);
-        fillUp(16, 23, "DecorObject", textMng.ground);
-        fillUp(0, 4, "CoinPickUp", textMng.items);
-        fillUp(11, 12, "HeartPickUp", textMng.items);
-        fillUp(8, 9, "Spikes", textMng.items);
-        fillUp(4, 5, "Checkpoint", textMng.items);
-        fillUp(0, 1, "SlimeEnemy", textMng.enemy.slime);
-        fillUp(7, 8, "StarPickUp", textMng.items);
+        for (var prop in Creator)
+            this.allObj = this.allObj.concat(Creator[prop].editor());
     },
     loop: function () {
         this.handleInput();          // Handle editor input
@@ -51,11 +37,10 @@ Editor.prototype = {
         }
     },
     drawUsedObject: function () {
-        var editorBlock = new GameObject(this.usedObj.texture, this.usedObj.index);
-        editorBlock.drawDistance = -10;
-        editorBlock.position.setv(game.scene.camera);
-        editorBlock.position.add(10.5, -4.5);
-        editorBlock.render();
+        this.usedObj.drawDistance = -10;
+        this.usedObj.position.setv(game.scene.camera);
+        this.usedObj.position.add(10.5, -4.5);
+        this.usedObj.render();
     },
     drawObjectSelection: function () {
         var shadow;
@@ -72,8 +57,7 @@ Editor.prototype = {
             for (var j = 0; j < 9; ++j) {
                 var index = i * 9 + j;
                 if (index == this.allObj.length) return;
-                var objInfo = this.allObj[index];
-                var obj = new GameObject(objInfo.texture, objInfo.index);
+                var obj = this.allObj[index];
                 obj.drawDistance = -7;
                 obj.position.setv(game.scene.camera);
                 obj.position.add(j - 4, 3 - i);
@@ -95,7 +79,7 @@ Editor.prototype = {
 
         switch (event.which) {
             case 1:
-                Factory(objectTag, {pos: mouse, texture: game.editor.usedObj.index});
+                Factory(objectTag, {pos: mouse, texture: game.editor.usedObj.textureIndex});
                 break;
             case 2:
                 game.scene.removeObjectFromScene(Creator[objectTag].pool(), mouse);

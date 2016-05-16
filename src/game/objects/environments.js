@@ -53,6 +53,9 @@ Creator["Checkpoint"] = {
     },
     pool: function () {
         return game.scene.environment;
+    },
+    editor: function() {
+        return new CheckpointObject();
     }
 };
 
@@ -62,5 +65,8 @@ Creator["Spikes"] = {
     },
     pool: function () {
         return game.scene.environment;
+    },
+    editor: function() {
+        return new SpikesObject();
     }
 };
