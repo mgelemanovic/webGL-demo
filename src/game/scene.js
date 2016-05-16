@@ -8,23 +8,17 @@ var Scene = function () {
 };
 
 Scene.prototype = {
-    init: function(sceneInfo) {
-        var fillUp = function (sceneInfo) {
-            if (!sceneInfo) return;
-            for (var i = 0; i < sceneInfo.length; ++i)
-                Factory(sceneInfo[i].tag, sceneInfo[i]);
-        };
+    init: function (sceneInfo) {
+        if (!sceneInfo) return;
+
         this.ground = [];
         this.decor = [];
         this.pickups = [];
         this.environment = [];
         this.enemies = [];
 
-        fillUp(sceneInfo.ground);
-        fillUp(sceneInfo.decor);
-        fillUp(sceneInfo.pickups);
-        fillUp(sceneInfo.environment);
-        fillUp(sceneInfo.enemies);
+        for (var i = 0; i < sceneInfo.length; ++i)
+            Factory(sceneInfo[i].tag, sceneInfo[i]);
 
         game.player.respawnPosition.set(0, 0);
         game.player.respawn();
@@ -65,7 +59,7 @@ Scene.prototype = {
         drawPool(this.environment);
         drawPool(this.enemies);
     },
-    update: function() {
+    update: function () {
         var updatePool = function (objectPool) {
             for (var i = 0; i < objectPool.length; ++i) {
                 if (Math.abs(objectPool[i].position.x - game.scene.camera.x) < 1.5 * game.scene.range)

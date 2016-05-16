@@ -54,7 +54,7 @@ Game.prototype = {
         this.currentLevel = (this.currentLevel + 1) % this.numberOfLevels;
         this.loadScene(this.currentLevel + "");
     },
-    loadTextures: function() {
+    loadTextures: function () {
         this.loadPlayerTextures("robot");
         this.loadBiomeTextures("grass");
         this.loadEnemyTextures();
@@ -105,8 +105,11 @@ Game.prototype = {
         var http_request = new XMLHttpRequest();
         http_request.onreadystatechange = function () {
             if (http_request.readyState == 4) {
-                game.scene.init(JSON.parse(http_request.responseText));
-                game.waitToLoad--;
+                var data = JSON.parse(http_request.responseText);
+                if (data.checksum == 36479732) {
+                    game.scene.init(data.sceneInfo);
+                    game.waitToLoad--;
+                }
             }
         };
 
@@ -118,7 +121,7 @@ Game.prototype = {
         reader.onload = function () {
             var data = JSON.parse(reader.result);
             if (data.checksum == 36479732) {
-                game.scene.init(data);
+                game.scene.init(data.sceneInfo);
                 game.hud.menu("mainMenu");
             }
         };
@@ -133,24 +136,19 @@ Game.prototype = {
     saveScene: function () {
         var data = {
             checksum: 36479732,
-            ground: [],
-            decor: [],
-            pickups: [],
-            environment: [],
-            enemies: []
+            sceneInfo: []
         };
 
-        var fillData = function (data, scenePool) {
-            for (var i = 0; i < scenePool.length; ++i) {
-                data.push(scenePool[i].writeData());
-            }
+        var fillData = function (scenePool) {
+            for (var i = 0; i < scenePool.length; ++i)
+                data.sceneInfo.push(scenePool[i].writeData());
         };
 
-        fillData(data.ground, this.scene.ground);
-        fillData(data.decor, this.scene.decor);
-        fillData(data.pickups, this.scene.pickups);
-        fillData(data.environment, this.scene.environment);
-        fillData(data.enemies, this.scene.enemies);
+        fillData(this.scene.ground);
+        fillData(this.scene.decor);
+        fillData(this.scene.pickups);
+        fillData(this.scene.environment);
+        fillData(this.scene.enemies);
 
         var a = document.createElement("a");
         a.href = URL.createObjectURL(new Blob([JSON.stringify(data)], {type: "text/json"}));
