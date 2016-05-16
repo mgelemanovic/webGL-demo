@@ -31,7 +31,8 @@ Editor.prototype = {
         } else {
             var player = game.player;
             player.respawn();
-            player.currentLives = player.maxLives;
+            player.currentLives = player.maxLives = 3;
+            game.score = 0;
             this.selectOn = false;
             canvas.onmousedown = null;
         }
@@ -52,11 +53,11 @@ Editor.prototype = {
         shadow.position.setv(game.scene.camera);
         shadow.render();
 
-        var len = Math.ceil(this.allObj.length / 9);
-        for (var i = 0; i < len; ++i) {
+        for (var i = 0; i < Math.ceil(this.allObj.length / 9); ++i) {
             for (var j = 0; j < 9; ++j) {
                 var index = i * 9 + j;
                 if (index == this.allObj.length) return;
+
                 var obj = this.allObj[index];
                 obj.drawDistance = -7;
                 obj.position.setv(game.scene.camera);
