@@ -10,7 +10,7 @@ EnvironmentObject.prototype = Object.assign(Object.create(RigidBody.prototype), 
 });
 
 var SpikesObject = function () {
-    EnvironmentObject.call(this, game.textureManager.items, 7);
+    EnvironmentObject.call(this, game.textureManager.items, 8);
     this.tag = "Spikes";
     this.collider.offset.y = -0.25;
     this.collider.h = 0.5;
@@ -27,17 +27,22 @@ SpikesObject.prototype = Object.assign(Object.create(EnvironmentObject.prototype
 });
 
 var CheckpointObject = function () {
-    EnvironmentObject.call(this, game.textureManager.items, 12);
+    EnvironmentObject.call(this, game.textureManager.items, 4);
     this.tag = "Checkpoint";
     this.animator = new Animator(30);
+    this.used = false;
 };
 
 CheckpointObject.prototype = Object.assign(Object.create(EnvironmentObject.prototype), {
     constructor: CheckpointObject,
     update: function () {
-        this.animator.animate(this, game.textureManager.items.slice(12, 14));
+        if (this.used)
+            this.animator.animate(this, game.textureManager.items.slice(5, 7));
     },
     interact: function (other, direction) {
-        other.respawnPosition = this.position;
+        if (!this.used) {
+            other.respawnPosition = this.position;
+            this.used = true;
+        }
     }
 });

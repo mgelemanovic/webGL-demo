@@ -21,7 +21,7 @@ Factory = {
                 object = new SlimeEnemy(info.pos);
                 break;
             case "DecorObject":
-                object = this.createStaticObject(game.textureManager.items, info);
+                object = this.createStaticObject(game.textureManager.ground, info);
                 object.tag = "DecorObject";
                 break;
             default:

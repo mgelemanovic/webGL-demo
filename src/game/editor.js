@@ -18,14 +18,14 @@ Editor.prototype = {
                 }
             };
         this.usedObj = {tag: "StaticObject", pool: game.scene.ground, texture: game.textureManager.ground, index: 0};
-        fillUp(0, textMng.ground.length, "StaticObject", textMng.ground);
-        fillUp(16, 20, "DecorObject", textMng.items);
-        fillUp(0, 3, "CoinPickUp", textMng.items);
-        fillUp(13, 14, "HeartPickUp", textMng.hud);
-        fillUp(7, 8, "Spikes", textMng.items);
-        fillUp(12, 13, "Checkpoint", textMng.items);
+        fillUp(0, 16, "GameObject", textMng.ground);
+        fillUp(16, 23, "DecorObject", textMng.ground);
+        fillUp(0, 4, "CoinPickUp", textMng.items);
+        fillUp(11, 12, "HeartPickUp", textMng.items);
+        fillUp(8, 9, "Spikes", textMng.items);
+        fillUp(4, 5, "Checkpoint", textMng.items);
         fillUp(0, 1, "SlimeEnemy", textMng.enemy.slime);
-        fillUp(3, 4, "StarPickUp", textMng.items);
+        fillUp(7, 8, "StarPickUp", textMng.items);
     },
     loop: function () {
         this.handleInput();          // Handle editor input

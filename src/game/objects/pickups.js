@@ -15,6 +15,7 @@ var CoinPickUpObject = function (index) {
     var value = 1;
     if (index == 1) value = 2;
     else if (index == 2) value = 5;
+    else if (index == 3) value = 15;
     PickUpObject.call(this, game.textureManager.items, index);
     this.tag = "CoinPickUp";
     this.value = value;
@@ -35,7 +36,7 @@ CoinPickUpObject.prototype = Object.assign(Object.create(PickUpObject.prototype)
 });
 
 var StarPickUpObject = function () {
-    PickUpObject.call(this, game.textureManager.items, 3);
+    PickUpObject.call(this, game.textureManager.items, 7);
     this.tag = "StarPickUp";
 };
 
@@ -49,7 +50,7 @@ StarPickUpObject.prototype = Object.assign(Object.create(PickUpObject.prototype)
 });
 
 var HeartPickUpObject = function () {
-    PickUpObject.call(this, game.textureManager.hud, 13);
+    PickUpObject.call(this, game.textureManager.items, 11);
     this.tag = "HeartPickUp";
 };
 
