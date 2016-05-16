@@ -21,6 +21,7 @@ Editor.prototype = {
         fillUp(0, textMng.ground.length, "StaticObject", textMng.ground);
         fillUp(16, 20, "DecorObject", textMng.items);
         fillUp(0, 3, "CoinPickUp", textMng.items);
+        fillUp(13, 14, "HeartPickUp", textMng.hud);
         fillUp(7, 8, "Spikes", textMng.items);
         fillUp(12, 13, "Checkpoint", textMng.items);
         fillUp(0, 1, "SlimeEnemy", textMng.enemy.slime);
@@ -94,6 +95,7 @@ Editor.prototype = {
         switch (obj.tag) {
             case "CoinPickUp":
             case "StarPickUp":
+            case "HeartPickUp":
                 pool = game.scene.pickups;
                 break;
             case "Spikes":

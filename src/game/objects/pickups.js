@@ -24,7 +24,13 @@ CoinPickUpObject.prototype = Object.assign(Object.create(PickUpObject.prototype)
     constructor: CoinPickUpObject,
     interact: function (other, direction) {
         PickUpObject.prototype.interact.call(this, other, direction);
+        var before = Math.floor(game.score / 10) % 10;
         game.score += this.value;
+        var after = Math.floor(game.score / 10) % 10;
+        if (before == 9 && after == 0 && game.player.maxLives <= 8) {
+            game.player.maxLives++;
+            game.player.heal(1);
+        }
     }
 });
 
@@ -39,5 +45,20 @@ StarPickUpObject.prototype = Object.assign(Object.create(PickUpObject.prototype)
         PickUpObject.prototype.interact.call(this, other, direction);
         game.hud.menuContent('victory');
         game.nextLevel();
+    }
+});
+
+var HeartPickUpObject = function () {
+    PickUpObject.call(this, game.textureManager.hud, 13);
+    this.tag = "HeartPickUp";
+};
+
+HeartPickUpObject.prototype = Object.assign(Object.create(PickUpObject.prototype), {
+    constructor: HeartPickUpObject,
+    interact: function (other, direction) {
+        if (other.currentLives < other.maxLives) {
+            PickUpObject.prototype.interact.call(this, other, direction);
+            other.heal(1);
+        }
     }
 });

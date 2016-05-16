@@ -8,6 +8,9 @@ Factory = {
             case "StarPickUp":
                 object = new StarPickUpObject();
                 break;
+            case "HeartPickUp":
+                object = new HeartPickUpObject();
+                break;
             case "Spikes":
                 object = new SpikesObject();
                 break;
