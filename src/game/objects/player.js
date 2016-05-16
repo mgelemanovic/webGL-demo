@@ -7,6 +7,7 @@ var Player = function () {
     this.immunityPeriod = 0;
     this.collider.w = 0.45;
     this.collider.h = 0.8;
+    //this.doubleJumpReady =  true;     // Double jump functionality
 };
 
 Player.prototype = Object.assign(Object.create(RigidBody.prototype), {
@@ -46,6 +47,11 @@ Player.prototype = Object.assign(Object.create(RigidBody.prototype), {
             this.onGround = false;
             this.speed.y = jumpSpeed;
         }
+        // Double jump functionality
+        /*else if (this.doubleJumpReady) {
+            this.doubleJumpReady = false;
+            this.speed.y = 0.8 * jumpSpeed;
+        }*/
     },
     animate: function () {
         var speed = this.speed.get(),
@@ -91,5 +97,8 @@ Player.prototype = Object.assign(Object.create(RigidBody.prototype), {
             return;
         }
         RigidBody.prototype.onCollision.call(this, other, direction);
+        // Double jump functionality
+        /*if (direction == "UP")
+            this.doubleJumpReady = true;*/
     }
 });

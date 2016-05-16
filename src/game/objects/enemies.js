@@ -35,8 +35,8 @@ var SlimeEnemy = function (spawn) {
 SlimeEnemy.prototype = Object.assign(Object.create(Enemy.prototype), {
     constructor: SlimeEnemy,
     update: function () {
+        RigidBody.prototype.update.call(this);
         if (!this.killed) {
-            RigidBody.prototype.update.call(this);
             this.checkForCollisionWith(game.scene.enemies);
             this.animator.animate(this, game.textureManager.enemy.slime.slice(0, 2));
         }
@@ -51,11 +51,15 @@ SlimeEnemy.prototype = Object.assign(Object.create(Enemy.prototype), {
             this.changeDirection();
         RigidBody.prototype.onCollision.call(this, other, direction);
     },
+    kill: function () {
+        this.killed = true;
+        this.speed.x = 0;
+        this.texturePool = game.textureManager.enemy.slime;
+        this.textureIndex = 2;
+    },
     interact: function (other, direction) {
         if (direction == "UP") {
-            this.killed = true;
-            this.texturePool = game.textureManager.enemy.slime;
-            this.textureIndex = 2;
+            this.kill();
             other.speed.y = 7.5;
         }
         else if (!this.killed) {

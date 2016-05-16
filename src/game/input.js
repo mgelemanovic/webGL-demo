@@ -41,6 +41,7 @@ Input.prototype = {
         // Jump handling
         if (currentlyPressedKeys[this.commands.jump]) {
             game.player.jump();
+            currentlyPressedKeys[this.commands.jump] = false;
         }
     }
 };
