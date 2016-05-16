@@ -83,24 +83,22 @@ Editor.prototype = {
         }
     },
     putNewBlock: function (event) {
-        var scene = game.scene,
-            obj = game.editor.usedObj,
-            pool = creator[obj.tag].pool(),
+        var objectTag = game.editor.usedObj.tag,
             factor = 75,
             mouse = {
-                x: Math.round(scene.camera.x + (event.pageX - canvas.offsetLeft - canvas.width / 2) / factor),
-                y: Math.round(scene.camera.y + (event.pageY - canvas.offsetTop - canvas.height / 2) / -factor)
+                x: Math.round(game.scene.camera.x + (event.pageX - canvas.offsetLeft - canvas.width / 2) / factor),
+                y: Math.round(game.scene.camera.y + (event.pageY - canvas.offsetTop - canvas.height / 2) / -factor)
             };
 
-        if (game.editor.decorFlag && obj.tag == "GameObject")
-            pool = game.scene.decor;
+        if (game.editor.decorFlag && objectTag == "GameObject")
+            objectTag = "DecorObject";
 
         switch (event.which) {
             case 1:
-                pool.push(Factory.create(obj.tag, {pos: mouse, texture: obj.index}));
+                Factory(objectTag, {pos: mouse, texture: game.editor.usedObj.index});
                 break;
             case 2:
-                scene.removeObjectFromScene(pool, mouse);
+                game.scene.removeObjectFromScene(Creator[objectTag].pool(), mouse);
                 break;
         }
     },

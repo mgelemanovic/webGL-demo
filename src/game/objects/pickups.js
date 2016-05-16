@@ -64,7 +64,7 @@ HeartPickUpObject.prototype = Object.assign(Object.create(PickUpObject.prototype
     }
 });
 
-creator["CoinPickUp"] = {
+Creator["CoinPickUp"] = {
     create: function (info) {
         return new CoinPickUpObject(info.texture);
     },
@@ -73,7 +73,7 @@ creator["CoinPickUp"] = {
     }
 };
 
-creator["StarPickUp"] = {
+Creator["StarPickUp"] = {
     create: function (info) {
         return new StarPickUpObject();
     },
@@ -82,7 +82,7 @@ creator["StarPickUp"] = {
     }
 };
 
-creator["HeartPickUp"] = {
+Creator["HeartPickUp"] = {
     create: function (info) {
         return new HeartPickUpObject();
     },

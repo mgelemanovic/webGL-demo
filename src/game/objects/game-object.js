@@ -52,24 +52,18 @@ GameObject.prototype = {
     }
 };
 
-creator["GameObject"] = {
+Creator["GameObject"] = {
     create: function (info) {
-        var textureIndex = 0;
-        if (info.texture)
-            textureIndex = info.texture;
-        return new GameObject(game.textureManager.ground, textureIndex);
+        return new GameObject(game.textureManager.ground, info.texture);
     },
     pool: function () {
         return game.scene.ground;
     }
 };
 
-creator["DecorObject"] = {
+Creator["DecorObject"] = {
     create: function (info) {
-        var textureIndex = 0;
-        if (info.texture)
-            textureIndex = info.texture;
-        var object = new GameObject(game.textureManager.ground, textureIndex);
+        var object = new GameObject(game.textureManager.ground, info.texture);
         object.tag = "DecorObject";
         return object;
     },

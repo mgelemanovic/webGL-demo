@@ -70,7 +70,7 @@ SlimeEnemy.prototype = Object.assign(Object.create(Enemy.prototype), {
     }
 });
 
-creator["SlimeEnemy"] = {
+Creator["SlimeEnemy"] = {
     create: function (info) {
         return new SlimeEnemy(info.pos);
     },

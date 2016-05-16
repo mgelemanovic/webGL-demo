@@ -2,15 +2,17 @@ var Scene = function () {
     this.camera = new Vector(0.0, 0.0);
     this.range = 9;
 
-    this.background = Factory.createBackground();
+    this.background = new GameObject(game.textureManager.background, 0);
+    this.background.drawDistance = -0.5;
+    this.background.scale.x = 1.19;
 };
 
 Scene.prototype = {
     init: function(sceneInfo) {
-        var fillUp = function (objectPool, sceneInfo) {
+        var fillUp = function (sceneInfo) {
             if (!sceneInfo) return;
             for (var i = 0; i < sceneInfo.length; ++i)
-                objectPool.push(Factory.create(sceneInfo[i].tag, sceneInfo[i]));
+                Factory(sceneInfo[i].tag, sceneInfo[i]);
         };
         this.ground = [];
         this.decor = [];
@@ -18,11 +20,11 @@ Scene.prototype = {
         this.environment = [];
         this.enemies = [];
 
-        fillUp(this.ground, sceneInfo.ground);
-        fillUp(this.decor, sceneInfo.decor);
-        fillUp(this.pickups, sceneInfo.pickups);
-        fillUp(this.environment, sceneInfo.environment);
-        fillUp(this.enemies, sceneInfo.enemies);
+        fillUp(sceneInfo.ground);
+        fillUp(sceneInfo.decor);
+        fillUp(sceneInfo.pickups);
+        fillUp(sceneInfo.environment);
+        fillUp(sceneInfo.enemies);
 
         game.player.respawnPosition.set(0, 0);
         game.player.respawn();

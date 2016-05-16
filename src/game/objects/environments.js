@@ -47,7 +47,7 @@ CheckpointObject.prototype = Object.assign(Object.create(EnvironmentObject.proto
     }
 });
 
-creator["Checkpoint"] = {
+Creator["Checkpoint"] = {
     create: function (info) {
         return new CheckpointObject();
     },
@@ -56,7 +56,7 @@ creator["Checkpoint"] = {
     }
 };
 
-creator["Spikes"] = {
+Creator["Spikes"] = {
     create: function (info) {
         return new SpikesObject();
     },
