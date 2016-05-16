@@ -69,3 +69,12 @@ SlimeEnemy.prototype = Object.assign(Object.create(Enemy.prototype), {
         }
     }
 });
+
+creator["SlimeEnemy"] = {
+    create: function (info) {
+        return new SlimeEnemy(info.pos);
+    },
+    pool: function () {
+        return game.scene.enemies;
+    }
+};

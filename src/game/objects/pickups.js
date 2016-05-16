@@ -63,3 +63,30 @@ HeartPickUpObject.prototype = Object.assign(Object.create(PickUpObject.prototype
         }
     }
 });
+
+creator["CoinPickUp"] = {
+    create: function (info) {
+        return new CoinPickUpObject(info.texture);
+    },
+    pool: function () {
+        return game.scene.pickups;
+    }
+};
+
+creator["StarPickUp"] = {
+    create: function (info) {
+        return new StarPickUpObject();
+    },
+    pool: function () {
+        return game.scene.pickups;
+    }
+};
+
+creator["HeartPickUp"] = {
+    create: function (info) {
+        return new HeartPickUpObject();
+    },
+    pool: function () {
+        return game.scene.pickups;
+    }
+};

@@ -17,7 +17,7 @@ Editor.prototype = {
                     self.allObj.push({tag: tag, texture: texture, index: j});
                 }
             };
-        this.usedObj = {tag: "StaticObject", pool: game.scene.ground, texture: game.textureManager.ground, index: 0};
+        this.usedObj = {tag: "GameObject", pool: game.scene.ground, texture: game.textureManager.ground, index: 0};
         fillUp(0, 16, "GameObject", textMng.ground);
         fillUp(16, 23, "DecorObject", textMng.ground);
         fillUp(0, 4, "CoinPickUp", textMng.items);
@@ -85,36 +85,15 @@ Editor.prototype = {
     putNewBlock: function (event) {
         var scene = game.scene,
             obj = game.editor.usedObj,
-            pool = null,
+            pool = creator[obj.tag].pool(),
             factor = 75,
             mouse = {
                 x: Math.round(scene.camera.x + (event.pageX - canvas.offsetLeft - canvas.width / 2) / factor),
                 y: Math.round(scene.camera.y + (event.pageY - canvas.offsetTop - canvas.height / 2) / -factor)
             };
 
-        switch (obj.tag) {
-            case "CoinPickUp":
-            case "StarPickUp":
-            case "HeartPickUp":
-                pool = game.scene.pickups;
-                break;
-            case "Spikes":
-            case "Checkpoint":
-                pool = game.scene.environment;
-                break;
-            case "DecorObject":
-                pool = game.scene.decor;
-                break;
-            case "SlimeEnemy":
-                pool = game.scene.enemies;
-                break;
-            default:
-                if (game.editor.decorFlag)
-                    pool = game.scene.decor;
-                else
-                    pool = game.scene.ground;
-                break;
-        }
+        if (game.editor.decorFlag && obj.tag == "GameObject")
+            pool = game.scene.decor;
 
         switch (event.which) {
             case 1:
