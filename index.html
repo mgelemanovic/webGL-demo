@@ -24,9 +24,9 @@
     <script type="text/javascript" src="src/game/objects/game-object.js"></script>
     <script type="text/javascript" src="src/game/objects/rigidbody.js"></script>
     <script type="text/javascript" src="src/game/objects/player.js"></script>
-    <script type="text/javascript" src="src/game/objects/pickups.js"></script>
     <script type="text/javascript" src="src/game/objects/environments.js"></script>
     <script type="text/javascript" src="src/game/objects/enemies.js"></script>
+    <script type="text/javascript" src="src/game/objects/pickups.js"></script>
     <script type="text/javascript" src="src/game/editor.js"></script>
 
     <!--Release scripts--><!--
@@ -85,6 +85,7 @@
         <p>Author: Mladen Gelemanovic</p><hr/>
         <p onclick="game.hud.menuContent('editorIntro');">EDITOR MODE</p>
         <p onclick="game.hud.menuContent('scene');">SCENE MANAGEMENT</p>
+        <p onclick="game.scene.camera.vertical = !game.scene.camera.vertical;">TOGGLE VERTICAL CAMERA</p>
     </div>
 </div>
 </body>

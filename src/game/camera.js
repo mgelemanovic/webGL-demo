@@ -15,6 +15,8 @@ Camera.prototype = {
         this.position.x = Math.max(4, game.player.position.x);
         if (this.vertical)
             this.position.y = Math.max(0, game.player.position.y - 2);
+        else
+            this.position.y = 0;
     },
     prepareScene: function () {
         GL.clear(GL.COLOR_BUFFER_BIT);

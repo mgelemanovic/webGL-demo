@@ -79,18 +79,6 @@ Creator["CoinPickUp"] = {
     }
 };
 
-Creator["StarPickUp"] = {
-    create: function (info) {
-        return new StarPickUpObject();
-    },
-    pool: function () {
-        return game.scene.pickups;
-    },
-    editor: function() {
-        return new StarPickUpObject();
-    }
-};
-
 Creator["HeartPickUp"] = {
     create: function (info) {
         return new HeartPickUpObject();
@@ -100,5 +88,17 @@ Creator["HeartPickUp"] = {
     },
     editor: function() {
         return new HeartPickUpObject();
+    }
+};
+
+Creator["StarPickUp"] = {
+    create: function (info) {
+        return new StarPickUpObject();
+    },
+    pool: function () {
+        return game.scene.pickups;
+    },
+    editor: function() {
+        return new StarPickUpObject();
     }
 };

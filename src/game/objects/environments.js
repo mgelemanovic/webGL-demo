@@ -47,18 +47,6 @@ CheckpointObject.prototype = Object.assign(Object.create(EnvironmentObject.proto
     }
 });
 
-Creator["Checkpoint"] = {
-    create: function (info) {
-        return new CheckpointObject();
-    },
-    pool: function () {
-        return game.scene.environment;
-    },
-    editor: function() {
-        return new CheckpointObject();
-    }
-};
-
 Creator["Spikes"] = {
     create: function (info) {
         return new SpikesObject();
@@ -68,5 +56,17 @@ Creator["Spikes"] = {
     },
     editor: function() {
         return new SpikesObject();
+    }
+};
+
+Creator["Checkpoint"] = {
+    create: function (info) {
+        return new CheckpointObject();
+    },
+    pool: function () {
+        return game.scene.environment;
+    },
+    editor: function() {
+        return new CheckpointObject();
     }
 };
