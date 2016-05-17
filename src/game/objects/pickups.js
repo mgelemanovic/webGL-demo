@@ -7,6 +7,7 @@ var PickUpObject = function (texturePool, textureIndex) {
 PickUpObject.prototype = Object.assign(Object.create(GameObject.prototype), {
     constructor: PickUpObject,
     interact: function (other, direction) {
+        game.scene.removed.push(this);
         game.scene.removeObjectFromScene(game.scene.pickups, this.position);
     }
 });

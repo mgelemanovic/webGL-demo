@@ -9,6 +9,10 @@ var Editor = function () {
 
 Editor.prototype = {
     initEditor: function () {
+        while (game.scene.removed.length > 0) {
+            var obj = game.scene.removed.pop();
+            Factory(obj.tag, {pos: obj.position, texture: obj.textureIndex});
+        }
         if (this.allObj.length != 0) return;
         for (var prop in Creator)
             this.allObj = this.allObj.concat(Creator[prop].editor());
@@ -69,7 +73,7 @@ Editor.prototype = {
     },
     putNewBlock: function (event) {
         var objectTag = game.editor.usedObj.tag,
-            camera = game.scene.camera.position
+            camera = game.scene.camera.position,
             factor = 75,
             mouse = {
                 x: Math.round(camera.x + (event.pageX - canvas.offsetLeft - canvas.width / 2) / factor),

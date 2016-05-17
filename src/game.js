@@ -150,6 +150,7 @@ Game.prototype = {
         fillData(this.scene.pickups);
         fillData(this.scene.environment);
         fillData(this.scene.enemies);
+        fillData(this.scene.removed);
 
         var a = document.createElement("a");
         a.href = URL.createObjectURL(new Blob([JSON.stringify(data)], {type: "text/json"}));

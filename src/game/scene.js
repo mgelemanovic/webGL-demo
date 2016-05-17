@@ -11,6 +11,7 @@ Scene.prototype = {
         this.pickups = [];
         this.environment = [];
         this.enemies = [];
+        this.removed = [];
 
         for (var i = 0; i < sceneInfo.length; ++i)
             Factory(sceneInfo[i].tag, sceneInfo[i]);

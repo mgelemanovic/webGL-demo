@@ -15,6 +15,7 @@ Enemy.prototype = Object.assign(Object.create(RigidBody.prototype), {
     interact: function (other, direction) {
     },
     kill: function () {
+        game.scene.removed.push(this);
         game.scene.removeObjectFromScene(game.scene.enemies, this.position);
     }
 });
@@ -40,6 +41,8 @@ SlimeEnemy.prototype = Object.assign(Object.create(Enemy.prototype), {
             this.checkForCollisionWith(game.scene.enemies);
             this.animator.animate(this, game.textureManager.enemy.slime.slice(0, 2));
         }
+        if (this.position.y < -4)
+            Enemy.prototype.kill.call(this);
     },
     changeDirection: function () {
         this.position.y += 0.25;        // Little bounce when changing direction
