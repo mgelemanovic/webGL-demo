@@ -47,6 +47,42 @@ CheckpointObject.prototype = Object.assign(Object.create(EnvironmentObject.proto
     }
 });
 
+var BridgeObject = function (spawn) {
+    EnvironmentObject.call(this, game.textureManager.items, 9);
+    this.tag = "Bridge";
+    this.steppedOn = false;
+    this.countdown = 500;
+    this.spawn = spawn;
+};
+
+BridgeObject.prototype = Object.assign(Object.create(EnvironmentObject.prototype), {
+    constructor: BridgeObject,
+    update: function () {
+        if (this.steppedOn)
+            this.countdown -= game.elapsed;
+        if (this.countdown <= 0)
+            this.applyPhysics();
+
+        if (this.position.y < -4) {
+            game.scene.removeObjectFromScene(game.scene.enemies, this.position);
+            this.position.setv(this.spawn);
+            game.scene.removed.push(this);
+        }
+    },
+    interact: function (other, direction) {
+        if (direction == "UP") {
+            RigidBody.prototype.onCollision.call(other, this, "UP");
+            this.steppedOn = true;
+        }
+    },
+    writeData: function () {
+        var data = GameObject.prototype.writeData.call(this);
+        data.pos.x = this.spawn.x;
+        data.pos.y = this.spawn.y;
+        return data;
+    }
+});
+
 Creator["Spikes"] = {
     create: function (info) {
         return new SpikesObject();
@@ -54,7 +90,7 @@ Creator["Spikes"] = {
     pool: function () {
         return game.scene.environment;
     },
-    editor: function() {
+    editor: function () {
         return new SpikesObject();
     }
 };
@@ -66,7 +102,19 @@ Creator["Checkpoint"] = {
     pool: function () {
         return game.scene.environment;
     },
-    editor: function() {
+    editor: function () {
         return new CheckpointObject();
+    }
+};
+
+Creator["Bridge"] = {
+    create: function (info) {
+        return new BridgeObject(info.pos);
+    },
+    pool: function () {
+        return game.scene.enemies;
+    },
+    editor: function () {
+        return new BridgeObject();
     }
 };
