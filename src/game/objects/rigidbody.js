@@ -42,6 +42,7 @@ RigidBody.prototype = Object.assign(Object.create(GameObject.prototype), {
                 this.position.y = oPos.y + (oCol.h + tCol.h) / 2 - tCol.offset.y;
                 break;
             case "DOWN":
+                this.speed.y = 0;
                 this.position.y = oPos.y - (oCol.h + tCol.h) / 2 - tCol.offset.y;
                 break;
             case "RIGHT":

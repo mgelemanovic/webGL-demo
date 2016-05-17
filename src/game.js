@@ -45,6 +45,7 @@ Game.prototype = {
 
         this.player.update();               // Update player
         this.scene.update();                // Update scene
+        this.scene.camera.followPlayer();
 
         this.scene.render();                // Render game world
         this.player.render();               // Render player

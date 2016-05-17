@@ -32,7 +32,7 @@ HUD.prototype = {
     },
     render: function () {
         var hudElement = new GameObject(game.textureManager.hud, 13),
-            camera = game.scene.camera,
+            camera = game.scene.camera.position,
             maxLives = game.player.maxLives,
             currentLives = game.player.currentLives,
             score = game.score,

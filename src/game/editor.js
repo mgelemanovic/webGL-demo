@@ -39,7 +39,7 @@ Editor.prototype = {
     },
     drawUsedObject: function () {
         this.usedObj.drawDistance = -10;
-        this.usedObj.position.setv(game.scene.camera);
+        this.usedObj.position.setv(game.scene.camera.position);
         this.usedObj.position.add(10.5, -4.5);
         this.usedObj.render();
     },
@@ -50,7 +50,7 @@ Editor.prototype = {
         else
             shadow = new GameObject(game.textureManager.colors, 0);
         shadow.drawDistance = -0.1;
-        shadow.position.setv(game.scene.camera);
+        shadow.position.setv(game.scene.camera.position);
         shadow.render();
 
         for (var i = 0; i < Math.ceil(this.allObj.length / 9); ++i) {
@@ -60,7 +60,7 @@ Editor.prototype = {
 
                 var obj = this.allObj[index];
                 obj.drawDistance = -7;
-                obj.position.setv(game.scene.camera);
+                obj.position.setv(game.scene.camera.position);
                 obj.position.add(j - 4, 3 - i);
                 obj.scale.set(0.8, 0.8);
                 obj.render();
@@ -69,10 +69,11 @@ Editor.prototype = {
     },
     putNewBlock: function (event) {
         var objectTag = game.editor.usedObj.tag,
+            camera = game.scene.camera.position
             factor = 75,
             mouse = {
-                x: Math.round(game.scene.camera.x + (event.pageX - canvas.offsetLeft - canvas.width / 2) / factor),
-                y: Math.round(game.scene.camera.y + (event.pageY - canvas.offsetTop - canvas.height / 2) / -factor)
+                x: Math.round(camera.x + (event.pageX - canvas.offsetLeft - canvas.width / 2) / factor),
+                y: Math.round(camera.y + (event.pageY - canvas.offsetTop - canvas.height / 2) / -factor)
             };
 
         if (game.editor.decorFlag && objectTag == "GameObject")
@@ -99,11 +100,19 @@ Editor.prototype = {
     handleInput: function () {
         // Pressed right
         if (currentlyPressedKeys[39]) {
-            game.scene.camera.x += 0.05;
+            game.scene.camera.position.x += 0.05;
         }
         // Pressed left
         if (currentlyPressedKeys[37]) {
-            game.scene.camera.x -= 0.05;
+            game.scene.camera.position.x -= 0.05;
+        }
+        // Pressed up
+        if (currentlyPressedKeys[38]) {
+            game.scene.camera.position.y += 0.05;
+        }
+        // Pressed down
+        if (currentlyPressedKeys[40]) {
+            game.scene.camera.position.y -= 0.05;
         }
         // Pressed h
         if (currentlyPressedKeys[72] && !this.switchStopper) {
