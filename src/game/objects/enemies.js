@@ -15,6 +15,7 @@ Enemy.prototype = Object.assign(Object.create(RigidBody.prototype), {
     interact: function (other, direction) {
     },
     kill: function () {
+        this.position = this.spawn;
         game.scene.removed.push(this);
         game.scene.removeObjectFromScene(game.scene.enemies, this.position);
     }
@@ -73,6 +74,45 @@ SlimeEnemy.prototype = Object.assign(Object.create(Enemy.prototype), {
     }
 });
 
+var SawEnemy = function (spawn) {
+    Enemy.call(this, game.textureManager.enemy.saw, 0, spawn);
+    this.tag = "SawEnemy";
+    this.animator = new Animator(20);
+    this.speed.x = -3.5;
+
+    this.collider.offset.y = -0.25;
+    this.collider.h = 0.5;
+};
+
+SawEnemy.prototype = Object.assign(Object.create(Enemy.prototype), {
+    constructor: SawEnemy,
+    update: function () {
+        RigidBody.prototype.update.call(this);
+        this.animator.animate(this, game.textureManager.enemy.saw.slice(0, 2));
+
+        if (this.speed.y < 0)
+            this.changeDirection();
+
+        if (this.position.y < -4)
+            Enemy.prototype.kill.call(this);
+    },
+    changeDirection: function () {
+        this.speed.x *= -1;
+        this.speed.y = 0;
+    },
+    onCollision: function (other, direction) {
+        if (direction == "LEFT" || direction == "RIGHT")
+            this.changeDirection();
+        RigidBody.prototype.onCollision.call(this, other, direction);
+    },
+    interact: function (other, direction) {
+        other.hurt(0.5);
+        if (direction == "UP") {
+            other.bounce(3);
+        }
+    }
+});
+
 Creator["SlimeEnemy"] = {
     create: function (info) {
         return new SlimeEnemy(info.pos);
@@ -82,5 +122,17 @@ Creator["SlimeEnemy"] = {
     },
     editor: function () {
         return new SlimeEnemy();
+    }
+};
+
+Creator["SawEnemy"] = {
+    create: function (info) {
+        return new SawEnemy(info.pos);
+    },
+    pool: function () {
+        return game.scene.enemies;
+    },
+    editor: function () {
+        return new SawEnemy();
     }
 };
