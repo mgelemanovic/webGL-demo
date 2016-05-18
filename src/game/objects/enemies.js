@@ -113,6 +113,29 @@ SawEnemy.prototype = Object.assign(Object.create(Enemy.prototype), {
     }
 });
 
+var GhostEnemy = function (spawn) {
+    Enemy.call(this, game.textureManager.enemy.ghost, 0, spawn);
+    this.tag = "GhostEnemy";
+    this.animator = new Animator(50);
+    this.step = 0;
+    this.collider.w = 0.5;
+    this.collider.h = 0.65;
+    this.path = new Vector(Math.max(1, 3 * Math.random()), Math.max(1, 3 * Math.random()));
+};
+
+GhostEnemy.prototype = Object.assign(Object.create(Enemy.prototype), {
+    constructor: GhostEnemy,
+    update: function () {
+        this.position.x = this.spawn.x + this.path.x * Math.cos(this.step / 60);
+        this.position.y = this.spawn.y + this.path.y * Math.sin(2 * this.step / 60);
+        this.step++;
+        this.animator.animate(this, game.textureManager.enemy.ghost.slice(0, 2));
+    },
+    interact: function (other, direction) {
+        other.hurt(0.5);
+    }
+});
+
 Creator["SlimeEnemy"] = {
     create: function (info) {
         return new SlimeEnemy(info.pos);
@@ -134,5 +157,17 @@ Creator["SawEnemy"] = {
     },
     editor: function () {
         return new SawEnemy();
+    }
+};
+
+Creator["GhostEnemy"] = {
+    create: function (info) {
+        return new GhostEnemy(info.pos);
+    },
+    pool: function () {
+        return game.scene.enemies;
+    },
+    editor: function () {
+        return new GhostEnemy();
     }
 };
