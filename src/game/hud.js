@@ -18,12 +18,12 @@ HUD.prototype = {
                     "<p onclick='game.hud.closeMenu();'>BACK</p>";
             case "editorIntro":
                 if (!game.editor.isOn)
-                    return "<h1>EDITOR</h1>" +
+                    return "<h1>EDITOR</h1><hr/>" +
                         "<p onclick='game.editor.changeMode(); game.loadScene(\"empty\");'>CREATE NEW SCENE</p>" +
                         "<p onclick='game.editor.changeMode();'>EDIT CURRENT SCENE</p>" +
                         "<p onclick='game.hud.closeMenu();'>BACK</p>";
                 else {
-                    return "<h1>EDITOR</h1>" +
+                    return "<h1>EDITOR</h1><hr/>" +
                         "<p onclick='game.editor.changeMode();'>PLAY SCENE</p>" +
                         "<p onclick='game.hud.closeMenu();'>BACK</p>";
                 }
@@ -142,7 +142,7 @@ HUD.prototype = {
         menu.style.top = y;
         if (menu.innerHTML == "") return;
         var div = document.getElementById("container");
-        div.replaceChild(menu, div.childNodes[3]);
+        div.replaceChild(menu, div.childNodes[4]);
     },
     hideInfo: function (id) {
         document.getElementById(id).style.visibility = "hidden";

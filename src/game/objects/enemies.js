@@ -116,7 +116,7 @@ SawEnemy.prototype = Object.assign(Object.create(Enemy.prototype), {
 var GhostEnemy = function (spawn) {
     Enemy.call(this, game.textureManager.enemy.ghost, 0, spawn);
     this.tag = "GhostEnemy";
-    this.animator = new Animator(50);
+    this.animator = new Animator(100);
     this.step = 0;
     this.collider.w = 0.5;
     this.collider.h = 0.65;
@@ -133,6 +133,41 @@ GhostEnemy.prototype = Object.assign(Object.create(Enemy.prototype), {
     },
     interact: function (other, direction) {
         other.hurt(0.5);
+    }
+});
+
+var FishEnemy = function (spawn) {
+    Enemy.call(this, game.textureManager.enemy.fish, 0, spawn);
+    this.tag = "FishEnemy";
+    this.collider.w = 0.5;
+    this.collider.h = 0.65;
+    this.nextJump = 0;
+};
+
+FishEnemy.prototype = Object.assign(Object.create(Enemy.prototype), {
+    constructor: FishEnemy,
+    update: function () {
+        if (this.position.y < -5) {
+            this.speed.y = 12;
+            this.position.y = -4.9;
+            this.nextJump = 1500;
+        }
+        if (this.nextJump <= 0)
+            this.applyPhysics();
+        if (this.speed.y < 0)
+            this.textureIndex = 1;
+        else
+            this.textureIndex = 0;
+        this.nextJump -= game.elapsed;
+    },
+    interact: function (other, direction) {
+        if (direction == "UP") {
+            if (this.speed.y > 0) {
+                other.bounce(3);
+                this.speed.y = 0;
+            }
+        } else
+            other.hurt(0.5);
     }
 });
 
@@ -169,5 +204,17 @@ Creator["GhostEnemy"] = {
     },
     editor: function () {
         return new GhostEnemy();
+    }
+};
+
+Creator["FishEnemy"] = {
+    create: function (info) {
+        return new FishEnemy(info.pos);
+    },
+    pool: function () {
+        return game.scene.enemies;
+    },
+    editor: function () {
+        return new FishEnemy();
     }
 };
