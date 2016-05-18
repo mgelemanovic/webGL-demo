@@ -1,7 +1,6 @@
 var Editor = function () {
     this.isOn = false;
     this.selectOn = false;
-    this.switchStopper = false;
     this.decorFlag = false;
     this.usedObj = new GameObject(game.textureManager.ground, 0);
     this.allObj = [];
@@ -31,28 +30,39 @@ Editor.prototype = {
         this.isOn = !this.isOn;
         if (this.isOn) {
             canvas.onmousedown = this.putNewBlock;
+            game.hud.info("editor", 45, 500);
             this.initEditor();
         } else {
+            game.hud.hideInfo("editor");
             var player = game.player;
             player.respawn();
             player.currentLives = player.maxLives = 3;
             game.score = 0;
-            this.selectOn = false;
+            this.selectOn = this.decorFlag = false;
             canvas.onmousedown = null;
         }
     },
     drawUsedObject: function () {
+        if (!this.selectOn) {
+            var shadow = new GameObject(game.textureManager.colors, 0);
+            if (this.decorFlag)
+                shadow.textureIndex = 1;
+            shadow.drawDistance = -10;
+            shadow.scale = new Vector(1.5, 1.5);
+            shadow.position.setv(game.scene.camera.position);
+            shadow.position.add(11, -4.75);
+            shadow.render();
+        }
+
         this.usedObj.drawDistance = -10;
         this.usedObj.position.setv(game.scene.camera.position);
-        this.usedObj.position.add(10.5, -4.5);
+        this.usedObj.position.add(11, -4.75);
         this.usedObj.render();
     },
     drawObjectSelection: function () {
-        var shadow;
+        var shadow = new GameObject(game.textureManager.colors, 0);
         if (this.decorFlag)
-            shadow = new GameObject(game.textureManager.colors, 1);
-        else
-            shadow = new GameObject(game.textureManager.colors, 0);
+            shadow.textureIndex = 1;
         shadow.drawDistance = -0.1;
         shadow.position.setv(game.scene.camera.position);
         shadow.render();
@@ -101,6 +111,13 @@ Editor.prototype = {
         if (index > game.editor.allObj.length || index < 0) return;
         game.editor.usedObj = game.editor.allObj[index];
     },
+    toggleSelector: function() {
+        this.selectOn = !this.selectOn;
+        if (this.selectOn)
+            canvas.onmousedown = this.selectNewBlock;
+        else
+            canvas.onmousedown = this.putNewBlock;
+    },
     handleInput: function () {
         // Pressed right
         if (currentlyPressedKeys[39]) {
@@ -118,22 +135,5 @@ Editor.prototype = {
         if (currentlyPressedKeys[40]) {
             game.scene.camera.position.y -= 0.05;
         }
-        // Pressed h
-        if (currentlyPressedKeys[72] && !this.switchStopper) {
-            this.selectOn = !this.selectOn;
-            if (this.selectOn)
-                canvas.onmousedown = this.selectNewBlock;
-            else
-                canvas.onmousedown = this.putNewBlock;
-            this.switchStopper = true;
-        }
-        // Pressed g
-        if (currentlyPressedKeys[71] && !this.switchStopper) {
-            this.decorFlag = !this.decorFlag;
-            this.switchStopper = true;
-        }
-
-        if (!currentlyPressedKeys[71] && !currentlyPressedKeys[72])
-            this.switchStopper = false;
     }
 };

@@ -26,6 +26,9 @@ HUD.prototype = {
                     game.editor.changeMode();
                     return "";
                 }
+            case "editor":
+                return "<p onclick='game.editor.toggleSelector();'>CHOOSE OBJECT</p>" +
+                    "<p onclick='game.editor.decorFlag = !game.editor.decorFlag;'>DECOR MODE</p>";
             default:
                 return "";
         }
@@ -111,5 +114,20 @@ HUD.prototype = {
         var div = document.getElementById("container");
         div.replaceChild(menu, div.childNodes[2]);
         this.showMenu(id);
+    },
+    info: function (id, x, y) {
+        var menu = document.createElement("DIV");
+        menu.className = "menu";
+        menu.id = id;
+        menu.innerHTML = this.init(id);
+        menu.style.visibility = "visible";
+        menu.style.left = x;
+        menu.style.top = y;
+        if (menu.innerHTML == "") return;
+        var div = document.getElementById("container");
+        div.replaceChild(menu, div.childNodes[2]);
+    },
+    hideInfo: function (id) {
+        document.getElementById(id).style.visibility = "hidden";
     }
 };

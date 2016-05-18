@@ -13,8 +13,12 @@ var Input = function () {
 Input.prototype = {
     handleKeyDown: function (event) {
         // Pause the game and show the menu if escape is pressed
-        if (event.keyCode == 27)
-            game.hud.menu("mainMenu");
+        if (event.keyCode == 27) {
+            if (game.editor.selectOn)
+                game.editor.toggleSelector();
+            else
+                game.hud.menu("mainMenu");
+        }
 
         currentlyPressedKeys[event.keyCode] = true;
     },
