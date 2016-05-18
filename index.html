@@ -43,6 +43,7 @@
         void main(void) {
             gl_FragColor = texture2D(uSampler, vTextureCoord);
         }
+
     </script>
 
     <script id="shader-vs" type="x-shader/x-vertex">
@@ -58,6 +59,7 @@
             gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
             vTextureCoord = aTextureCoord;
         }
+
     </script>
 </head>
 
@@ -66,26 +68,18 @@
     <canvas id="webgl-context" width="1280" height="600"></canvas>
     <div class="menu" id="startMenu" style="visibility: visible">
         <h1>WEBGL PLATFORMER v1</h1>
-        <p>Author: Mladen Gelemanovic</p><hr/>
+        <p>Author: Mladen Gelemanovic</p>
+        <hr/>
         <p onclick="game.start();">PLAY</p>
-        <p>
-            <h3>BIOME</h3>
-            <span onclick="game.loadBiomeTextures('grass');">GRASS</span>
-            <span onclick="game.loadBiomeTextures('snow');">SNOW</span>
-            <span onclick="game.loadBiomeTextures('desert');">DESERT</span>
-        </p>
-        <p>
-            <h3>PLAYER</h3>
-            <span onclick="game.loadPlayerTextures('robot');">ROBOT</span>
-            <span onclick="game.loadPlayerTextures('adventurer');">ADVENTURER</span>
-        </p>
+        <p onclick="document.getElementById('startMenu').style.visibility = 'hidden'; game.hud.info('customization', 500, 150);">
+            CUSTOMIZATION</p>
     </div>
     <div class="menu" id="mainMenu">
         <h1>WEBGL PLATFORMER v1</h1>
-        <p>Author: Mladen Gelemanovic</p><hr/>
+        <p>Author: Mladen Gelemanovic</p>
+        <hr/>
         <p onclick="game.hud.menuContent('editorIntro');">EDITOR MODE</p>
         <p onclick="game.hud.menuContent('scene');">SCENE MANAGEMENT</p>
-        <p onclick="game.scene.camera.vertical = !game.scene.camera.vertical;">TOGGLE VERTICAL CAMERA</p>
     </div>
 </div>
 </body>

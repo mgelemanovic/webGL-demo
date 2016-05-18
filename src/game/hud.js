@@ -21,14 +21,31 @@ HUD.prototype = {
                     return "<h1>EDITOR</h1>" +
                         "<p onclick='game.editor.changeMode(); game.loadScene(\"empty\");'>CREATE NEW SCENE</p>" +
                         "<p onclick='game.editor.changeMode();'>EDIT CURRENT SCENE</p>" +
-                        "<p onclick='game.hud.closeMenu();'>Back</p>";
+                        "<p onclick='game.hud.closeMenu();'>BACK</p>";
                 else {
-                    game.editor.changeMode();
-                    return "";
+                    return "<h1>EDITOR</h1>" +
+                        "<p onclick='game.editor.changeMode();'>PLAY SCENE</p>" +
+                        "<p onclick='game.hud.closeMenu();'>BACK</p>";
                 }
             case "editor":
-                return "<p onclick='game.editor.toggleSelector();'>CHOOSE OBJECT</p>" +
+                return "<p onclick='game.editor.deleteFlag = !game.editor.deleteFlag;'>DELETE MODE</p>" +
                     "<p onclick='game.editor.decorFlag = !game.editor.decorFlag;'>DECOR MODE</p>";
+            case "customization":
+                return "<h1>CUSTOMIZATION</h1><hr/>" +
+                    "<p onclick='game.hud.hideInfo(\"customization\"); game.hud.info(\"player\", 500, 150);'>PLAYER</p>" +
+                    "<p onclick='game.hud.hideInfo(\"customization\"); game.hud.info(\"biome\", 500, 150);'>BIOME</p>" +
+                    "<p onclick='document.getElementById(\"startMenu\").style.visibility = \"visible\"; game.hud.hideInfo(\"customization\");'>BACK</p>";
+            case "player":
+                return "<h1>CHOOSE PLAYER</h1><hr/>" +
+                    "<p onclick='game.loadPlayerTextures(\"robot\");'>ROBOT</p>" +
+                    "<p onclick='game.loadPlayerTextures(\"adventurer\");'>ADVENTURER</p> " +
+                    "<p onclick='game.hud.hideInfo(\"player\"); game.hud.info(\"customization\", 500, 150);'>BACK</p>";
+            case "biome":
+                return "<h1>CHOOSE BIOME</h1><hr/>" +
+                    "<p onclick='game.loadBiomeTextures(\"grass\");'>GRASS</p>" +
+                    "<p onclick='game.loadBiomeTextures(\"snow\");'>SNOW</p> " +
+                    "<p onclick='game.loadBiomeTextures(\"desert\");'>DESERT</p> " +
+                    "<p onclick='game.hud.hideInfo(\"biome\"); game.hud.info(\"customization\", 500, 150);'>BACK</p>";
             default:
                 return "";
         }
@@ -125,7 +142,7 @@ HUD.prototype = {
         menu.style.top = y;
         if (menu.innerHTML == "") return;
         var div = document.getElementById("container");
-        div.replaceChild(menu, div.childNodes[2]);
+        div.replaceChild(menu, div.childNodes[3]);
     },
     hideInfo: function (id) {
         document.getElementById(id).style.visibility = "hidden";

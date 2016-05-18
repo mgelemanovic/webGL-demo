@@ -1,7 +1,6 @@
 var Editor = function () {
-    this.isOn = false;
-    this.selectOn = false;
-    this.decorFlag = false;
+    this.isOn = this.selectOn = false;
+    this.decorFlag = this.deleteFlag = false;
     this.usedObj = new GameObject(game.textureManager.ground, 0);
     this.allObj = [];
 };
@@ -47,6 +46,8 @@ Editor.prototype = {
             var shadow = new GameObject(game.textureManager.colors, 0);
             if (this.decorFlag)
                 shadow.textureIndex = 1;
+            if (this.deleteFlag)
+                shadow.textureIndex = 3;
             shadow.drawDistance = -10;
             shadow.scale = new Vector(1.5, 1.5);
             shadow.position.setv(game.scene.camera.position);
@@ -63,6 +64,8 @@ Editor.prototype = {
         var shadow = new GameObject(game.textureManager.colors, 0);
         if (this.decorFlag)
             shadow.textureIndex = 1;
+        if (this.deleteFlag)
+            shadow.textureIndex = 3;
         shadow.drawDistance = -0.1;
         shadow.position.setv(game.scene.camera.position);
         shadow.render();
@@ -95,10 +98,13 @@ Editor.prototype = {
 
         switch (event.which) {
             case 1:
-                Factory(objectTag, {pos: mouse, texture: game.editor.usedObj.textureIndex});
+                if (game.editor.deleteFlag)
+                    game.scene.removeObjectFromScene(Creator[objectTag].pool(), mouse);
+                else
+                    Factory(objectTag, {pos: mouse, texture: game.editor.usedObj.textureIndex});
                 break;
             case 2:
-                game.scene.removeObjectFromScene(Creator[objectTag].pool(), mouse);
+                game.editor.toggleSelector();
                 break;
         }
     },
@@ -107,11 +113,18 @@ Editor.prototype = {
             x: 4 + Math.round((event.pageX - canvas.offsetLeft - canvas.width / 2) / 75),
             y: 3 - Math.round((event.pageY - canvas.offsetTop - canvas.height / 2) / -75)
         };
-        var index = mouse.y * 9 + mouse.x;
-        if (index > game.editor.allObj.length || index < 0) return;
-        game.editor.usedObj = game.editor.allObj[index];
+        switch (event.which) {
+            case 1:
+                var index = mouse.y * 9 + mouse.x;
+                if (index > game.editor.allObj.length || index < 0) return;
+                game.editor.usedObj = game.editor.allObj[index];
+                break;
+            case 2:
+                game.editor.toggleSelector();
+                break;
+        }
     },
-    toggleSelector: function() {
+    toggleSelector: function () {
         this.selectOn = !this.selectOn;
         if (this.selectOn)
             canvas.onmousedown = this.selectNewBlock;
