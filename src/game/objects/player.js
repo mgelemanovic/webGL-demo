@@ -7,7 +7,7 @@ var Player = function () {
     this.immunityPeriod = 0;
     this.collider.w = 0.45;
     this.collider.h = 0.8;
-    this.doubleJumpReady =  true;     // Double jump functionality
+    this.doubleJumpReady = true;     // Double jump functionality
 };
 
 Player.prototype = Object.assign(Object.create(RigidBody.prototype), {
@@ -68,7 +68,12 @@ Player.prototype = Object.assign(Object.create(RigidBody.prototype), {
             this.immunityPeriod = 1000;     // 1 second period
         }
     },
-    heal: function(hp) {
+    bounce: function (speed) {
+        this.grounded();
+        this.doubleJumpReady = false;
+        this.speed.y = speed;
+    },
+    heal: function (hp) {
         this.currentLives = Math.min(this.maxLives, this.currentLives + hp);
     },
     checkForDeath: function () {

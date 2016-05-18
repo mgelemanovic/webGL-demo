@@ -21,7 +21,7 @@ SpikesObject.prototype = Object.assign(Object.create(EnvironmentObject.prototype
     update: function () {
     },
     interact: function (other, direction) {
-        if (other.speed.y < 0)
+        if (direction == "UP" && other.speed.y < 0)
             other.hurt(1);
     }
 });

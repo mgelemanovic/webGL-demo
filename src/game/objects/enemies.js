@@ -63,7 +63,7 @@ SlimeEnemy.prototype = Object.assign(Object.create(Enemy.prototype), {
     interact: function (other, direction) {
         if (direction == "UP") {
             this.kill();
-            other.speed.y = 7.5;
+            other.bounce(7.5);
         }
         else if (!this.killed) {
             if (other.immunityPeriod <= 0)
@@ -80,7 +80,7 @@ Creator["SlimeEnemy"] = {
     pool: function () {
         return game.scene.enemies;
     },
-    editor: function() {
+    editor: function () {
         return new SlimeEnemy();
     }
 };
