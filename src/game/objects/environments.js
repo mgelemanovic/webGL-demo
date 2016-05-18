@@ -83,6 +83,35 @@ BridgeObject.prototype = Object.assign(Object.create(EnvironmentObject.prototype
     }
 });
 
+var BoxObject = function (spawn) {
+    EnvironmentObject.call(this, game.textureManager.items, 10);
+    this.tag = "Box";
+    this.collider.h = this.collider.w = 0.65;
+    this.collider.offset.y = -0.2;
+};
+
+BoxObject.prototype = Object.assign(Object.create(EnvironmentObject.prototype), {
+    constructor: BoxObject,
+    update: function () {
+    },
+    interact: function (other, direction) {
+        RigidBody.prototype.onCollision.call(other, this, direction);
+        if (direction == "DOWN") {
+            game.scene.removeObjectFromScene(game.scene.ground, this.position);
+            game.scene.removed.push(this);
+            var random = Math.random();
+            if (random < 0.4)
+                Factory("CoinPickUp", {pos: this.position, texture: 1});
+            else if (random < 0.7)
+                Factory("HeartPickUp", {pos: this.position});
+            else if (random < 0.95)
+                Factory("GhostEnemy", {pos: this.position});
+            else
+                Factory("CoinPickUp", {pos: this.position, texture: 3});
+        }
+    }
+});
+
 Creator["Spikes"] = {
     create: function (info) {
         return new SpikesObject();
@@ -116,5 +145,17 @@ Creator["Bridge"] = {
     },
     editor: function () {
         return new BridgeObject();
+    }
+};
+
+Creator["Box"] = {
+    create: function (info) {
+        return new BoxObject();
+    },
+    pool: function () {
+        return game.scene.ground;
+    },
+    editor: function () {
+        return new BoxObject();
     }
 };

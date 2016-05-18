@@ -84,10 +84,10 @@ Game.prototype = {
             saw: []
         };
 
-        textures.getSpriteSheet(textures.enemy.slime, "textures/enemies.png", 0, 1, 0, 3, 128, 128);
-        textures.getSpriteSheet(textures.enemy.ghost, "textures/enemies.png", 1, 2, 0, 3, 128, 128);
-        textures.getSpriteSheet(textures.enemy.fish, "textures/enemies.png", 2, 3, 0, 3, 128, 128);
-        textures.getSpriteSheet(textures.enemy.saw, "textures/enemies.png", 3, 4, 0, 2, 128, 128);
+        textures.getSpriteSheet(textures.enemy.slime, "textures/enemies.png", 0, 1, 2, 5, 128, 128);
+        textures.getSpriteSheet(textures.enemy.ghost, "textures/enemies.png", 1, 2, 0, 2, 128, 128);
+        textures.getSpriteSheet(textures.enemy.fish, "textures/enemies.png", 1, 2, 2, 5, 128, 128);
+        textures.getSpriteSheet(textures.enemy.saw, "textures/enemies.png", 0, 1, 0, 2, 128, 128);
     },
     loadOtherTextures: function () {
         var textures = this.textureManager;
