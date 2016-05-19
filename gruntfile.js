@@ -3,7 +3,8 @@ module.exports = function (grunt) {
         // Define source files and their destination
         uglify: {
             files: {
-                src: 'src/**/*.js',
+                src: ['src/core/**/*.js', 'src/game/*.js', 'src/game/objects/game-object.js',
+                'src/game/objects/rigidbody.js', 'src/game/objects/*.js', 'src/game.js'],
                 dest: 'dist/game.min.js'
             }
         },
