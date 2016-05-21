@@ -99,7 +99,7 @@ Game.prototype = {
         textures.getSpriteSheet(textures.items, "textures/items.png", 0, 5, 0, 4, 128, 128);
         textures.getColor([0, 0, 0, 200]);
         textures.getColor([0, 0, 50, 200]);
-        textures.getColor([0, 100, 0, 200]);
+        textures.getColor([0, 100, 0, 175]);
         textures.getColor([50, 0, 0, 200]);
     },
     loadScene: function (path) {

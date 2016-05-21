@@ -25,31 +25,37 @@ Scene.prototype = {
                 pool.splice(i, 1);
         }
     },
+    drawPool: function (pool) {
+        for (var i = 0; i < pool.length; ++i) {
+            if (this.camera.inRange(pool[i], 1))
+                pool[i].render();
+        }
+    },
+    updatePool: function (pool) {
+        for (var i = 0; i < pool.length; ++i) {
+            if (this.camera.inRange(pool[i], 1.5))
+                pool[i].update();
+        }
+    },
+    togglePoolCollider: function (pool) {
+        for (var i = 0; i < pool.length; ++i)
+            pool[i].debug = !pool[i].debug;
+
+        this.render();
+        game.player.render();
+        game.hud.render();
+    },
     render: function () {
         this.camera.prepareScene();
 
-        var drawPool = function (objectPool) {
-            for (var i = 0; i < objectPool.length; ++i) {
-                if (game.scene.camera.inRange(objectPool[i], 1))
-                    objectPool[i].render();
-            }
-        };
-
-        drawPool(this.decor);
-        drawPool(this.ground);
-        drawPool(this.pickups);
-        drawPool(this.environment);
-        drawPool(this.enemies);
+        this.drawPool(this.decor);
+        this.drawPool(this.ground);
+        this.drawPool(this.pickups);
+        this.drawPool(this.environment);
+        this.drawPool(this.enemies);
     },
     update: function () {
-        var updatePool = function (objectPool) {
-            for (var i = 0; i < objectPool.length; ++i) {
-                if (game.scene.camera.inRange(objectPool[i], 1.5))
-                    objectPool[i].update();
-            }
-        };
-
-        updatePool(this.enemies);
-        updatePool(this.environment);
+        this.updatePool(this.enemies);
+        this.updatePool(this.environment);
     }
 };

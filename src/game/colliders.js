@@ -31,8 +31,8 @@ Collider.prototype = {
             tPos.y - this.h / 2 < T.y &&
             tPos.y + this.h / 2 > B.y) {
 
-            var insideHeight = tPos.y > B.y && tPos.y < T.y,
-                insideWidth = tPos.x > B.x && tPos.x < T.x;
+            var insideHeight = tPos.y >= B.y && tPos.y <= T.y,
+                insideWidth = tPos.x >= B.x && tPos.x <= T.x;
             if (tPos.x > T.x && insideHeight)
                 return "RIGHT";
             if (tPos.x < B.x && insideHeight)

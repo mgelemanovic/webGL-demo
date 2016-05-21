@@ -60,6 +60,8 @@ SlimeEnemy.prototype = Object.assign(Object.create(Enemy.prototype), {
         this.speed.x = 0;
         this.texturePool = game.textureManager.enemy.slime;
         this.textureIndex = 2;
+        this.collider.offset.y = -0.4;
+        this.collider.h = 0.2;
     },
     interact: function (other, direction) {
         if (direction == "UP") {
@@ -139,7 +141,7 @@ GhostEnemy.prototype = Object.assign(Object.create(Enemy.prototype), {
 var FishEnemy = function (spawn) {
     Enemy.call(this, game.textureManager.enemy.fish, 0, spawn);
     this.tag = "FishEnemy";
-    this.collider.w = 0.5;
+    this.collider.w = 0.6;
     this.collider.h = 0.65;
     this.nextJump = 0;
 };
@@ -151,13 +153,16 @@ FishEnemy.prototype = Object.assign(Object.create(Enemy.prototype), {
             this.speed.y = 12;
             this.position.y = -4.9;
             this.nextJump = 1500;
+            this.textureIndex = 0;
         }
         if (this.nextJump <= 0)
             this.applyPhysics();
-        if (this.speed.y < 0)
-            this.textureIndex = 1;
-        else
-            this.textureIndex = 0;
+        if (this.textureIndex != 2) {
+            if (this.speed.y < 0)
+                this.textureIndex = 1;
+            else
+                this.textureIndex = 0;
+        }
         this.nextJump -= game.elapsed;
     },
     interact: function (other, direction) {
@@ -165,6 +170,7 @@ FishEnemy.prototype = Object.assign(Object.create(Enemy.prototype), {
             if (this.speed.y > 0) {
                 other.bounce(3);
                 this.speed.y = 0;
+                this.textureIndex = 2;
             }
         } else
             other.hurt(0.5);

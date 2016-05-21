@@ -14,8 +14,6 @@ var GameObject = function (texturePool, textureIndex) {
 
 GameObject.prototype = {
     render: function () {
-        if (this.debug)
-            this.collider.render();
         game.textureManager.setActiveTexture(this.texturePool[this.textureIndex]);
         mvPushMatrix();
         mat4.translate(mvMatrix, mvMatrix, [this.position.x, this.position.y, this.drawDistance]);
@@ -23,6 +21,8 @@ GameObject.prototype = {
         GL.uniformMatrix4fv(shaderProgram.mvMatrixUniform, false, mvMatrix);
         GL.drawArrays(GL.TRIANGLE_STRIP, 0, 4);
         mvPopMatrix();
+        if (this.debug)
+            this.collider.render();
     },
     setScale: function (newX, newY) {
         if (newX > 1) newX = 1;
@@ -31,7 +31,7 @@ GameObject.prototype = {
         this.collider.w = Math.abs(newX);
         this.collider.h = Math.abs(newY);
     },
-    writeData: function() {
+    writeData: function () {
         var data = {
             pos: {
                 x: this.position.x,
@@ -53,7 +53,7 @@ Creator["GameObject"] = {
     pool: function () {
         return game.scene.ground;
     },
-    editor: function() {
+    editor: function () {
         var objects = [];
         for (var i = 0; i < 16; ++i)
             objects.push(new GameObject(game.textureManager.ground, i));
@@ -70,7 +70,7 @@ Creator["DecorObject"] = {
     pool: function () {
         return game.scene.decor;
     },
-    editor: function() {
+    editor: function () {
         var objects = [];
         for (var i = 16; i < 23; ++i) {
             var object = new GameObject(game.textureManager.ground, i);

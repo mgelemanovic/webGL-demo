@@ -5,7 +5,7 @@ var Player = function () {
     this.respawnPosition = new Vector(0, 0);
     this.currentLives = this.maxLives = 3;
     this.immunityPeriod = 0;
-    this.collider.w = 0.45;
+    this.collider.w = 0.5;
     this.collider.h = 0.8;
     this.doubleJumpReady = true;     // Double jump functionality
 };
@@ -50,7 +50,7 @@ Player.prototype = Object.assign(Object.create(RigidBody.prototype), {
         // Double jump functionality
         else if (this.doubleJumpReady) {
             this.doubleJumpReady = false;
-            this.speed.y = 0.8 * jumpSpeed;
+            this.speed.y = jumpSpeed;
         }
     },
     animate: function () {
@@ -105,5 +105,11 @@ Player.prototype = Object.assign(Object.create(RigidBody.prototype), {
         // Double jump functionality
         if (direction == "UP")
             this.doubleJumpReady = true;
+    },
+    toggleCollider: function () {
+        this.debug = !this.debug;
+        game.scene.render();
+        this.render();
+        game.hud.render();
     }
 });

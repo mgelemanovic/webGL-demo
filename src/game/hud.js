@@ -46,6 +46,15 @@ HUD.prototype = {
                     "<p onclick='game.loadBiomeTextures(\"snow\");'>SNOW</p> " +
                     "<p onclick='game.loadBiomeTextures(\"desert\");'>DESERT</p> " +
                     "<p onclick='game.hud.hideInfo(\"biome\"); game.hud.info(\"customization\", 500, 150);'>BACK</p>";
+            case "debug":
+                return "<h1>DEBUG OPTIONS</h1><hr/>" +
+                    "<p>FPS</p>" +
+                    "<p onclick='game.player.toggleCollider();'>PLAYER COLLIDER</p>" +
+                    "<p onclick='game.scene.togglePoolCollider(game.scene.ground);'>GROUND COLLIDERS</p>" +
+                    "<p onclick='game.scene.togglePoolCollider(game.scene.enemies);'>ENEMY COLLIDERS</p>" +
+                    "<p onclick='game.scene.togglePoolCollider(game.scene.environment);'>ENVIRONMENT COLLIDERS</p>" +
+                    "<p onclick='game.scene.togglePoolCollider(game.scene.pickups);'>PICKUP COLLIDERS</p>" +
+                    "<p onclick='game.hud.closeMenu();'>BACK</p>";
             default:
                 return "";
         }
