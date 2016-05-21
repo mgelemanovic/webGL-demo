@@ -10,7 +10,7 @@ var Game = function () {
     this.score = 0;
 
     this.currentLevel = 0;
-    this.numberOfLevels = 2;
+    this.numberOfLevels = 3;
 
     this.lastTime = 0;
     this.elapsed = 0;

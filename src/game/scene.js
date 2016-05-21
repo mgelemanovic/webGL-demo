@@ -19,11 +19,10 @@ Scene.prototype = {
         game.player.respawnPosition.set(0, 0);
         game.player.respawn();
     },
-    removeObjectFromScene: function (objectPool, coords) {
-        for (var i = 0; i < objectPool.length; ++i) {
-            if (coords.x == objectPool[i].position.x && coords.y == objectPool[i].position.y) {
-                objectPool.splice(i, 1);
-            }
+    removeObjectFromScene: function (pool, position) {
+        for (var i = 0; i < pool.length; ++i) {
+            if (Math.abs(position.x - pool[i].position.x) < 0.3 && Math.abs(position.y - pool[i].position.y) < 0.3)
+                pool.splice(i, 1);
         }
     },
     render: function () {

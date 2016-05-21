@@ -29,10 +29,8 @@ Editor.prototype = {
         this.isOn = !this.isOn;
         if (this.isOn) {
             canvas.onmousedown = this.putNewBlock;
-            game.hud.info("editor", 45, 500);
             this.initEditor();
         } else {
-            game.hud.hideInfo("editor");
             var player = game.player;
             player.respawn();
             player.currentLives = player.maxLives = 3;
@@ -96,16 +94,11 @@ Editor.prototype = {
         if (game.editor.decorFlag && objectTag == "GameObject")
             objectTag = "DecorObject";
 
-        switch (event.which) {
-            case 1:
-                if (game.editor.deleteFlag)
-                    game.scene.removeObjectFromScene(Creator[objectTag].pool(), mouse);
-                else
-                    Factory(objectTag, {pos: mouse, texture: game.editor.usedObj.textureIndex});
-                break;
-            case 2:
-                game.editor.toggleSelector();
-                break;
+        if (event.which == 1) {
+            if (game.editor.deleteFlag)
+                game.scene.removeObjectFromScene(Creator[objectTag].pool(), mouse);
+            else
+                Factory(objectTag, {pos: mouse, texture: game.editor.usedObj.textureIndex});
         }
     },
     selectNewBlock: function (event) {
@@ -113,19 +106,14 @@ Editor.prototype = {
             x: 4 + Math.round((event.pageX - canvas.offsetLeft - canvas.width / 2) / 75),
             y: 3 - Math.round((event.pageY - canvas.offsetTop - canvas.height / 2) / -75)
         };
-        switch (event.which) {
-            case 1:
-                var index = mouse.y * 9 + mouse.x;
-                if (index > game.editor.allObj.length || index < 0) return;
-                game.editor.usedObj = game.editor.allObj[index];
-                break;
-            case 2:
-                game.editor.toggleSelector();
-                break;
+        if (event.which == 1) {
+            var index = mouse.y * 9 + mouse.x;
+            if (index > game.editor.allObj.length || index < 0) return;
+            game.editor.usedObj = game.editor.allObj[index];
         }
     },
-    toggleSelector: function () {
-        this.selectOn = !this.selectOn;
+    toggleSelector: function (mode) {
+        this.selectOn = mode;
         if (this.selectOn)
             canvas.onmousedown = this.selectNewBlock;
         else
@@ -148,5 +136,9 @@ Editor.prototype = {
         if (currentlyPressedKeys[40]) {
             game.scene.camera.position.y -= 0.05;
         }
+
+        this.toggleSelector(currentlyPressedKeys[81]);
+        this.decorFlag = currentlyPressedKeys[87];
+        this.deleteFlag = currentlyPressedKeys[69];
     }
 };

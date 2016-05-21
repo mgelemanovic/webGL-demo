@@ -25,11 +25,11 @@ HUD.prototype = {
                 else {
                     return "<h1>EDITOR</h1><hr/>" +
                         "<p onclick='game.editor.changeMode();'>PLAY SCENE</p>" +
+                        "<p>OBJECT SELECTION (Q / GRAY)<br/>" +
+                        "DECOR MODE (W / BLUE)<br/>" +
+                        "DELETE MODE (E / RED)</p>" +
                         "<p onclick='game.hud.closeMenu();'>BACK</p>";
                 }
-            case "editor":
-                return "<p onclick='game.editor.deleteFlag = !game.editor.deleteFlag;'>DELETE MODE</p>" +
-                    "<p onclick='game.editor.decorFlag = !game.editor.decorFlag;'>DECOR MODE</p>";
             case "customization":
                 return "<h1>CUSTOMIZATION</h1><hr/>" +
                     "<p onclick='game.hud.hideInfo(\"customization\"); game.hud.info(\"player\", 500, 150);'>PLAYER</p>" +
@@ -122,25 +122,26 @@ HUD.prototype = {
         } else
             game.pause();
     },
-    menuContent: function (id) {
+    createMenu: function (id) {
         var menu = document.createElement("DIV");
         menu.className = "menu";
         menu.id = id;
         menu.innerHTML = this.init(id);
+        return menu;
+    },
+    menuContent: function (id) {
+        var menu = this.createMenu(id);
         if (menu.innerHTML == "") return;
         var div = document.getElementById("container");
         div.replaceChild(menu, div.childNodes[2]);
         this.showMenu(id);
     },
     info: function (id, x, y) {
-        var menu = document.createElement("DIV");
-        menu.className = "menu";
-        menu.id = id;
-        menu.innerHTML = this.init(id);
+        var menu = this.createMenu(id);
+        if (menu.innerHTML == "") return;
         menu.style.visibility = "visible";
         menu.style.left = x;
         menu.style.top = y;
-        if (menu.innerHTML == "") return;
         var div = document.getElementById("container");
         div.replaceChild(menu, div.childNodes[4]);
     },
