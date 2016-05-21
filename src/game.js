@@ -35,6 +35,7 @@ Game.prototype = {
         var timeNow = new Date().getTime();
         if (this.lastTime != 0) {
             this.elapsed = timeNow - this.lastTime;
+            this.hud.updateFPS(this.elapsed);
             // Time step correction
             if (this.elapsed > 30) this.elapsed = 30;
         }
