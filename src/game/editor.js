@@ -96,7 +96,7 @@ Editor.prototype = {
 
         if (event.which == 1) {
             if (game.editor.deleteFlag)
-                game.scene.removeObjectFromScene(Creator[objectTag].pool(), mouse);
+                game.scene.removeObjectFromScene(mouse);
             else
                 Factory(objectTag, {pos: mouse, texture: game.editor.usedObj.textureIndex});
         }

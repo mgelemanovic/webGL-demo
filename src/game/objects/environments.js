@@ -63,8 +63,8 @@ BridgeObject.prototype = Object.assign(Object.create(EnvironmentObject.prototype
         if (this.countdown <= 0)
             this.applyPhysics();
 
-        if (this.position.y < -4) {
-            game.scene.removeObjectFromScene(game.scene.enemies, this.position);
+        if (this.position.y < -5) {
+            game.scene.removeObjectFromScene(this.position);
             this.position.setv(this.spawn);
             game.scene.removed.push(this);
         }
@@ -97,7 +97,7 @@ BoxObject.prototype = Object.assign(Object.create(EnvironmentObject.prototype), 
     interact: function (other, direction) {
         RigidBody.prototype.onCollision.call(other, this, direction);
         if (direction == "DOWN") {
-            game.scene.removeObjectFromScene(game.scene.ground, this.position);
+            game.scene.removeObjectFromScene(this.position);
             game.scene.removed.push(this);
             var random = Math.random();
             if (random < 0.4)
