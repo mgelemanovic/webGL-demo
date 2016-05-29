@@ -1,6 +1,7 @@
 var Creator = {};
 
-var Factory = function (tag, info) {
+var Factory = function (info) {
+    var tag = info.tag;
     if (!(tag in Creator)) tag = "GameObject";
     var object = Creator[tag].create(info);
     object.position.setv(info.pos);

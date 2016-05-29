@@ -64,9 +64,8 @@ BridgeObject.prototype = Object.assign(Object.create(EnvironmentObject.prototype
             this.applyPhysics();
 
         if (this.position.y < -5) {
-            game.scene.removeObjectFromScene(this.position);
             this.position.setv(this.spawn);
-            game.scene.removed.push(this);
+            game.scene.removeObject(this);
         }
     },
     interact: function (other, direction) {
@@ -97,17 +96,16 @@ BoxObject.prototype = Object.assign(Object.create(EnvironmentObject.prototype), 
     interact: function (other, direction) {
         RigidBody.prototype.onCollision.call(other, this, direction);
         if (direction == "DOWN") {
-            game.scene.removeObjectFromScene(this.position);
-            game.scene.removed.push(this);
+            game.scene.removeObject(this);
             var random = Math.random();
             if (random < 0.4)
-                Factory("CoinPickUp", {pos: this.position, texture: 1});
+                Factory({pos: this.position, tag: "CoinPickUp", texture: 1});
             else if (random < 0.7)
-                Factory("HeartPickUp", {pos: this.position});
+                Factory({pos: this.position, tag: "HeartPickUp"});
             else if (random < 0.95)
-                Factory("GhostEnemy", {pos: this.position});
+                Factory({pos: this.position, tag: "GhostEnemy"});
             else
-                Factory("CoinPickUp", {pos: this.position, texture: 3});
+                Factory({pos: this.position, tag: "CoinPickUp", texture: 3});
         }
     }
 });

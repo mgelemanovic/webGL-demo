@@ -9,7 +9,7 @@ Editor.prototype = {
     initEditor: function () {
         while (game.scene.removed.length > 0) {
             var obj = game.scene.removed.pop();
-            Factory(obj.tag, {pos: obj.position, texture: obj.textureIndex});
+            Factory({pos: obj.position, tag: obj.tag, texture: obj.textureIndex});
         }
         if (this.allObj.length != 0) return;
         for (var prop in Creator)
@@ -96,9 +96,9 @@ Editor.prototype = {
 
         if (event.which == 1) {
             if (game.editor.deleteFlag)
-                game.scene.removeObjectFromScene(mouse);
+                game.editor.deleteBlock(mouse);
             else
-                Factory(objectTag, {pos: mouse, texture: game.editor.usedObj.textureIndex});
+                Factory({pos: mouse, tag: objectTag, texture: game.editor.usedObj.textureIndex});
         }
     },
     selectNewBlock: function (event) {
@@ -110,6 +110,17 @@ Editor.prototype = {
             var index = mouse.y * 9 + mouse.x;
             if (index > game.editor.allObj.length || index < 0) return;
             game.editor.usedObj = game.editor.allObj[index];
+        }
+    },
+    deleteBlock: function (position) {
+        var pool = [],
+            scene = game.scene;
+        pool.push(scene.ground, scene.decor, scene.pickups, scene.enemies, scene.environment);
+        for (var i = 0; i < pool.length; ++i) {
+            for (var j = 0; j < pool[i].length; ++j) {
+                if (Math.abs(position.x - pool[i][j].position.x) < 0.5 && Math.abs(position.y - pool[i][j].position.y) < 0.5)
+                    pool[i].splice(j, 1);
+            }
         }
     },
     toggleSelector: function (mode) {

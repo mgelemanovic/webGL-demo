@@ -16,8 +16,7 @@ Enemy.prototype = Object.assign(Object.create(RigidBody.prototype), {
     },
     kill: function () {
         this.position = this.spawn;
-        game.scene.removed.push(this);
-        game.scene.removeObjectFromScene(this.position);
+        game.scene.removeObject(this);
     }
 });
 
