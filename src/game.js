@@ -10,7 +10,7 @@ var Game = function () {
     this.score = 0;
 
     this.currentLevel = 0;
-    this.numberOfLevels = 3;
+    this.numberOfLevels = 4;
 
     this.lastTime = 0;
     this.elapsed = 0;
@@ -41,7 +41,7 @@ Game.prototype = {
         }
         this.lastTime = timeNow;
     },
-    loop: function () {
+    loop: function () {                     // Standard game loop
         this.inputManager.handleInput();    // Handle player input
 
         this.player.update();               // Update player

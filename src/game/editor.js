@@ -15,13 +15,13 @@ Editor.prototype = {
         for (var prop in Creator)
             this.allObj = this.allObj.concat(Creator[prop].editor());
     },
-    loop: function () {
-        this.handleInput();          // Handle editor input
+    loop: function () {                 // Editor game loop
+        this.handleInput();             // Handle editor input
 
-        game.scene.render();         // Render game world
+        game.scene.render();            // Render game world
         if (this.selectOn)
-            this.drawObjectSelection();
-        this.drawUsedObject();
+            this.drawObjectSelection(); // Render all objects
+        this.drawUsedObject();          // Render currently used object
     },
     changeMode: function () {
         game.hud.menu("mainMenu");

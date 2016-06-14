@@ -5,8 +5,8 @@ var EnvironmentObject = function (texturePool, textureIndex) {
 
 EnvironmentObject.prototype = Object.assign(Object.create(RigidBody.prototype), {
     constructor: EnvironmentObject,
-    interact: function (other, direction) {
-    }
+    update: function () {},
+    interact: function (other, direction) {}
 });
 
 var SpikesObject = function () {
@@ -18,8 +18,6 @@ var SpikesObject = function () {
 
 SpikesObject.prototype = Object.assign(Object.create(EnvironmentObject.prototype), {
     constructor: SpikesObject,
-    update: function () {
-    },
     interact: function (other, direction) {
         if (direction == "UP" && other.speed.y < 0)
             other.hurt(1);
@@ -82,7 +80,7 @@ BridgeObject.prototype = Object.assign(Object.create(EnvironmentObject.prototype
     }
 });
 
-var BoxObject = function (spawn) {
+var BoxObject = function () {
     EnvironmentObject.call(this, game.textureManager.items, 10);
     this.tag = "Box";
     this.collider.h = this.collider.w = 0.65;
@@ -91,8 +89,6 @@ var BoxObject = function (spawn) {
 
 BoxObject.prototype = Object.assign(Object.create(EnvironmentObject.prototype), {
     constructor: BoxObject,
-    update: function () {
-    },
     interact: function (other, direction) {
         RigidBody.prototype.onCollision.call(other, this, direction);
         if (direction == "DOWN") {

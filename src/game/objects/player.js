@@ -35,10 +35,10 @@ Player.prototype = Object.assign(Object.create(RigidBody.prototype), {
         var moveSpeed = 4;
         if (direction == "LEFT") {
             this.speed.x = -moveSpeed;
-            this.scale.x = -1;
+            this.scale.x = -Math.abs(this.scale.x);
         } else if (direction == "RIGHT") {
             this.speed.x = moveSpeed;
-            this.scale.x = 1;
+            this.scale.x = Math.abs(this.scale.x);
         }
     },
     jump: function () {
